@@ -6,8 +6,20 @@ import settings
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
+def main():
+    return render_template("main.html")
+
+@app.route('/home')
+def home():
     return render_template("home.html")
+
+@app.route('/audit')
+def sql_audit():
+    return render_template("audit.html")
+
+@app.route('/execute')
+def sql_execute():
+    return render_template("execute.html")
 
 if __name__ == '__main__':
     port = 5200
