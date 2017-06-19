@@ -13,6 +13,9 @@
 
     <script src={{ url_for("static", filename="js/bootstrap-datetimepicker.min.js") }} type="text/javascript"></script>
     <link href={{ url_for('static', filename='css/bootstrap-datetimepicker.min.css') }} rel="stylesheet" type="text/css">
+
+    <script src={{ url_for("static", filename="js/fileinput.min.js") }} type="text/javascript"></script>
+    <link href={{ url_for('static', filename='css/fileinput.min.css') }} rel="stylesheet" type="text/css">
 </head>
 <body>
     <div class="container-fluid">
@@ -23,7 +26,7 @@
                     <a href="javascript:void(0)" id="home" class="list-group-item active" onclick=init_web("home")><span class="glyphicon glyphicon-home"> 首页</span></a>
                     <a href="javascript:void(0)" id="audit" class="list-group-item" onclick=init_web("audit")><span class="glyphicon glyphicon-education"> SQL审核</span></a>
                     <a href="javascript:void(0)" id="execute" class="list-group-item" onclick=init_web("execute")><span class="glyphicon glyphicon-cog"> 创建SQL工单</span></a>
-                    <a href="javascript:void(0)" id="sql_list" class="list-group-item" onclick=init_web("sql_list")><span class="glyphicon glyphicon-cog"> SQL工单列表</span></a>
+                    <a href="javascript:void(0)" id="list" class="list-group-item" onclick=init_web("list")><span class="glyphicon glyphicon-list"> SQL工单列表</span></a>
                 </div>
             </div>
             <div class="col-md-10" id="div_web">

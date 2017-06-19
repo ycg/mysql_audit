@@ -1,25 +1,35 @@
 <form id="sql_form" action="/autoreview" method="post" target="nm_iframe" class="form-horizontal" role="form">
     <div class="col-md-8">
-        <textarea id="sql" name="sql" class="form-control" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=20 required></textarea>
+        <textarea id="sql" name="sql" class="form-control" style="resize: none" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=20 required></textarea>
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            <input id="remark" type="text" name="remark" class="form-control" placeholder="请输入上线单名称，如:XX项目会员功能建表" required>
+            <input id="remark" type="text" name="remark" class="form-control" placeholder="请输入上线单名称，如:修改房源宝后台bug" required>
         </div>
         <div class="form-group">
             <input id="jira_url" type="text" name="jira_url" class="form-control" placeholder="请输入jira地址" required>
         </div>
         <div class="form-group">
-            <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" data-placeholder="请选择要上线的集群:" required>
-                <option value="0" disabled selected>请选择要上线的集群:</option>
+            <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" required>
+                <option value="0" disabled selected style="color: black">请选择要上线的集群:</option>
             </select>
         </div>
         <div class="form-group">
-            <select id="is_backup" name="is_backup" class="selectpicker show-tick form-control bs-select-hidden" data-placeholder="请选择是否要备份:" required>
-                <option value="0" disabled selected>请选择是否要备份:</option>
+            <select id="is_backup" name="is_backup" class="selectpicker show-tick form-control bs-select-hidden" required>
+                <option value="0" disabled selected style="color: black">请选择是否要备份:</option>
                 <option value="1">是</option>
                 <option value="0">否</option>
             </select>
+        </div>
+        <div class="form-group">
+            <select id="dba_user" name="dba_user" class="selectpicker show-tick form-control bs-select-hidden" required>
+                <option value="0" disabled selected style="color: black">请选择执行DBA执行:</option>
+                <option value="1">DBA1</option>
+                <option value="0">DBA2</option>
+            </select>
+        </div>
+         <div class="form-group">
+            <input id="file_upload" type="file" name="file_upload" class="form-control file" placeholder="SQL过多请上传文件:" required>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary">创建SQL工单</button>
@@ -30,5 +40,6 @@
 
 
 <script type="text/javascript">
+    $("#file_upload").fileinput({showUpload: false});
     $(".selectpicker").selectpicker({liveSearch: true});
 </script>
