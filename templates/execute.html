@@ -1,4 +1,4 @@
-<form id="sql_form" action="/autoreview" method="post" target="nm_iframe" class="form-horizontal" role="form">
+<form id="sql_form" action="/sql_add" method="post" target="nm_iframe" class="form-horizontal" role="form">
     <div class="col-md-8">
         <textarea id="sql" name="sql" class="form-control" style="resize: none" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=20 required></textarea>
     </div>
@@ -26,6 +26,10 @@
                 <option value="0" disabled selected style="color: black">请选择执行DBA执行:</option>
                 <option value="1">DBA1</option>
                 <option value="0">DBA2</option>
+                <option value="1">DBA3</option>
+                <option value="0">DBA4</option>
+                <option value="1">DBA5</option>
+                <option value="0">DBA6</option>
             </select>
         </div>
          <div class="form-group">

@@ -1,7 +1,8 @@
 from gevent import pywsgi
-from flask import Flask, app, render_template
+from flask import Flask, app, render_template, request
 
 import settings
+from common import inception_util, entity
 
 app = Flask(__name__)
 
@@ -24,6 +25,23 @@ def sql_execute():
 @app.route("/list")
 def sql_list():
     return render_template("list.html")
+
+#region sql audit
+
+@app.route("/audit/check", methods=["POST"])
+def get_sql_audit_info():
+    return render_template("audit_view.html", audit_infos=inception_util.sql_audit(get_object_from_json(request.form).sql, settings.host_info))
+
+#endregion
+
+def get_object_from_json(json_value):
+    obj = entity.Entity()
+    for key, value in dict(json_value).items():
+        if(value[0].isdigit()):
+            setattr(obj, key, int(value[0]))
+        else:
+            setattr(obj, key, value[0])
+    return obj
 
 if __name__ == '__main__':
     port = 5200

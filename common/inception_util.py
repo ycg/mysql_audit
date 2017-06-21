@@ -12,9 +12,7 @@ sqL_enable_split_flag = "--enable-split"
 
 sql_mode = """/*--host={0};--port={1};--user={2};--password={3};{4}*/
               inception_magic_start;
-              start transaction;
               {5}
-              commit;
               inception_magic_commit;"""
 
 sql_simple_mode = "inception_magic_start;{0}inception_magic_commit;"

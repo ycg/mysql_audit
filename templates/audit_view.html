@@ -1,0 +1,66 @@
+<style type="text/css">
+    pre {
+        border: 0px;
+        background: none;
+        font-size: 14px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+</style>
+{% if(audit_infos != None) %}
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th colspan="5" rowspan="1" class="text-left bg-success">
+                审核结果
+            </th>
+        </tr>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                执行结果
+            </th>
+            <th>
+                错误结果
+            </th>
+            <th>
+                SQL内容
+            </th>
+            <th>
+                影响行数
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for info in audit_infos %}
+            <tr>
+                <td>
+                    <pre>{{ info.id }}</pre>
+                </td>
+                <td>
+                    {% if(info.errlevel == 0) %}
+                        <pre>Success</pre>
+                    {% elif(info.errlevel == 1) %}
+                        <pre>Warning</pre>
+                    {% elif(info.errlevel == 2) %}
+                        <pre>Error</pre>
+                    {% endif %}
+                </td>
+                <td>
+                    <pre>{{ info.errormessage }}</pre>
+                </td>
+                <td>
+                    <pre>{{ info.sql }}</pre>
+                </td>
+                <td>
+                    <pre>{{ info.affected_rows }}</pre>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
