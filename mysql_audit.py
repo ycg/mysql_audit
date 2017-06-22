@@ -2,6 +2,7 @@ from gevent import pywsgi
 from flask import Flask, app, render_template, request
 
 import settings
+from control import host
 from common import inception_util, entity
 
 app = Flask(__name__)
@@ -43,6 +44,10 @@ def get_sql_audit_info():
 @app.route("/host")
 def get_host():
     return render_template("host.html")
+
+@app.route("/host/query", methods=["POST"])
+def query_host():
+    return render_template("host_view.html", host_infos=host.query_host_infos(get_object_from_json(request.form)))
 
 #engregion
 

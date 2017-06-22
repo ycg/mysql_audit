@@ -1,10 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Host
+            </th>
+            <th>
+                IP
+            </th>
+            <th>
+                Port
+            </th>
+            <th>
+                User
+            </th>
+            <th>
+                Test_Host
+            </th>
+            <th>
+                Online_Host
+            </th>
+            <th>
 
-</body>
-</html>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for info in user_infos %}
+            <tr>
+                <td>
+                    {{ info.host_id }}
+                </td>
+                <td>
+                    {{ info.host_name }}
+                </td>
+                <td>
+                    {{ info.ip }}
+                </td>
+                <td>
+                    {{ info.prot }}
+                </td>
+                <td>
+                    {{ info.user }}
+                </td>
+                <td>
+                    {% if(info.is_test_host == 0) %}
+                        No
+                    {% else %}
+                        Yes
+                    {% endif %}
+                </td>
+                <td>
+                    {% if(info.is_online_host == 0) %}
+                        No
+                    {% else %}
+                        Yes
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    <button class="btn btn-primary">编辑</button>
+                    <button class="btn btn-danger">删除</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>

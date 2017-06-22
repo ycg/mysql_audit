@@ -51,7 +51,8 @@ CREATE TABLE mysql_hosts
   password VARCHAR(50) NOT NULL COMMENT '密码',
   is_test_host TINYINT NOT NULL DEFAULT 0 COMMENT '是否是测试实例',
   is_online_host TINYINT NOT NULL DEFAULT 0 COMMENT '是否是线上实例',
-  remark VARCHAR(20) NOT NULL DEFAULT '' COMMENT '备注，界面都是以这个内容显示',
+  host_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '主机名称，界面都是以这个内容显示',
+  remark VARCHAR(50) NOT NULL DEFAULT '' COMMENT '备注',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'

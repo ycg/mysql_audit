@@ -1,1 +1,32 @@
-host
+<div class="row">
+    <div class="col-md-2">
+        <input id="host_id" type="text" class="form-control" placeholder="input host id">
+    </div>
+    <div class="col-md-2">
+        <input id="host_name" type="text" class="form-control" placeholder="input host name">
+    </div>
+    <div class="col-md-2">
+        <select id="host_type" name="host_type" class="selectpicker show-tick form-control bs-select-hidden" required>
+            <option value="0" selected>所有MySQL实例</option>
+            <option value="1">测试实例</option>
+            <option value="2">线上实例</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary" onclick="query_host_info()">查询</button>
+    </div>
+</div>
+
+<div class="col-md-8" id="host_data">
+
+</div>
+
+<script type="text/javascript">
+    $(".selectpicker").selectpicker();
+
+    function query_host_info() {
+        var parameter = "host_id=" + $("#host_id").val() + "&host_name=" + $("#host_name").val() + "&host_type=" + $("#host_type").val();
+        console.log(parameter)
+        input_data_for_post("/host/query", parameter, "#host_data")
+    }
+</script>
