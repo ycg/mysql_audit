@@ -37,3 +37,13 @@ function set_tab_active(id_name) {
         }
     });
 }
+
+$("button[type='reset']").click(function () {
+    $('input').attr("value", '');
+    $("textarea").val("");
+    $("select.selectpicker").each(function () {
+        $(this).selectpicker('val', $(this).find('option:first').val());
+        $(this).find("option").attr("selected", false);
+        $(this).find("option:first").attr("selected", true);
+    });
+});

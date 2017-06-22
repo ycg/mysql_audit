@@ -15,7 +15,7 @@ sql_mode = """/*--host={0};--port={1};--user={2};--password={3};{4}*/
               {5}
               inception_magic_commit;"""
 
-sql_simple_mode = "inception_magic_start;{0}inception_magic_commit;"
+sql_mode_no_host = "inception_magic_start;{0}inception_magic_commit;"
 
 osc_fields = ["DBNAME", "TABLENAME", "SQLSHA1", "PERCENT", "REMAINTIME", "INFORMATION"]
 execute_fields = ['ID', 'stage', 'errlevel', 'stagestatus', 'errormessage', 'SQL', 'Affected_rows', 'sequence', 'backup_dbname', 'execute_time', 'sqlsha1']
@@ -30,24 +30,21 @@ def sql_execute(sql, host_info):
 
 def stop_osc_task(sha1_code):
     sql = "inception stop alter '{}';".format(sha1_code)
-    return get_object(execute_sql(sql_simple_mode.format(sql)), fields=osc_fields)
+    return get_object(execute_sql(sql_mode_no_host.format(sql)), fields=osc_fields)
 
 def get_osc_info(sha1_code):
     sql = "inception get osc_percent '{}';".format(sha1_code)
-    return get_object(execute_sql(sql_simple_mode.format(sql)), fields=osc_fields)
+    return get_object(execute_sql(sql_mode_no_host.format(sql)), fields=osc_fields)
 
 def get_object(rows, fields=None):
     result = []
     if(rows == None or len(rows) <= 0 or fields == None or len(fields) <= 0):
         return result
-
     for row in rows:
         info = entity.Entity()
         for i in range(0, len(fields)):
             setattr(info, fields[i].lower(), row[i])
         result.append(info)
-    if(len(rows) == 1):
-        return result[0]
     return result
 
 def execute_sql(sql):

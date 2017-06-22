@@ -6,6 +6,8 @@ from common import inception_util, entity
 
 app = Flask(__name__)
 
+#region tab
+
 @app.route("/")
 def main():
     return render_template("main.html")
@@ -26,11 +28,29 @@ def sql_execute():
 def sql_list():
     return render_template("list.html")
 
+#endregion
+
 #region sql audit
 
 @app.route("/audit/check", methods=["POST"])
 def get_sql_audit_info():
     return render_template("audit_view.html", audit_infos=inception_util.sql_audit(get_object_from_json(request.form).sql, settings.host_info))
+
+#endregion
+
+#region host api
+
+@app.route("/host")
+def get_host():
+    return render_template("host.html")
+
+#engregion
+
+#region user api
+
+@app.route("/user")
+def get_user():
+    return render_template("user.html")
 
 #endregion
 

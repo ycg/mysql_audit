@@ -1,1 +1,54 @@
-ccc
+<form id="sql_form" action="/sql_add" method="post" target="nm_iframe" class="form-inline col-md-12" role="form">
+    <div class="form-group">
+        <select id="user" name="user" class="selectpicker show-tick form-control bs-select-hidden" required multiple>
+            <option value="0" selected>查询所有用户</option>
+            <option value="1">DBA1</option>
+            <option value="2">DBA2</option>
+            <option value="3">DBA3</option>
+            <option value="4">DBA4</option>
+            <option value="5">DBA5</option>
+            <option value="6">DBA5</option>
+            <option value="7">DBA6</option>
+        </select>
+    </div>
+    &nbsp;&nbsp;
+    <div class="form-group">
+        <select id="is_backup" name="is_backup" class="selectpicker show-tick form-control bs-select-hidden" required multiple>
+            <option value="0" selected>查询所有状态</option>
+            <option value="1">未审核</option>
+            <option value="2">已审核</option>
+            <option value="3">未执行</option>
+            <option value="4">已执行</option>
+        </select>
+    </div>
+    &nbsp;&nbsp;
+    <div class="form-group">
+        <input id="start_datetime" name="start_datetime" type="text" value="" class="form_datetime form-control" placeholder="开始时间" readonly>
+    </div>
+    &nbsp;&nbsp;
+    <div class="form-group">
+        <input id="stop_datetime" name="stop_datetime" type="text" value="" class="form_datetime form-control" placeholder="结束时间" readonly>
+    </div>
+    <div class="form-group">
+        &nbsp;&nbsp;
+        <button type="submit" class="btn btn-primary">查询</button>
+        &nbsp;&nbsp;
+        <button type="reset" class="btn btn-default">清空</button>
+    </div>
+</form>
+
+<div class="col-md-12" id="sql_list">
+
+</div>
+
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: "yyyy-mm-dd hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        pickerPosition: "bottom-left"
+    });
+    $(".selectpicker").selectpicker({liveSearch: true});
+</script>
+
+<script src={{ url_for("static", filename="js/common.js") }} type="text/javascript"></script>

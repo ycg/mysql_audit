@@ -1,12 +1,22 @@
 <div class="row">
-    <div class="col-md-6">
-        <textarea id="sql_value" name="sql_value" class="form-control" style="resize: none; font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 15px" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=20 required></textarea>
+    <div class="col-md-8">
+        <textarea id="sql_value" name="sql_value" class="form-control" style="resize: none; font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 14px" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=18 required></textarea>
+    </div>
+    <div class="col-md-4">
+        <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" required>
+            <option value="0" disabled selected style="color: black">请选择要审核的集群:</option>
+            <option value="0">Group1</option>
+            <option value="0">Group2</option>
+            <option value="0">Group3</option>
+        </select>
     </div>
 </div>
 </br>
 <div class="row">
     <div class="col-md-8">
         <button class="btn btn-primary" onclick="get_audit_infos()">执行SQL审核</button>
+        &nbsp;&nbsp;
+        <button class="btn btn-default" type="reset">清空</button>
     </div>
 </div>
 </br>
@@ -17,7 +27,11 @@
 </div>
 
 <script type="text/javascript">
+    $(".selectpicker").selectpicker({liveSearch: true});
+
     function get_audit_infos() {
         input_data_for_post("/audit/check", "sql=" + $("#sql_value").val(), "#audit_info")
     }
 </script>
+
+<script src={{ url_for("static", filename="js/common.js") }} type="text/javascript"></script>
