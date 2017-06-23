@@ -3,7 +3,7 @@
         <input id="host_id" type="text" class="form-control" placeholder="input host id">
     </div>
     <div class="col-md-2">
-        <input id="host_name" type="text" class="form-control" placeholder="input host name">
+        <input id="host_name_tmp" type="text" class="form-control" placeholder="input host name">
     </div>
     <div class="col-md-2">
         <select id="host_type" name="host_type" class="selectpicker show-tick form-control bs-select-hidden" required>
@@ -12,21 +12,116 @@
             <option value="2">线上实例</option>
         </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-4">
         <button class="btn btn-primary" onclick="query_host_info()">查询</button>
+        &nbsp;&nbsp;
+        <button class="btn btn-primary" onclick=show_update_dialog(0,1)>添加MySQL主机</button>
     </div>
 </div>
 
-<div class="col-md-8" id="host_data">
+</br>
+<div class="row">
+    <div class="col-md-6" id="host_data">
 
+    </div>
+</div>
+
+<div class="modal fade" id="host_add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel">添加MySQL实例</h4>
+            </div>
+            <div class="modal-body">
+                <form id="host_add_form">
+                    <div class="form-group">
+                        <label id="host_name_lable" name="host_name_lable" class="control-label" for="host_name">数据库名称:</label>
+                        <input id="host_name" name="host_name" type="text" class="form-control" placeholder="input mysql name">
+                    </div>
+                    <div class="form-group">
+                        <label id="host_ip_lable" name="host_ip_lable" class="control-label" for="host_ip">IP地址:</label>
+                        <input id="host_ip" name="host_ip" type="text" class="form-control" placeholder="input mysql host ip">
+                    </div>
+                    <div class="form-group">
+                        <label id="host_port_lable" name="host_port_lable" class="control-label" for="host_port">端口:</label>
+                        <input id="host_port" name="host_port" type="text" class="form-control" placeholder="input mysql host port" value="3306">
+                    </div>
+                    <div class="form-group">
+                        <label id="host_user_lable" name="host_user_lable" class="control-label" for="host_user">用户名:</label>
+                        <input id="host_user" name="host_user" type="text" class="form-control" placeholder="input mysql user">
+                    </div>
+                    <div class="form-group">
+                        <label id="host_password_lable" name="host_password_lable" class="control-label" for="host_password">密码:</label>
+                        <input id="host_password" name="host_password" type="password" class="form-control" placeholder="input mysql password">
+                    </div>
+                    <div class="form-group">
+                        <select id="host_tpye" name="host_tpye" class="selectpicker show-tick form-control bs-select-hidden">
+                            <option value="0" selected disabled style="color: black">请选择实例类型</option>
+                            <option value="1">测试实例</option>
+                            <option value="2">线上实例</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-default" onclick="test_connection()">测试连接</button>
+                <button type="button" class="btn btn-primary" id="operation_btn" onclick="add_mysql_host()">添加</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
     $(".selectpicker").selectpicker();
 
+    function test_connection() {
+        post_request("/host/test", get_form_json($("#host_add_form")))
+    }
+
+    function show_update_dialog(host_id, type) {
+        var obj_json = "";
+        if (type == 1) {
+            $("#host_port").val(3360);
+            $("#operation_btn").text("添加");
+            $("#host_ip").val("");
+            $("#host_user").val("");
+            $("#host_name").val("");
+            $("#host_password").val("");
+        }
+        else if (type == 2) {
+            $.post("/host/query/host_id", "host_id=" + host_id, function (data) {
+                obj_json = JSON.parse(data);
+                $("#operation_btn").text("更新");
+                $("#host_ip").val(obj_json.ip);
+                $("#host_port").val(obj_json.port);
+                $("#host_user").val(obj_json.user);
+                $("#host_name").val(obj_json.host_name);
+                $("#host_password").val(obj_json.password);
+            });
+        }
+        show_modal_dialog("#host_add")
+    }
+
+    function add_mysql_host() {
+        post_request("/host/add", get_form_json($("#host_add_form")))
+    }
+
+    function update_mysql_host(host_id) {
+
+    }
+
+    function delete_mysql_host(host_id) {
+        if (confirm("是否确认删除?") == true) {
+            post_request("/host/delete", "host_id=" + host_id)
+        }
+    }
+
     function query_host_info() {
-        var parameter = "host_id=" + $("#host_id").val() + "&host_name=" + $("#host_name").val() + "&host_type=" + $("#host_type").val();
-        console.log(parameter)
+        var parameter = "host_id=" + convert_int("#host_id") + "&host_name=" + convert_string("#host_name_tmp") + "&host_type=" + convert_int("#host_type");
         input_data_for_post("/host/query", parameter, "#host_data")
     }
 </script>

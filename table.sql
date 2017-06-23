@@ -46,7 +46,7 @@ CREATE TABLE mysql_hosts
 (
   host_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   ip VARCHAR(20) NOT NULL COMMENT 'ip地址',
-  prot SMALLINT UNSIGNED NOT NULL DEFAULT 3306 COMMENT '端口',
+  port SMALLINT UNSIGNED NOT NULL DEFAULT 3306 COMMENT '端口',
   user VARCHAR(20) NOT NULL COMMENT '用户名',
   password VARCHAR(50) NOT NULL COMMENT '密码',
   is_test_host TINYINT NOT NULL DEFAULT 0 COMMENT '是否是测试实例',
@@ -57,3 +57,5 @@ CREATE TABLE mysql_hosts
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
 ) COMMENT 'mysql主机地址信息表';
+
+insert into mysql_hosts (ip,user,password,is_test_host,host_name,remark)values("192.168.11.101","yangcg",password("yangcaogui"), 1, "jumpserver","jump server");

@@ -33,3 +33,7 @@ for dd in cc:
     #print(dd.errormessage)
 
 #inception_util.get_osc_info("dsadsadsadsa")
+
+import control
+from control import host
+print(host.query_host_infos([]))

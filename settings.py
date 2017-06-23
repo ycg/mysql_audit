@@ -9,8 +9,9 @@ inception_password = "yangcaogui"
 LINUX_OS = 'Linux' in platform.system()
 WINDOWS_OS = 'Windows' in platform.system()
 
-host_info = entity.Entity()
-host_info.host = "192.168.11.101"
-host_info.port = 3306
-host_info.user = "yangcg"
-host_info.password = "yangcaogui"
+MySQL_HOST = entity.Entity()
+MySQL_HOST.key = 99999
+MySQL_HOST.host = "192.168.11.101"
+MySQL_HOST.port = 3306
+MySQL_HOST.user = "yangcg"
+MySQL_HOST.password = "yangcaogui"
