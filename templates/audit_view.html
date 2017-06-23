@@ -55,8 +55,8 @@
                 <td>
                     <pre>{{ info.sql }}</pre>
                 </td>
-                <td {% if(info.affected_rows) %} class="text-danger" {% endif %}>
-                    <pre>{{ info.affected_rows }}</pre>
+                <td>
+                    <pre {% if(info.affected_rows) %} class="text-danger" {% endif %}>{{ info.affected_rows }}</pre>
                 </td>
             </tr>
         {% endfor %}

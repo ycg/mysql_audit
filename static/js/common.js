@@ -51,6 +51,7 @@ $("button[type='reset']").click(function () {
         $(this).selectpicker('val', $(this).find('option:first').val());
         $(this).find("option").attr("selected", false);
         $(this).find("option:first").attr("selected", true);
+        $(this).val(0)
     });
 });
 
