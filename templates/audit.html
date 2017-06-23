@@ -31,8 +31,7 @@
 
     function get_audit_infos() {
         var json = "sql=" + $("#sql_value").val() + "&host_id=" + $("#host_id").val();
-        console.log(json)
-        input_data_for_post("/audit/check", json, "#audit_info")
+        input_data_for_post_loding("/audit/check", json, "#audit_info")
     }
 </script>
 
