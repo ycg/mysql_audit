@@ -5,6 +5,7 @@
         font-size: 13px;
         margin: 0 0 0px;
         padding: 0px;
+        white-space: pre-wrap;
     }
 </style>
 {% if(audit_infos != None) %}
@@ -19,7 +20,7 @@
             <th>
                 ID
             </th>
-            <th>
+            <th style="width: 80px">
                 执行结果
             </th>
             <th>
@@ -28,7 +29,7 @@
             <th>
                 SQL内容
             </th>
-            <th>
+            <th style="width: 80px">
                 影响行数
             </th>
         </tr>

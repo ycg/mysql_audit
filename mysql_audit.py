@@ -2,8 +2,8 @@ from gevent import pywsgi
 from flask import Flask, app, render_template, request
 
 import settings
-from control import host
-from common import inception_util, entity, cache
+from control import host, audit
+from common import entity, cache
 
 app = Flask(__name__)
 
@@ -19,10 +19,6 @@ def main():
 def home():
     return render_template("home.html")
 
-@app.route("/audit")
-def sql_audit():
-    return render_template("audit.html")
-
 @app.route("/execute")
 def sql_execute():
     return render_template("execute.html")
@@ -35,9 +31,13 @@ def sql_list():
 
 #region sql audit
 
+@app.route("/audit")
+def sql_audit():
+    return render_template("audit.html", host_infos=audit.get_audit_mysql_host())
+
 @app.route("/audit/check", methods=["POST"])
 def get_sql_audit_info():
-    return render_template("audit_view.html", audit_infos=inception_util.sql_audit(get_object_from_json(request.form).sql, settings.MySQL_HOST))
+    return audit.audit_sql(get_object_from_json(request.form))
 
 #endregion
 
@@ -91,7 +91,10 @@ def get_object_from_json(json_value):
         if(value[0].isdigit()):
             setattr(obj, key, int(value[0]))
         else:
-            setattr(obj, key, value[0])
+            if(value[0] == "null"):
+                setattr(obj, key, None)
+            else:
+                setattr(obj, key, value[0])
     return obj
 
 #endregion

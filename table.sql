@@ -58,4 +58,4 @@ CREATE TABLE mysql_hosts
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
 ) COMMENT 'mysql主机地址信息表';
 
-insert into mysql_hosts (ip,user,password,is_test_host,host_name,remark)values("192.168.11.101","yangcg",password("yangcaogui"), 1, "jumpserver","jump server");
+insert into mysql_hosts (ip,user,password,is_test_host,host_name,remark)values("192.168.11.101","yangcg","yangcaogui", 1, "jumpserver","jump server");

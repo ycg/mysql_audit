@@ -5,9 +5,9 @@
     <div class="col-md-4">
         <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" required>
             <option value="0" disabled selected style="color: black">请选择要审核的集群:</option>
-            <option value="0">Group1</option>
-            <option value="0">Group2</option>
-            <option value="0">Group3</option>
+            {% for info in host_infos %}
+                <option value="{{ info.host_id }}">{{ info.host_name }}</option>
+            {% endfor %}
         </select>
     </div>
 </div>
@@ -30,7 +30,9 @@
     $(".selectpicker").selectpicker({liveSearch: true});
 
     function get_audit_infos() {
-        input_data_for_post("/audit/check", "sql=" + $("#sql_value").val(), "#audit_info")
+        var json = "sql=" + $("#sql_value").val() + "&host_id=" + $("#host_id").val();
+        console.log(json)
+        input_data_for_post("/audit/check", json, "#audit_info")
     }
 </script>
 
