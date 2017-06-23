@@ -2,8 +2,8 @@ from gevent import pywsgi
 from flask import Flask, app, render_template, request
 
 import settings
-from control import host, audit
 from common import entity, cache
+from control import host, audit, execute
 
 app = Flask(__name__)
 
@@ -18,10 +18,6 @@ def main():
 @app.route("/home")
 def home():
     return render_template("home.html")
-
-@app.route("/execute")
-def sql_execute():
-    return render_template("execute.html")
 
 @app.route("/list")
 def sql_list():
@@ -38,6 +34,14 @@ def sql_audit():
 @app.route("/audit/check", methods=["POST"])
 def get_sql_audit_info():
     return audit.audit_sql(get_object_from_json(request.form))
+
+#endregion
+
+#region sql execute
+
+@app.route("/execute")
+def sql_execute():
+    return render_template("execute.html", host_infos=execute.get_execute_mysql_host())
 
 #endregion
 
