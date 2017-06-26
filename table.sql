@@ -25,6 +25,7 @@ CREATE TABLE role_info
 CREATE TABLE sql_work
 (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(100) NOT NULL COMMENT '标题，此sql对应的是什么业务',
   create_user_id SMALLINT UNSIGNED NOT NULL COMMENT '创建sql工单用户id',
   audit_user_id SMALLINT UNSIGNED NOT NULL COMMENT '审核用户id',
   execute_user_id SMALLINT UNSIGNED NOT NULL COMMENT '执行用户id',

@@ -32,9 +32,9 @@
                 </td>
                 <td>
                     {% if(info.errlevel == 0) %}
-                        <pre>Success</pre>
+                        <pre class="text-success">Success</pre>
                     {% elif(info.errlevel == 1) %}
-                        <pre>Warning</pre>
+                        <pre class="text-warning">Warning</pre>
                     {% elif(info.errlevel == 2) %}
                         <pre class="text-danger">Error</pre>
                     {% endif %}

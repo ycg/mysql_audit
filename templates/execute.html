@@ -1,10 +1,10 @@
-<form id="sql_form" action="/sql_add" method="post" target="nm_iframe" class="form-horizontal" role="form">
+<form id="sql_work_form" target="nm_iframe" class="form-horizontal" role="form">
     <div class="col-md-8">
         <textarea id="sql" name="sql" class="form-control" style="resize: none" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=20 required></textarea>
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            <input id="remark" type="text" name="remark" class="form-control" placeholder="请输入上线单名称，如:修改房源宝后台bug" required>
+            <input id="title" type="text" name="title" class="form-control" placeholder="请输入上线工单名称，如:修改房源宝后台bug" required>
         </div>
         <div class="form-group">
             <input id="jira_url" type="text" name="jira_url" class="form-control" placeholder="请输入jira地址" required>
@@ -25,7 +25,7 @@
             </select>
         </div>
         <div class="form-group">
-            <select id="dba_user" name="dba_user" class="selectpicker show-tick form-control bs-select-hidden" required>
+            <select id="dba_user_id" name="dba_user_id" class="selectpicker show-tick form-control bs-select-hidden" required>
                 <option value="0" disabled selected style="color: black">请选择执行SQL的DBA:</option>
                 <option value="1">DBA1</option>
                 <option value="0">DBA2</option>
@@ -39,7 +39,8 @@
             <input id="file_upload" type="file" name="file_upload" class="form-control file" placeholder="SQL过多请上传文件:" required>
         </div>-->
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">创建SQL工单</button>
+            <button type="submit" class="btn btn-primary" onclick="add_sql_work()">创建SQL工单</button>
+            &nbsp;&nbsp;
             <button type="reset" class="btn btn-default">清空重填</button>
         </div>
     </div>
@@ -49,6 +50,11 @@
 <script type="text/javascript">
     $("#file_upload").fileinput({showUpload: false});
     $(".selectpicker").selectpicker({liveSearch: true});
+
+    function add_sql_work() {
+        console.log(get_form_json($("#sql_work_form")))
+        //post_request("", get_form_json($("#sql_work_form")))
+    }
 </script>
 
 <script src={{ url_for("static", filename="js/common.js") }} type="text/javascript"></script>
