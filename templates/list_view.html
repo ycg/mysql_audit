@@ -5,13 +5,10 @@
             ID
         </th>
         <th>
-            创建用户
-        </th>
-        <th>
-            创建时间
-        </th>
-        <th>
             标题
+        </th>
+        <th>
+            创建用户
         </th>
         <th>
             SQL
@@ -29,6 +26,9 @@
             是否删除
         </th>
         <th>
+            创建时间
+        </th>
+        <th>
 
         </th>
     </tr>
@@ -40,13 +40,10 @@
                 {{ info.id }}
             </td>
             <td>
-                {{ info.create_user_id }}
-            </td>
-            <td>
-                {{ info.created_time }}
-            </td>
-            <td>
                 {{ info.title }}
+            </td>
+            <td>
+                {{ info.create_user_id }}
             </td>
             <td>
                 {{ info.sql_value }}
@@ -62,6 +59,9 @@
             </td>
             <td>
                 {{ info.is_deleted }}
+            </td>
+            <td>
+                {{ info.created_time }}
             </td>
             <td class="text-center">
                 <button class="btn-primary btn btn-xs">详细</button>

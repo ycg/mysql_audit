@@ -1,7 +1,6 @@
+import cache
 import hashlib
 from flask_login import UserMixin
-
-from common import cache
 
 class User(UserMixin):
     def __init__(self, username):

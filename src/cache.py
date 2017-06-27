@@ -1,4 +1,4 @@
-import db_util, settings, util
+import db_util, settings, common_util
 
 class MyCache():
     __user_infos = {}
@@ -15,13 +15,13 @@ class MyCache():
         rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.work_user")
         self.__user_infos.clear()
         for row in rows:
-            self.__user_infos[row["user_id"]] = util.get_object(row)
+            self.__user_infos[row["user_id"]] = common_util.get_object(row)
 
     def load_mysql_host_infos(self):
         rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.mysql_hosts WHERE is_deleted = 0;")
         self.__mysql_host_infos.clear()
         for row in rows:
-            info = util.get_object(row)
+            info = common_util.get_object(row)
             info.host = info.ip
             info.key = info.host_id
             self.__mysql_host_infos[row["host_id"]] = info

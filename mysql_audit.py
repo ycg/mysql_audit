@@ -1,11 +1,12 @@
-import os, json
+import os
+import json
+
 from gevent import pywsgi
 from flask import Flask, app, render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user, LoginManager, current_user
 
 import settings
-from common import entity, cache
-from control import host, audit, execute, user_login, sql_list
+from src import common_util, cache, user_login, sql_manager, host_manager
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -35,12 +36,12 @@ def home():
 @app.route("/audit")
 @login_required
 def sql_audit():
-    return render_template("audit.html", host_infos=audit.get_audit_mysql_host())
+    return render_template("audit.html", host_infos=sql_manager.get_audit_mysql_host())
 
 @app.route("/audit/check", methods=["POST"])
 @login_required
 def get_sql_audit_info():
-    return audit.audit_sql(get_object_from_json(request.form))
+    return sql_manager.audit_sql(get_object_from_json(request.form))
 
 #endregion
 
@@ -49,18 +50,18 @@ def get_sql_audit_info():
 @app.route("/execute")
 @login_required
 def sql_work():
-    return render_template("execute.html", host_infos=execute.get_execute_mysql_host())
+    return render_template("sql_work_add.html", host_infos=sql_manager.get_execute_mysql_host())
 
 @app.route("/execute/add", methods=["POST"])
 @login_required
 def add_sql_work():
-    execute.add_sql_work(get_object_from_json(request.form))
+    sql_manager.add_sql_work(get_object_from_json(request.form))
     return "add ok."
 
 @app.route("/execute/delete/<int:id>")
 @login_required
 def delete_sql_work(id):
-    return execute.delete_sql_work(id)
+    return sql_manager.delete_sql_work(id)
 
 #endregion
 
@@ -75,7 +76,7 @@ def sql_list_home():
 @login_required
 def query_sql_list():
     print(request.form)
-    return render_template("list_view.html", sql_list=sql_list.get_sql_list(get_object_from_json(request.form)))
+    return render_template("list_view.html", sql_list=sql_manager.get_sql_list(get_object_from_json(request.form)))
 
 @app.route("/list/delete/<int:id>", methods=["GET", "POST"])
 @login_required
@@ -94,12 +95,12 @@ def get_host():
 @app.route("/host/query", methods=["POST"])
 @login_required
 def query_host():
-    return render_template("host_view.html", host_infos=host.query_host_infos(get_object_from_json(request.form)))
+    return render_template("host_view.html", host_infos=host_manager.query_host_infos(get_object_from_json(request.form)))
 
 @app.route("/host/add", methods=["POST"])
 @login_required
 def add_host():
-    host.add(get_object_from_json(request.form))
+    host_manager.add(get_object_from_json(request.form))
     return "add mysql host ok!"
 
 @app.route("/host/update", methods=["POST"])
@@ -110,18 +111,18 @@ def update_host():
 @app.route("/host/delete", methods=["POST"])
 @login_required
 def delete_host():
-    host.delete(get_object_from_json(request.form))
+    host_manager.delete(get_object_from_json(request.form))
     return "delete mysql host ok!"
 
 @app.route("/host/test", methods=["POST"])
 @login_required
 def test_connection():
-    return host.test_connection(get_object_from_json(request.form))
+    return host_manager.test_connection(get_object_from_json(request.form))
 
 @app.route("/host/query/host_id", methods=["POST"])
 @login_required
 def get_host_info():
-    return host.get_host_info(get_object_from_json(request.form))
+    return host_manager.get_host_info(get_object_from_json(request.form))
 
 #endregion
 
@@ -138,7 +139,7 @@ def get_user():
 
 @app.route("/login/verfiy", methods=['GET', 'POST'])
 def login_verfiy():
-    result = entity.Entity()
+    result = common_util.Entity()
     result.error = ""
     result.success = ""
     user_tmp = user_login.User(request.form["userName"])
@@ -158,14 +159,14 @@ def load_user(user_id):
 
 @app.route("/login")
 def login_home():
-    return "<p hidden>login_error</p>" + render_template("login.html")
+    return render_template("login.html")
 
 #endregion
 
 #region commcon method
 
 def get_object_from_json(json_value):
-    obj = entity.Entity()
+    obj = common_util.Entity()
     for key, value in dict(json_value).items():
         if(value[0].isdigit()):
             setattr(obj, key, int(value[0]))

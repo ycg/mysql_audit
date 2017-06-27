@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import traceback, json
-
-import settings
-from common import cache, db_util, util
+import settings, cache, db_util, common_util
 
 def query_host_infos(obj):
     result = cache.MyCache().get_mysql_host_info(host_id=obj.host_id)
@@ -24,7 +22,7 @@ def add(obj):
 
 def update(obj):
     sql = "select ip, port, `user`, `password`, host_name from mysql_audit.mysql_hosts where host_id = {0}".format(obj.host_id)
-    info = util.get_object(db_util.DBUtil().fetchone(settings.MySQL_HOST, sql))
+    info = common_util.get_object(db_util.DBUtil().fetchone(settings.MySQL_HOST, sql))
     return json.dumps(info, default=lambda o: o.__dict__)
 
 def delete(obj):
@@ -42,6 +40,6 @@ def test_connection(obj):
 
 def get_host_info(obj):
     sql = "select ip, port, `user`, `password`, host_name from mysql_audit.mysql_hosts where host_id = {0}".format(obj.host_id)
-    info = util.get_object(db_util.DBUtil().fetchone(settings.MySQL_HOST, sql))
+    info = common_util.get_object(db_util.DBUtil().fetchone(settings.MySQL_HOST, sql))
     return json.dumps(info, default=lambda o: o.__dict__)
 

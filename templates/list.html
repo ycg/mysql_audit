@@ -1,6 +1,6 @@
-<form id="sql_list_form" method="post" target="nm_iframe" class="form-inline col-md-12" role="form">
+<form id="sql_list_form" action="/list/query" method="post" target="nm_iframe" class="form-inline col-md-12">
     <div class="form-group">
-        <select id="user_id" name="user_id" class="selectpicker show-tick form-control bs-select-hidden" required multiple>
+        <select id="user_id" name="user_id" class="selectpicker show-tick form-control bs-select-hidden" style="width: 500px" required>
             <option value="0" selected>查询所有用户</option>
             <option value="1">DBA1</option>
             <option value="2">DBA2</option>
@@ -13,7 +13,7 @@
     </div>
     &nbsp;&nbsp;
     <div class="form-group">
-        <select id="status" name="status" class="selectpicker show-tick form-control bs-select-hidden" required multiple>
+        <select id="status" name="status" class="selectpicker show-tick form-control bs-select-hidden" required>
             <option value="0" selected>查询所有状态</option>
             <option value="1">未审核</option>
             <option value="2">已审核</option>
@@ -32,7 +32,7 @@
     </div>
     <div class="form-group">
         &nbsp;&nbsp;
-        <button type="submit" class="btn btn-primary" onclick="query_sql_list()">查询</button>
+        <button type="submit" class="btn btn-primary">查询</button>
         &nbsp;&nbsp;
         <button type="reset" class="btn btn-default">清空</button>
     </div>
@@ -51,6 +51,15 @@
         pickerPosition: "bottom-left"
     });
     $(".selectpicker").selectpicker({liveSearch: true});
+
+    $(document).ready(function () {
+        $("#sql_list_form").bind("submit", function () {
+            ajaxSubmit(this, function (data) {
+                $("#sql_list").html(data);
+            });
+            return false;
+        });
+    });
 
     function query_sql_list() {
         input_data_for_post("/list/query", get_form_json($("#sql_list_form")), "#sql_list")

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import MySQLdb, sys
-import settings, entity
+import settings, common_util
 
 reload(sys)
 sys.setdefaultencoding("utf8")
@@ -41,7 +41,7 @@ def get_object(rows, fields=None):
     if(rows == None or len(rows) <= 0 or fields == None or len(fields) <= 0):
         return result
     for row in rows:
-        info = entity.Entity()
+        info = common_util.Entity()
         for i in range(0, len(fields)):
             setattr(info, fields[i].lower(), row[i])
         result.append(info)
