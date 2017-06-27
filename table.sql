@@ -8,10 +8,14 @@ CREATE TABLE work_user
   chinese_name VARCHAR(10) NOT NULL DEFAULT '' COMMENT '用户中文名',
   group_id SMALLINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '属于哪个业务组，用于权限管理',
   role_id SMALLINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '角色id，用户权限管理',
+  email varchar(30) NOT NULL DEFAULT '' COMMENT '用户邮件，用户发送消息给用户',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
-  updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
+  updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间',
+  UNIQUE KEY userName (`user_name`)
 ) COMMENT '用户表';
+
+insert into work_user (user_name, user_password) VALUES ("yangcg", md5("yangcaogui"));
 
 CREATE TABLE role_info
 (
@@ -37,7 +41,7 @@ CREATE TABLE sql_work
   backup_table VARCHAR(50) NOT NULL DEFAULT '' COMMENT '备份之后的表名称',
   sql_value TEXT COMMENT '要执行的sql内容',
   return_value TEXT COMMENT '返回的结果值',
-  status TINYINT UNSIGNED NOT NULL COMMENT '状态',
+  status TINYINT UNSIGNED NOT NULL COMMENT '状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'

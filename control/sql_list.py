@@ -1,12 +1,17 @@
+# -*- coding: utf-8 -*-
 
-#Ç¿´óµÄ²éÑ¯Ìõ¼ş
-#Òª¸ù¾İÈ¨ÏŞµÄ²»Í¬ÏÔÊ¾²»Í¬µÄ²Ëµ¥
+#å¼ºå¤§çš„æŸ¥è¯¢æ¡ä»¶
+#è¦æ ¹æ®æƒé™çš„ä¸åŒæ˜¾ç¤ºä¸åŒçš„èœå•
 
-#²éÑ¯Ìõ¼şÓĞ
-#°´ÕÕÓÃ»§id£¬Ê±¼ä£¬°²×°Ö´ĞĞ×´Ì¬
+#æŸ¥è¯¢æ¡ä»¶æœ‰
+#æŒ‰ç…§ç”¨æˆ·idï¼Œæ—¶é—´ï¼Œå®‰è£…æ‰§è¡ŒçŠ¶æ€
 
-def get_sql_list(query_parameters):
-    pass
+import settings
+from common import db_util
+
+def get_sql_list(obj):
+    sql = "select * from mysql_audit.sql_work where 1 = 1 order by id desc limit 20;"
+    return db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
 
 def get_user_list():
     pass

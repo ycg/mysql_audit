@@ -1,53 +1,73 @@
 <table class="table table-bordered table-hover">
-        <thead>
+    <thead>
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            创建用户
+        </th>
+        <th>
+            创建时间
+        </th>
+        <th>
+            标题
+        </th>
+        <th>
+            SQL
+        </th>
+        <th>
+            是否备份
+        </th>
+        <th>
+            执行用户
+        </th>
+        <th>
+            状态
+        </th>
+        <th>
+            是否删除
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for info in sql_list %}
         <tr>
-            <th colspan="5" rowspan="1" class="text-left bg-success">
-                审核结果
-            </th>
+            <td>
+                {{ info.id }}
+            </td>
+            <td>
+                {{ info.create_user_id }}
+            </td>
+            <td>
+                {{ info.created_time }}
+            </td>
+            <td>
+                {{ info.title }}
+            </td>
+            <td>
+                {{ info.sql_value }}
+            </td>
+            <td>
+                {{ info.is_backup }}
+            </td>
+            <td>
+                {{ info.execute_user_id }}
+            </td>
+            <td>
+                {{ info.status }}
+            </td>
+            <td>
+                {{ info.is_deleted }}
+            </td>
+            <td class="text-center">
+                <button class="btn-primary btn btn-xs">详细</button>
+                <button class="btn-danger btn btn-xs">删除</button>
+            </td>
         </tr>
-        <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                执行结果
-            </th>
-            <th>
-                错误结果
-            </th>
-            <th>
-                SQL内容
-            </th>
-            <th>
-                影响行数
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for info in audit_infos %}
-            <tr>
-                <td>
-                    <pre>{{ info.id }}</pre>
-                </td>
-                <td>
-                    {% if(info.errlevel == 0) %}
-                        <pre>Success</pre>
-                    {% elif(info.errlevel == 1) %}
-                        <pre>Warning</pre>
-                    {% elif(info.errlevel == 2) %}
-                        <pre class="text-danger">Error</pre>
-                    {% endif %}
-                </td>
-                <td>
-                    <pre>{{ info.errormessage }}</pre>
-                </td>
-                <td>
-                    <pre>{{ info.sql }}</pre>
-                </td>
-                <td {% if(info.affected_rows) %} class="text-danger" {% endif %}>
-                    <pre>{{ info.affected_rows }}</pre>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% endfor %}
+    </tbody>
+</table>

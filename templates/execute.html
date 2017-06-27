@@ -52,8 +52,7 @@
     $(".selectpicker").selectpicker({liveSearch: true});
 
     function add_sql_work() {
-        console.log(get_form_json($("#sql_work_form")))
-        //post_request("", get_form_json($("#sql_work_form")))
+        post_request("/execute/add", get_form_json($("#sql_work_form")))
     }
 </script>
 
