@@ -13,7 +13,7 @@ CREATE TABLE work_user
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间',
   UNIQUE KEY userName (`user_name`)
-) COMMENT '用户表';
+) COMMENT '用户表' CHARSET utf8 ENGINE innodb;
 
 insert into work_user (user_name, user_password) VALUES ("yangcg", md5("yangcaogui"));
 
@@ -21,10 +21,25 @@ CREATE TABLE role_info
 (
   role_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   role_name VARCHAR(10) NOT NULL COMMENT '角色名称',
+  remark varchar(100) NOT NULL DEFAULT '' COMMENT '备注',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
-) COMMENT '角色信息表例如：开发人员-组长-DBA';
+) COMMENT '角色信息表例如：开发人员-组长-DBA' CHARSET utf8 ENGINE innodb;
+
+INSERT INTO role_info (role_id, role_name, remark) VALUES (1000, '开发', '开发人员只能查看自己创建的工具');
+INSERT INTO role_info (role_id, role_name, remark) VALUES (1001, '开发组长', '开发组长能够查看本小组所有开发人员的历史数据');
+INSERT INTO role_info (role_id, role_name, remark) VALUES (1002, 'DBA', '后台管理员的权限');
+
+CREATE TABLE group_info
+(
+  group_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  group_name VARCHAR(10) NOT NULL DEFAULT '' COMMENT '组名称',
+  remark varchar(100) NOT NULL DEFAULT '' COMMENT '备注',
+  is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
+  created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
+  updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
+) COMMENT '组信息表' CHARSET utf8 ENGINE innodb;
 
 CREATE TABLE sql_work
 (
@@ -45,7 +60,7 @@ CREATE TABLE sql_work
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
-) COMMENT 'sql执行工单表';
+) COMMENT 'sql执行工单表' CHARSET utf8 ENGINE innodb;
 
 CREATE TABLE mysql_hosts
 (
@@ -61,6 +76,6 @@ CREATE TABLE mysql_hosts
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
-) COMMENT 'mysql主机地址信息表';
+) COMMENT 'mysql主机地址信息表' CHARSET utf8 ENGINE innodb;
 
 insert into mysql_hosts (ip,user,password,is_test_host,host_name,remark)values("192.168.11.101","yangcg","yangcaogui", 1, "jumpserver","jump server");

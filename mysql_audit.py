@@ -131,7 +131,7 @@ def get_host_info():
 @app.route("/user")
 @login_required
 def get_user():
-    return render_template("user.html")
+    return render_template("user.html", role_infos=cache.MyCache().get_role_info())
 
 #endregion
 
