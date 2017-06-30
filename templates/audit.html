@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-md-8">
-        <textarea id="sql_value" name="sql_value" class="form-control" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=18 required></textarea>
+    <div class="col-md-9">
+        <textarea id="sql_value" name="sql_value" class="form-control" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=21 required></textarea>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" required>
             <option value="0" disabled selected style="color: black">请选择要审核的集群:</option>
             {% for info in host_infos %}

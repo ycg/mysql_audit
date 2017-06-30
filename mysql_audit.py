@@ -6,7 +6,7 @@ from flask import Flask, app, render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user, LoginManager, current_user
 
 import settings
-from src import common_util, cache, user_login, sql_manager, host_manager
+from src import common_util, cache, user_login, sql_manager, host_manager, user_manager
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -62,6 +62,11 @@ def add_sql_work():
 @login_required
 def delete_sql_work(id):
     return sql_manager.delete_sql_work(id)
+
+@app.route("/execute/sql/exeucte/<int:id>", methods=["GET", "POST"])
+@login_required
+def get_sql_execute_home(id):
+    return render_template("sql_execute.html", sql_info=sql_manager.get_sql_info_by_id(id))
 
 #endregion
 
@@ -132,6 +137,11 @@ def get_host_info():
 @login_required
 def get_user():
     return render_template("user.html", role_infos=cache.MyCache().get_role_info())
+
+@app.route("/user/query", methods=["POST"])
+@login_required
+def query_user():
+    return render_template("user_view.html", user_infos=user_manager.query_user(None))
 
 #endregion
 

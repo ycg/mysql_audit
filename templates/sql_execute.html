@@ -1,0 +1,52 @@
+<div class="row col-md-12">
+    <button class="btn btn-default" onclick=init_web("list")>返回</button>
+</div>
+</br></br>
+<div class="row">
+    <div class="col-md-8">
+        <textarea id="sql_value" name="sql_value" class="form-control" rows=20>{{ sql_info.sql_value }}</textarea>
+    </div>
+    <div class="col-md-4">
+        <form id="host_add_form">
+            <div class="form-group" hidden>
+                <input id="host_id" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label id="host_name_lable" class="control-label" for="host_name">工单名称:</label>
+                <input id="host_name" type="text" class="form-control" value="{{ sql_info.title }}">
+            </div>
+            <div class="form-group">
+                <label id="host_ip_lable" class="control-label" for="host_ip">Jira地址:</label>
+                <input id="host_ip" type="text" class="form-control" value="{{ sql_info.jira_url }}">
+            </div>
+            <div class="form-group">
+                <label id="host_ip_lable" class="control-label" for="host_ip">创建用户:</label>
+                <input id="host_ip" type="text" class="form-control" value="{{ sql_info.chinese_name }}">
+            </div>
+            <div class="form-group">
+                <label id="host_port_lable" class="control-label" for="host_port">上线集群:</label>
+                <input id="host_port" type="text" class="form-control" value="{{ sql_info.host_name }}">
+            </div>
+            <div class="form-group">
+                <label id="host_user_lable" class="control-label" for="is_backup">是否备份:</label>
+                <input id="is_backup" type="text" class="form-control" value="{{ sql_info.is_backup }}">
+            </div>
+        </form>
+    </div>
+</div>
+</br>
+<div class="row">
+    <div class="col-md-8">
+        <button class="btn btn-primary">重新审核SQL</button>
+        <button class="btn btn-primary">执行SQL</button>
+    </div>
+</div>
+</br>
+<div class="row col-md-12" id="sql_execute_result">
+
+</div>
+
+<script type="text/javascript">
+
+</script>
+

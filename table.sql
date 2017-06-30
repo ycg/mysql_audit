@@ -16,6 +16,10 @@ CREATE TABLE work_user
 ) COMMENT '用户表' CHARSET utf8 ENGINE innodb;
 
 insert into work_user (user_name, user_password) VALUES ("yangcg", md5("yangcaogui"));
+insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg1", md5("yangcaogui"), '杨曹贵1', 0, 1001, 'ycg166911@163.com');
+insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg2", md5("yangcaogui"), '杨曹贵2', 10000, 1001, 'ycg166911@163.com');
+insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg3", md5("yangcaogui"), '杨曹贵3', 10001, 1002, 'ycg166911@163.com');
+
 
 CREATE TABLE role_info
 (
@@ -40,6 +44,9 @@ CREATE TABLE group_info
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
 ) COMMENT '组信息表' CHARSET utf8 ENGINE innodb;
+
+INSERT INTO group_info(group_id, group_name, remark) VALUES (10000, 'DBA组', '');
+INSERT INTO group_info(group_id, group_name, remark) VALUES (10001, '运维组', '');
 
 CREATE TABLE sql_work
 (

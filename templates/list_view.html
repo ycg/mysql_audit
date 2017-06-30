@@ -1,3 +1,4 @@
+</br>
 <table class="table table-bordered table-hover">
     <thead>
     <tr>
@@ -12,6 +13,9 @@
         </th>
         <th>
             SQL
+        </th>
+        <th>
+            上线集群
         </th>
         <th>
             是否备份
@@ -43,10 +47,13 @@
                 {{ info.title }}
             </td>
             <td>
-                {{ info.create_user_id }}
+                {{ info.chinese_name }}
             </td>
             <td>
                 {{ info.sql_value }}
+            </td>
+            <td>
+                {{ info.host_name }}
             </td>
             <td>
                 {{ info.is_backup }}
@@ -55,7 +62,23 @@
                 {{ info.execute_user_id }}
             </td>
             <td>
-                {{ info.status }}
+                {% if(info.status == 1) %}
+                    未审核
+                {% elif(info.status == 2) %}
+                    审核成功
+                {% elif(info.status == 3) %}
+                    审核未通过
+                {% elif(info.status == 4) %}
+                    未执行
+                {% elif(info.status == 5) %}
+                    执行中
+                {% elif(info.status == 6) %}
+                    执行成功
+                {% elif(info.status == 7) %}
+                    已取消
+                {% else %}
+                    None
+                {% endif %}
             </td>
             <td>
                 {{ info.is_deleted }}
@@ -64,8 +87,17 @@
                 {{ info.created_time }}
             </td>
             <td class="text-center">
-                <button class="btn-primary btn btn-xs">详细</button>
-                <button class="btn-danger btn btn-xs">删除</button>
+                {% if(info.status == 1) %}
+                    <button class="btn-primary btn btn-xs">去审核</button>
+                {% endif %}
+                {% if(info.status == 2) %}
+                    <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>执行SQL</button>
+                {% endif %}
+                <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>查看</button>
+                <button class="btn-default btn btn-xs">编辑信息</button>
+                {% if(info.status <= 4) %}
+                    <button class="btn-danger btn btn-xs">取消工单</button>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}

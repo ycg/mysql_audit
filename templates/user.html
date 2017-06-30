@@ -13,13 +13,13 @@
     <div class="col-md-4">
         <button class="btn btn-primary">查询</button>
         &nbsp;&nbsp;
-        <button class="btn btn-primary" onclick=show_modal_dialog("#user_add")>添加用户</button>
+        <button class="btn btn-primary" onclick=show_add_user_dialog()>添加用户</button>
     </div>
 </div>
 
 </br>
 <div class="row">
-    <div class="col-md-6" id="user-data">
+    <div class="col-md-8" id="user_data">
 
     </div>
 </div>
@@ -36,19 +36,19 @@
             <div class="modal-body">
                 <form id="host_add_form">
                     <div class="form-group">
-                        <label id="host_name_lable" name="host_name_lable" class="control-label" for="user_name">用户名:</label>
+                        <label id="user_name_lable" name="user_name_lable" class="control-label" for="user_name">用户名:</label>
                         <input id="user_name" name="user_name" type="text" class="form-control" placeholder="input user name">
                     </div>
                     <div class="form-group">
-                        <label id="host_ip_lable" name="host_ip_lable" class="control-label" for="user_password">密码:</label>
+                        <label id="user_password_lable" name="user_password_lable" class="control-label" for="user_password">密码:</label>
                         <input id="user_password" name="user_password" type="password" class="form-control" placeholder="input user password">
                     </div>
                     <div class="form-group">
-                        <label id="host_port_lable" name="host_port_lable" class="control-label" for="chinese_name">中文名:</label>
+                        <label id="chinese_name_lable" name="chinese_name_lable" class="control-label" for="chinese_name">中文名:</label>
                         <input id="chinese_name" name="chinese_name" type="text" class="form-control" placeholder="input user chinese name">
                     </div>
                     <div class="form-group">
-                        <label id="host_user_lable" name="host_user_lable" class="control-label" for="email">邮箱:</label>
+                        <label id="email_lable" name="email_lable" class="control-label" for="email">邮箱:</label>
                         <input id="email" name="email" type="text" class="form-control" placeholder="input user email">
                     </div>
                     <div class="form-group">
@@ -78,4 +78,19 @@
 
 <script type="text/javascript">
     $(".selectpicker").selectpicker();
+
+    function show_add_user_dialog() {
+        $("#email").val("");
+        $("#user_name").val("");
+        $("#chinese_name").val("");
+        $("#user_password").val("");
+        show_modal_dialog("#user_add");
+    }
+
+    function query_user() {
+        var parameter = "user_name=" + convert_string("#user_name_query") + "&role_id=" + convert_int("#role_id_query");
+        input_data_for_post("/user/query", parameter, "#user_data");
+    }
+
+    query_user();
 </script>

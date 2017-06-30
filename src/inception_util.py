@@ -17,6 +17,7 @@ sql_mode = """/*--host={0};--port={1};--user={2};--password={3};{4}*/
 
 sql_mode_no_host = "inception_magic_start;{0}inception_magic_commit;"
 
+#errlevel：返回值为非0的情况下，说明是有错的。1表示警告，不影响执行，2表示严重错误，必须修改。
 osc_fields = ["DBNAME", "TABLENAME", "SQLSHA1", "PERCENT", "REMAINTIME", "INFORMATION"]
 execute_fields = ['ID', 'stage', 'errlevel', 'stagestatus', 'errormessage', 'SQL', 'Affected_rows', 'sequence', 'backup_dbname', 'execute_time', 'sqlsha1']
 

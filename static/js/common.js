@@ -18,10 +18,10 @@ function input_data_for_post(url, json_data, div_id) {
 }
 
 function input_data_for_post_loding(url, json_data, div_id) {
-    //show_modal_dialog("#loading")
+    show_modal_dialog("#loading")
     $.post(url, json_data, function (data) {
         $(div_id).html(data)
-        //hide_modal_dialog("#loading")
+        hide_modal_dialog("#loading")
     });
 }
 

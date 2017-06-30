@@ -3,6 +3,7 @@ import db_util, settings, common_util
 class MyCache():
     __user_infos = {}
     __role_infos = {}
+    __group_infos = {}
     __mysql_host_infos = {}
 
     def __init__(self):
@@ -11,6 +12,7 @@ class MyCache():
     def load_all_cache(self):
         self.load_user_infos()
         self.load_role_infos()
+        self.load_group_infos()
         self.load_mysql_host_infos()
 
     def load_user_infos(self):
@@ -25,6 +27,12 @@ class MyCache():
         for row in rows:
             self.__role_infos[row["role_id"]] = common_util.get_object(row)
 
+    def load_group_infos(self):
+        rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.group_info")
+        self.__group_infos.clear()
+        for row in rows:
+            self.__group_infos[row["group_id"]] = common_util.get_object(row)
+
     def load_mysql_host_infos(self):
         rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.mysql_hosts WHERE is_deleted = 0;")
         self.__mysql_host_infos.clear()
@@ -34,18 +42,19 @@ class MyCache():
             info.key = info.host_id
             self.__mysql_host_infos[row["host_id"]] = info
 
+    def get_value_by_key(self, dic, key=None):
+        if(key in dic.keys()):
+            return dic[key]
+        return dic.values()
+
     def get_user_info(self, user_id=None):
-        if(user_id in self.__user_infos.keys()):
-            return self.__user_infos[user_id]
-        return self.__user_infos.values()
+        return self.get_value_by_key(self.__user_infos, user_id)
 
     def get_role_info(self, role_id=None):
-        if(role_id in self.__role_infos.keys()):
-            return self.__user_infos[role_id]
-        return self.__role_infos.values()
+        return self.get_value_by_key(self.__role_infos, role_id)
+
+    def get_group_info(self, group_id=None):
+        return self.get_value_by_key(self.__group_infos, group_id)
 
     def get_mysql_host_info(self, host_id=None):
-        if(host_id in self.__mysql_host_infos.keys()):
-            return self.__mysql_host_infos[host_id]
-        return self.__mysql_host_infos.values()
-
+        return self.get_value_by_key(self.__mysql_host_infos, host_id)
