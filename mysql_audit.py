@@ -50,7 +50,7 @@ def get_sql_audit_info():
 @app.route("/execute")
 @login_required
 def sql_work():
-    return render_template("sql_work_add.html", host_infos=sql_manager.get_execute_mysql_host())
+    return render_template("sql_work_add.html", host_infos=sql_manager.get_execute_mysql_host(), dba_users=cache.MyCache().get_user_info_by_role(settings.ROLE_DBA))
 
 @app.route("/execute/add", methods=["POST"])
 @login_required

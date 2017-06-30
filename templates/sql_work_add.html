@@ -27,12 +27,9 @@
         <div class="form-group">
             <select id="dba_user_id" name="dba_user_id" class="selectpicker show-tick form-control bs-select-hidden" required>
                 <option value="0" disabled selected style="color: black">请选择执行SQL的DBA:</option>
-                <option value="1">DBA1</option>
-                <option value="0">DBA2</option>
-                <option value="1">DBA3</option>
-                <option value="0">DBA4</option>
-                <option value="1">DBA5</option>
-                <option value="0">DBA6</option>
+                {% for info in dba_users %}
+                    <option value="{{ info.user_id }}">{{ info.chinese_name }}</option>
+                {% endfor %}
             </select>
         </div>
         <!--<div class="form-group">

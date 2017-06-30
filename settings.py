@@ -15,3 +15,7 @@ MySQL_HOST.host = "192.168.11.101"
 MySQL_HOST.port = 3306
 MySQL_HOST.user = "yangcg"
 MySQL_HOST.password = "yangcaogui"
+
+ROLE_DEV = 1000
+ROLE_LEADER = 1001
+ROLE_DBA = 1002

@@ -1,4 +1,4 @@
-import db_util, settings, common_util
+import db_util, settings, common_util, cache
 
 def add_user():
     pass
@@ -13,3 +13,5 @@ def query_user(obj):
              left join mysql_audit.group_info t3 on t1.group_id = t3.group_id;"""""
     return db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
 
+def query_user_by_role(role_id):
+    pass

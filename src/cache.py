@@ -50,6 +50,13 @@ class MyCache():
     def get_user_info(self, user_id=None):
         return self.get_value_by_key(self.__user_infos, user_id)
 
+    def get_user_info_by_role(self, role_id):
+        user_list = []
+        for info in self.__user_infos.values():
+            if(info.role_id == role_id):
+                user_list.append(info)
+        return user_list
+
     def get_role_info(self, role_id=None):
         return self.get_value_by_key(self.__role_infos, role_id)
 

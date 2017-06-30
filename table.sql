@@ -15,10 +15,7 @@ CREATE TABLE work_user
   UNIQUE KEY userName (`user_name`)
 ) COMMENT '用户表' CHARSET utf8 ENGINE innodb;
 
-insert into work_user (user_name, user_password) VALUES ("yangcg", md5("yangcaogui"));
-insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg1", md5("yangcaogui"), '杨曹贵1', 0, 1001, 'ycg166911@163.com');
-insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg2", md5("yangcaogui"), '杨曹贵2', 10000, 1001, 'ycg166911@163.com');
-insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg3", md5("yangcaogui"), '杨曹贵3', 10001, 1002, 'ycg166911@163.com');
+insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg", md5("yangcaogui"), '杨曹贵', 10000, 1002, 'ycg166911@163.com');
 
 
 CREATE TABLE role_info
@@ -55,6 +52,9 @@ CREATE TABLE sql_work
   create_user_id SMALLINT UNSIGNED NOT NULL COMMENT '创建sql工单用户id',
   audit_user_id SMALLINT UNSIGNED NOT NULL COMMENT '审核用户id',
   execute_user_id SMALLINT UNSIGNED NOT NULL COMMENT '执行用户id',
+  create_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '创建sql工单用户名冗余字段',
+  audit_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '审核用户名冗余字段',
+  execute_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '执行用户名冗余字段',
   audit_date_time DATETIME COMMENT 'sql审核时间',
   execute_date_time DATETIME COMMENT 'sql执行时间',
   mysql_host_id SMALLINT UNSIGNED NOT NULL COMMENT '要执行的数据主机id',

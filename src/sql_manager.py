@@ -27,7 +27,7 @@ def add_sql_work(obj):
              (`create_user_id`, `audit_user_id`, `execute_user_id`, `audit_date_time`, `execute_date_time`,
               `mysql_host_id`, `jira_url`, `is_backup`, `backup_table`, `sql_value`, `return_value`, `status`, `title`)
              VALUES
-             ({0}, {1}, 0, NULL, NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}');"""\
+             ({0}, {1}, {1}, NULL, NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}');"""\
              .format(obj.current_user_id, obj.dba_user_id, obj.host_id, obj.jira_url, obj.is_backup, db_util.DBUtil().escape(obj.sql), status, obj.title)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
 
@@ -49,7 +49,7 @@ def get_sql_list(obj):
 
 #根据工单id获取全部信息
 def get_sql_info_by_id(id):
-    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.is_backup, t2.host_name, t3.chinese_name
+    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup, t2.host_name, t3.chinese_name
              from `mysql_audit`.`sql_work` t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
