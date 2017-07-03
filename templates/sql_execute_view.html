@@ -1,0 +1,73 @@
+{% if(audit_infos != None) %}
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th colspan="7" rowspan="1" class="text-left">
+                执行结果
+            </th>
+        </tr>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th style="width: 80px">
+                执行结果
+            </th>
+            <th>
+                错误结果
+            </th>
+            <th>
+                SQL内容
+            </th>
+            <th>
+                备份表
+            </th>
+            <th style="width: 80px">
+                执行时间
+            </th>
+            <th style="width: 80px">
+                影响行数
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for info in audit_infos %}
+            <tr {% if(info.errlevel == 0) %}
+                        class="bg-success"
+                {% elif(info.errlevel == 1) %}
+                    class="bg-warning"
+                {% elif(info.errlevel == 2) %}
+                    class="bg-danger"
+                {% endif %}>
+                <td style="width: 50px">
+                    <pre>{{ info.id }}</pre>
+                </td>
+                <td>
+                    {% if(info.errlevel == 0) %}
+                        <pre class="text-success">Success</pre>
+                    {% elif(info.errlevel == 1) %}
+                        <pre class="text-warning">Warning</pre>
+                    {% elif(info.errlevel == 2) %}
+                        <pre class="text-danger">Error</pre>
+                    {% endif %}
+                </td>
+                <td>
+                    <pre>{{ info.errormessage }}</pre>
+                </td>
+                <td>
+                    <pre>{{ info.sql }}</pre>
+                </td>
+                <td>
+                    <pre>{{ info.backup_dbname }}</pre>
+                </td>
+                <td>
+                    <pre>{{ info.execute_time }}</pre>
+                </td>
+                <td>
+                    <pre {% if(info.affected_rows) %} class="text-danger" {% endif %}>{{ info.affected_rows }}</pre>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

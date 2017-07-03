@@ -30,8 +30,17 @@
     $(".selectpicker").selectpicker({liveSearch: true});
 
     function get_audit_infos() {
-        var json = "sql=" + $("#sql_value").val() + "&host_id=" + $("#host_id").val();
-        input_data_for_post_loding("/audit/check", json, "#audit_info")
+        var sql = $("#sql_value").val();
+        var host_id =$("#host_id").val();
+        if (host_id <= 0) {
+            $("#audit_info").html("请选择数据库集群");
+            return;
+        }
+        if (sql.length <= 0) {
+            $("#audit_info").html("请输入要审核的SQL");
+            return;
+        }
+        input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id, "#audit_info");
     }
 </script>
 

@@ -63,7 +63,7 @@ CREATE TABLE sql_work
   backup_table VARCHAR(50) NOT NULL DEFAULT '' COMMENT '备份之后的表名称',
   sql_value TEXT COMMENT '要执行的sql内容',
   return_value TEXT COMMENT '返回的结果值',
-  status TINYINT UNSIGNED NOT NULL COMMENT '状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功',
+  status TINYINT UNSIGNED NOT NULL COMMENT '状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'

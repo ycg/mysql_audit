@@ -62,18 +62,19 @@
                 {{ info.execute_user_id }}
             </td>
             <td>
-                {% if(info.status == 1) %}
+                <!--状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销-->
+                {% if(info.status == 0) %}
                     未审核
-                {% elif(info.status == 2) %}
+                {% elif(info.status == 1) %}
                     审核成功
-                {% elif(info.status == 3) %}
+                {% elif(info.status == 2) %}
                     审核未通过
+                {% elif(info.status == 3) %}
+                    执行错误
                 {% elif(info.status == 4) %}
-                    未执行
+                    执行成功
                 {% elif(info.status == 5) %}
                     执行中
-                {% elif(info.status == 6) %}
-                    执行成功
                 {% elif(info.status == 7) %}
                     已取消
                 {% else %}
