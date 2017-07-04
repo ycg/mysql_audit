@@ -80,7 +80,6 @@ def sql_list_home():
 @app.route("/list/query", methods=["POST"])
 @login_required
 def query_sql_list():
-    print(request.form)
     return render_template("list_view.html", sql_list=sql_manager.get_sql_list(get_object_from_json(request.form)))
 
 @app.route("/list/delete/<int:id>", methods=["GET", "POST"])
