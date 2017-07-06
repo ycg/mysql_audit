@@ -33,7 +33,7 @@
         <tbody>
         {% for info in audit_infos %}
             <tr {% if(info.errlevel == 0) %}
-                        class="bg-success"
+                    class="bg-success"
                 {% elif(info.errlevel == 1) %}
                     class="bg-warning"
                 {% elif(info.errlevel == 2) %}

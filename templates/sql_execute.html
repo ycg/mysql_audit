@@ -29,24 +29,30 @@
             </div>
             <div class="form-group">
                 <label id="host_user_lable" class="control-label" for="is_backup">是否备份:</label>
-                <input id="is_backup" type="text" class="form-control" value="{{ sql_info.is_backup }}">
+                <input id="is_backup" type="text" class="form-control" value= {% if(sql_info.is_backup == 1) %} Yes {% else %} No {% endif %}>
             </div>
         </form>
     </div>
 </div>
 </br>
-<div class="row">
+<div class="row" {% if(sql_info.status == 4) %} hidden {% endif %}>
     <div class="col-md-8">
         <button class="btn btn-primary">重新审核SQL</button>
-        <button class="btn btn-primary">执行SQL</button>
+        <button class="btn btn-primary" onclick="sql_execute({{ sql_info.id }})">执行SQL</button>
     </div>
 </div>
 </br>
-<div class="row col-md-12" id="sql_execute_result">
-
+<div class="row">
+    <div class="col-md-12" id="sql_execute_result"></div>
 </div>
 
 <script type="text/javascript">
+    function sql_execute(sql_id) {
+        input_data_for_post("/execute/now/" + sql_id, "", "#sql_execute_result")
+    }
 
+    {% if(sql_info.status == 4) %}
+        input_data_for_post("/execute/result/" + {{ sql_info.id }}, "", "#sql_execute_result")
+    {% endif %}
 </script>
 

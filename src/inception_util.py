@@ -9,8 +9,8 @@ sys.setdefaultencoding("utf8")
 sql_audit_flag = "--enable-check;"
 sql_execute_flag = "--enable-execute;"
 sqL_enable_split_flag = "--enable-split;"
-sql_disable_remote_backup = "--disable-remote-backup;"
 sql_enable_remote_backup = "--enable-remote-backup;"
+sql_disable_remote_backup = "--disable-remote-backup;"
 
 sql_mode = """/*--host={0};--port={1};--user={2};--password={3};{4}*/
               inception_magic_start;
@@ -30,7 +30,7 @@ def sql_audit(sql, host_info):
 
 #sql执行
 def sql_execute(sql, host_info, is_backup=True):
-    parameters = sql_execute_flag + sql_enable_remote_backup if(is_backup) else sql_disable_remote_backup
+    parameters = sql_execute_flag + (sql_enable_remote_backup if(is_backup) else sql_disable_remote_backup)
     sql = sql_mode.format(host_info.host, host_info.port, host_info.user, host_info.password, parameters, sql)
     return get_object(execute_sql(sql), fields=execute_fields)
 

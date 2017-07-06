@@ -44,7 +44,7 @@
                 {{ info.id }}
             </td>
             <td>
-                {{ info.title }}
+                <a role="button" onclick=get_execute_html({{ info.id }})>{{ info.title }}</a>
             </td>
             <td>
                 {{ info.chinese_name }}
@@ -59,7 +59,7 @@
                 {{ info.is_backup }}
             </td>
             <td>
-                {{ info.execute_user_id }}
+                {{ info.execute_user_name }}
             </td>
             <td>
                 <!--状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销-->
@@ -82,25 +82,37 @@
                 {% endif %}
             </td>
             <td>
-                {{ info.is_deleted }}
+                {% if(info.is_deleted == 0) %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
             </td>
             <td>
                 {{ info.created_time }}
             </td>
             <td class="text-center">
-                {% if(info.status == 1) %}
-                    <button class="btn-primary btn btn-xs">去审核</button>
-                {% endif %}
-                {% if(info.status == 2) %}
+                {% if(info.status == 4) %}
+                    <button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>
+                {% else %}
                     <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>执行SQL</button>
-                {% endif %}
-                <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>查看</button>
-                <button class="btn-default btn btn-xs">编辑信息</button>
-                {% if(info.status <= 4) %}
-                    <button class="btn-danger btn btn-xs">取消工单</button>
                 {% endif %}
             </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+
+<div class="text-center">
+    <ul class="pagination pagination-centered">
+        <li><a href="javascript:void(0)" onclick="get_slow_logs_by_page_number(1)">&laquo;</a></li>
+        <li><a href="javascript:void(0)" onclick="get_slow_logs_by_page_number({{ number }})">1</a>
+        <a href="javascript:void(0)" onclick="get_slow_logs_by_page_number({{ number }})">2</a>
+        <a href="javascript:void(0)" onclick="get_slow_logs_by_page_number({{ number }})">3</a></li>
+        {% for number in page_list %}
+            <li {% if(number == page_number) %} class="active" {% endif %}>
+                <a href="javascript:void(0)" onclick="get_slow_logs_by_page_number({{ number }})">{{ number }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

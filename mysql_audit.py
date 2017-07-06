@@ -68,6 +68,16 @@ def delete_sql_work(id):
 def get_sql_execute_home(id):
     return render_template("sql_execute.html", sql_info=sql_manager.get_sql_info_by_id(id))
 
+@app.route("/execute/now/<int:sql_id>", methods=["GET", "POST"])
+@login_required
+def sql_execute_by_sql_id(sql_id):
+    return render_template("sql_execute_view.html", audit_infos=sql_manager.sql_execute(sql_id))
+
+@app.route("/execute/result/<int:sql_id>", methods=["GET", "POST"])
+@login_required
+def get_sql_result(sql_id):
+    return render_template("sql_execute_view.html", audit_infos=sql_manager.get_sql_result(sql_id))
+
 #endregion
 
 #region sql list

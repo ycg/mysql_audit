@@ -34,17 +34,20 @@ def delete_sql_work(id):
 #根据查询条件获取工单列表-有分页功能
 def get_sql_list(obj):
     sql = """select t1.id, t1.title, t1.create_user_id, t1.audit_user_id, t1.execute_user_id, t1.audit_date_time,
-                    t1.execute_date_time, t1.mysql_host_id, t1.jira_url, if(t1.is_backup = 0, '否', '是') as is_backup, t1.backup_table, left(sql_value, 50) as sql_value, t1.return_value, t1.status, t1.is_deleted, t1.created_time,
-                    t2.host_name, t3.chinese_name
+                    t1.execute_date_time, t1.mysql_host_id, t1.jira_url, if(t1.is_backup = 0, 'No', 'Yes') as is_backup,
+                    t1.backup_table, left(sql_value, 50) as sql_value, t1.return_value, t1.status, t1.is_deleted, t1.created_time,
+                    t2.host_name, t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name
              from mysql_audit.sql_work t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
+             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
              where 1 = 1 order by t1.id desc limit 20;"""
     return db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
 
 #根据工单id获取全部信息
 def get_sql_info_by_id(id):
-    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup, t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id
+    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup,
+             t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status, t1.return_value
              from `mysql_audit`.`sql_work` t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
@@ -55,10 +58,22 @@ def get_sql_info_by_id(id):
 #状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功
 def sql_execute(sql_id):
     sql_info = get_sql_info_by_id(sql_id)
-    result_obj = inception_util.sql_execute(sql_info.sql_value, cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id))
-    sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {2} where id = {3};"\
-          .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)), settings.SQL_EXECUTE_SUCCESS if(get_sql_info_by_id(result_obj)) else settings.SQL_EXECUTE_FAIL, sql_info.id)
-    db_util.DBUtil().execute(sql, settings.MySQL_HOST)
+    if(sql_info.status == settings.SQL_EXECUTE_SUCCESS):
+        return json.loads(sql_info.return_value)
+    else:
+        result_obj = inception_util.sql_execute(sql_info.sql_value,
+                                                cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
+                                                is_backup=sql_info.is_backup)
+        sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {1} where id = {2};"\
+              .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
+                      settings.SQL_EXECUTE_SUCCESS if(get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
+                      sql_info.id)
+        db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+        return result_obj
+
+#获取执行成功的SQL执行结果
+def get_sql_result(sql_id):
+    return json.loads(get_sql_info_by_id(sql_id).return_value)
 
 #获取sql审核或执行的状态
 #True：执行或审核没有错误
