@@ -61,25 +61,15 @@
             <td>
                 {{ info.execute_user_name }}
             </td>
-            <td>
-                <!--状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销-->
-                {% if(info.status == 0) %}
-                    未审核
-                {% elif(info.status == 1) %}
-                    审核成功
-                {% elif(info.status == 2) %}
-                    审核未通过
-                {% elif(info.status == 3) %}
-                    执行错误
-                {% elif(info.status == 4) %}
-                    执行成功
-                {% elif(info.status == 5) %}
-                    执行中
-                {% elif(info.status == 7) %}
-                    已取消
-                {% else %}
-                    None
-                {% endif %}
+            <td
+                {% if(info.status == 1 or info.status == 4) %}
+                    class = "text-success"
+                {% elif(info.status == 0) %}
+                    class = "text-warning"
+                {% elif(info.status == 2 or info.status == 3) %}
+                    class = "text-danger"
+                {% endif %}>
+                {{ info.status_name }}
             </td>
             <td>
                 {% if(info.is_deleted == 0) %}
@@ -95,7 +85,8 @@
                 {% if(info.status == 4) %}
                     <button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>
                 {% else %}
-                    <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>执行SQL</button>
+                    <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>执行</button>
+                    <button class="btn-danger btn btn-xs">编辑</button>
                 {% endif %}
             </td>
         </tr>

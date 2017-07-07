@@ -1,4 +1,4 @@
-<form id="sql_work_form" target="nm_iframe" class="form-horizontal" role="form">
+<form id="sql_work_form" target="nm_iframe" class="form-horizontal row" role="form">
     <div class="col-md-8">
         <textarea id="sql" name="sql" class="form-control" style="resize: none" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=20 required></textarea>
     </div>
@@ -19,7 +19,7 @@
         </div>
         <div class="form-group">
             <select id="is_backup" name="is_backup" class="selectpicker show-tick form-control bs-select-hidden" required>
-                <option value="0" disabled selected style="color: black">请选择是否要备份:</option>
+                <option value="3" disabled selected style="color: black">请选择是否要备份:</option>
                 <option value="1">是</option>
                 <option value="0">否</option>
             </select>
@@ -36,20 +36,87 @@
             <input id="file_upload" type="file" name="file_upload" class="form-control file" placeholder="SQL过多请上传文件:" required>
         </div>-->
         <div class="form-group">
-            <button type="button" class="btn btn-primary" onclick="add_sql_work()">创建SQL工单</button>
-            &nbsp;&nbsp;
+            <button type="button" class="btn btn-success" onclick="get_audit_infos()">SQL审核</button>
+            &nbsp;
+            <button type="button" class="btn btn-primary" onclick="check_input_value()">创建SQL工单</button>
+            &nbsp;
             <button type="reset" class="btn btn-default">清空重填</button>
         </div>
     </div>
 </form>
+</br>
+<div class="row">
+    <div class="col-md-12" id="audit_info">
 
+    </div>
+</div>
+<div class="modal fade" id="sql_create_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">提示</h4>
+            </div>
+            <div class="modal-body">
+                是否创建工单?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="add_sql_work()">创建</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
-    $("#file_upload").fileinput({showUpload: false});
+    //$("#file_upload").fileinput({showUpload: false});
     $(".selectpicker").selectpicker({liveSearch: true});
+
+    function check_input_value() {
+        var json_obj = get_form_json($("#sql_work_form"));
+        if ($("#host_id").val() == null) {
+            display_error_message("请选择数据库集群");
+        }
+        else if (json_obj.sql.length <= 0) {
+            display_error_message("请输入要执行的SQL");
+        }
+        else if (json_obj.title.length <= 0) {
+            display_error_message("请输入工单名称");
+        }
+        else if (json_obj.jira_url.length <= 0) {
+            display_error_message("请输入jira地址");
+        }
+        else if ($("#dba_user_id").val() == null) {
+            display_error_message("请选择执行SQL的DBA");
+        }
+        else if ($("#is_backup").val() == null) {
+            display_error_message("请选择是否要备份");
+        }
+        else {
+            show_modal_dialog("#sql_create_dialog");
+        }
+    }
 
     function add_sql_work() {
         post_request("/execute/add", get_form_json($("#sql_work_form")))
+        hide_modal_dialog("#sql_create_dialog")
+    }
+
+    function display_error_message(message) {
+        $("#audit_info").html(message);
+    }
+
+    function get_audit_infos() {
+        var sql = $("#sql").val();
+        var host_id = $("#host_id").val();
+        if (host_id <= 0) {
+            display_error_message("请选择数据库集群");
+            return;
+        }
+        if (sql.length <= 0) {
+            display_error_message("请输入要审核的SQL");
+            return;
+        }
+        input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id, "#audit_info");
     }
 </script>
 
