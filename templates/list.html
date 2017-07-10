@@ -32,6 +32,8 @@
 </div>
 
 <script type="text/javascript">
+    var page_number_global = 1;
+
     $(".form_datetime").datetimepicker({
         format: "yyyy-mm-dd hh:ii",
         autoclose: true,
@@ -42,14 +44,15 @@
 
     function query_sql_list() {
         var json_obj = get_form_json($("#sql_list_form"));
-        json_obj.page_number = 1;
+        json_obj.page_number = page_number_global;
         input_data_for_post("/list/query", json_obj, "#sql_list");
         return false;
     }
 
     function query_sql_list_by_page_number(page_number) {
         var json_obj = get_form_json($("#sql_list_form"))
-        json_obj.page_number = page_number
+        page_number_global = page_number;
+        json_obj.page_number = page_number;
         input_data_for_post("/list/query", json_obj, "#sql_list")
     }
 

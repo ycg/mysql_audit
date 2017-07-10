@@ -64,7 +64,6 @@ def get_sql_list(obj):
              left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
              where 1 = 1 {0} order by t1.id desc limit {1}, {2};"""
     sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
-    print(sql)
     result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
     for info in result_list:
         get_sql_work_status_name(info)
