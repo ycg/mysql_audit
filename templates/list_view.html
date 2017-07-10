@@ -62,13 +62,13 @@
                 {{ info.execute_user_name }}
             </td>
             <td
-                {% if(info.status == 1 or info.status == 4) %}
-                    class = "text-success"
-                {% elif(info.status == 0) %}
-                    class = "text-warning"
-                {% elif(info.status == 2 or info.status == 3) %}
-                    class = "text-danger"
-                {% endif %}>
+                    {% if(info.status == 1 or info.status == 4) %}
+                        class="text-success"
+                    {% elif(info.status == 0) %}
+                        class="text-warning"
+                    {% elif(info.status == 2 or info.status == 3) %}
+                        class="text-danger"
+                    {% endif %}>
                 {{ info.status_name }}
             </td>
             <td>
@@ -96,13 +96,10 @@
 
 <div class="text-center">
     <ul class="pagination pagination-centered">
-        <li><a href="javascript:void(0)" onclick="get_slow_logs_by_page_number(1)">&laquo;</a></li>
-        <li><a href="javascript:void(0)" onclick="get_slow_logs_by_page_number({{ number }})">1</a>
-        <a href="javascript:void(0)" onclick="get_slow_logs_by_page_number({{ number }})">2</a>
-        <a href="javascript:void(0)" onclick="get_slow_logs_by_page_number({{ number }})">3</a></li>
+        <li><a href="javascript:void(0)" onclick="query_sql_list_by_page_number(1)">&laquo;</a></li>
         {% for number in page_list %}
             <li {% if(number == page_number) %} class="active" {% endif %}>
-                <a href="javascript:void(0)" onclick="get_slow_logs_by_page_number({{ number }})">{{ number }}</a>
+                <a href="javascript:void(0)" onclick="query_sql_list_by_page_number({{ number }})">{{ number }}</a>
             </li>
         {% endfor %}
     </ul>

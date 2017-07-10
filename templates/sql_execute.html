@@ -59,7 +59,15 @@
                 <strong>是否备份：</strong><label style="font-weight: normal">{% if(sql_info.is_backup == 1) %} Yes {% else %} No {% endif %}</label>
             </div>
             <div class="form-group">
-                <strong>执行状态：</strong><label style="font-weight: normal">{{ sql_info.status_name }}</label>
+                <strong>执行状态：</strong>
+                <label style="font-weight: normal"
+                    {% if(sql_info.status == 1 or sql_info.status == 4) %}
+                        class = "text-success"
+                    {% elif(sql_info.status == 0) %}
+                        class = "text-warning"
+                    {% elif(sql_info.status == 2 or sql_info.status == 3) %}
+                        class = "text-danger"
+                    {% endif %}>{{ sql_info.status_name }}</label>
             </div>
             <div class="form-group">
                 <div class="checkbox">
@@ -74,7 +82,7 @@
 </br>
 <div class="row" {% if(sql_info.status == 4) %} hidden {% endif %}>
     <div class="col-md-8">
-        <button class="btn btn-primary">重新审核SQL</button>
+        <button class="btn btn-default" onclick="sql_audit_again({{ sql_info.id }})">重新审核SQL</button>
         <button class="btn btn-primary" onclick="sql_execute({{ sql_info.id }})">执行SQL</button>
     </div>
 </div>
@@ -88,8 +96,10 @@
         input_data_for_post("/execute/now/" + sql_id, "", "#sql_execute_result")
     }
 
-    {% if(sql_info.status == 4) %}
-        input_data_for_post("/execute/result/" + {{ sql_info.id }}, "", "#sql_execute_result")
-    {% endif %}
+    function sql_audit_again(sql_id) {
+        input_data_for_post("/audit/check/" + sql_id, "", "#sql_execute_result")
+    }
+
+    input_data_for_post("/execute/result/" + {{ sql_info.id }}, "", "#sql_execute_result")
 </script>
 

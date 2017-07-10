@@ -1,6 +1,4 @@
-import os
-import json
-
+import os, json
 from gevent import pywsgi
 from flask import Flask, app, render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user, LoginManager, current_user
@@ -43,6 +41,12 @@ def sql_audit():
 def get_sql_audit_info():
     return sql_manager.audit_sql(get_object_from_json(request.form))
 
+@app.route("/audit/check/<int:id>", methods=["GET", "POST"])
+@login_required
+def get_sql_audit_info_by_sql_id(id):
+    return sql_manager.audit_sql_by_sql_id(id)
+
+
 #endregion
 
 #region sql execute
@@ -55,8 +59,7 @@ def sql_work():
 @app.route("/execute/add", methods=["POST"])
 @login_required
 def add_sql_work():
-    sql_manager.add_sql_work(get_object_from_json(request.form))
-    return "add ok."
+    return sql_manager.add_sql_work(get_object_from_json(request.form))
 
 @app.route("/execute/delete/<int:id>")
 @login_required
@@ -85,17 +88,28 @@ def get_sql_result(sql_id):
 @app.route("/list")
 @login_required
 def sql_list_home():
-    return render_template("list.html")
+    return render_template("list.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)
 
 @app.route("/list/query", methods=["POST"])
 @login_required
 def query_sql_list():
-    return render_template("list_view.html", sql_list=sql_manager.get_sql_list(get_object_from_json(request.form)))
+    obj = get_object_from_json(request.form)
+    return render_template("list_view.html",
+                           sql_list=sql_manager.get_sql_list(obj),
+                           page_number=obj.page_number,
+                           page_list=get_page_number_list(obj.page_number))
 
 @app.route("/list/delete/<int:id>", methods=["GET", "POST"])
 @login_required
 def delete_sql_list(id):
     pass
+
+def get_page_number_list(page_number):
+    if(page_number <= 5):
+        page_list = range(1, 10)
+    else:
+        page_list = range(page_number - 5, page_number + 6)
+    return page_list
 
 #endregion
 

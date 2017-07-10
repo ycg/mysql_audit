@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import platform
 from src import common_util
 
@@ -31,4 +33,16 @@ SQL_WORK_CANCEL = 6
 INCETION_SQL_OK = 0
 INCETION_SQL_Waring = 1
 INCETION_SQL_ERROR = 2
+
+SQL_LIST_PAGE_SIZE = 15
+
+SQL_WORK_STATUS_DICT = {
+    SQL_NO_AUDIT: "未审核",
+    SQL_AUDIT_OK: "审核成功",
+    SQL_AUDIT_FAIL: "审核失败",
+    SQL_EXECUTE_FAIL: "执行错误",
+    SQL_EXECUTE_SUCCESS: "执行成功",
+    SQL_EXECUTE_ING: "执行中",
+    SQL_WORK_CANCEL: "取消工单"
+}
 

@@ -17,7 +17,6 @@ CREATE TABLE work_user
 
 insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg", md5("yangcaogui"), '杨曹贵', 10000, 1002, 'ycg166911@163.com');
 
-
 CREATE TABLE role_info
 (
   role_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -64,6 +63,7 @@ CREATE TABLE sql_work
   sql_value TEXT COMMENT '要执行的sql内容',
   return_value TEXT COMMENT '返回的结果值',
   status TINYINT UNSIGNED NOT NULL COMMENT '状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销',
+  ignore_warnings TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '0：不忽略警告 | 1：忽略警告',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'

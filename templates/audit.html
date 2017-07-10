@@ -15,7 +15,6 @@
 <div class="row">
     <div class="col-md-8">
         <button class="btn btn-primary" onclick="get_audit_infos()">执行SQL审核</button>
-        &nbsp;&nbsp;
         <button class="btn btn-default" type="reset">清空</button>
     </div>
 </div>
@@ -31,7 +30,7 @@
 
     function get_audit_infos() {
         var sql = $("#sql_value").val();
-        var host_id =$("#host_id").val();
+        var host_id = $("#host_id").val();
         if (host_id <= 0) {
             $("#audit_info").html("请选择数据库集群");
             return;

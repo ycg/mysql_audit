@@ -2,40 +2,27 @@
     <div class="form-group">
         <select id="user_id" name="user_id" class="selectpicker show-tick form-control bs-select-hidden" style="width: 500px" required>
             <option value="0" selected>查询所有用户</option>
-            <option value="1">DBA1</option>
-            <option value="2">DBA2</option>
-            <option value="3">DBA3</option>
-            <option value="4">DBA4</option>
-            <option value="5">DBA5</option>
-            <option value="6">DBA5</option>
-            <option value="7">DBA6</option>
+            {% for info in user_infos %}
+                <option value="{{ info.user_id }}">{{ info.chinese_name }}</option>
+            {% endfor %}
         </select>
     </div>
-    &nbsp;&nbsp;
     <div class="form-group">
         <select id="status" name="status" class="selectpicker show-tick form-control bs-select-hidden" required>
             <option value="0" selected>查询所有状态</option>
-            <option value="1">未审核</option>
-            <option value="2">审核成功</option>
-            <option value="3">审核未通过</option>
-            <option value="4">未执行</option>
-            <option value="5">执行中</option>
-            <option value="6">执行成功</option>
-            <option value="7">已取消</option>
+            {% for key, value in sql_work_status.items() %}
+                <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
         </select>
     </div>
-    &nbsp;&nbsp;
     <div class="form-group">
         <input id="start_datetime" name="start_datetime" type="text" value="" class="form_datetime form-control" placeholder="开始时间" readonly>
     </div>
-    &nbsp;&nbsp;
     <div class="form-group">
         <input id="stop_datetime" name="stop_datetime" type="text" value="" class="form_datetime form-control" placeholder="结束时间" readonly>
     </div>
     <div class="form-group">
-        &nbsp;&nbsp;
         <button type="submit" class="btn btn-primary">查询</button>
-        &nbsp;&nbsp;
         <button type="reset" class="btn btn-default">清空</button>
     </div>
 </form>
@@ -63,7 +50,15 @@
     });
 
     function query_sql_list() {
-        input_data_for_post("/list/query", get_form_json($("#sql_list_form")), "#sql_list")
+        var json_obj = get_form_json($("#sql_list_form"))
+        json_obj.page_number = 1
+        input_data_for_post("/list/query", json_obj, "#sql_list")
+    }
+
+    function query_sql_list_by_page_number(page_number) {
+        var json_obj = get_form_json($("#sql_list_form"))
+        json_obj.page_number = page_number
+        input_data_for_post("/list/query", json_obj, "#sql_list")
     }
 
     function get_execute_html(id) {

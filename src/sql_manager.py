@@ -4,13 +4,22 @@ import json
 from flask import render_template
 import inception_util, cache, db_util, settings, common_util
 
+PAGE_SIZE = 10
 
+#根据sql和主机id审核sql
 def audit_sql(obj):
     return render_template("audit_view.html", audit_infos=inception_util.sql_audit(obj.sql, cache.MyCache().get_mysql_host_info(obj.host_id)))
 
+#根据sql_id获取sql进行审核
+def audit_sql_by_sql_id(sql_id):
+    sql_info = get_sql_info_by_id(sql_id)
+    return render_template("audit_view.html", audit_infos=inception_util.sql_audit(sql_info.sql_value, cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id)))
+
+#获取审核的数据库主机信息
 def get_audit_mysql_host():
     return cache.MyCache().get_mysql_host_info()
 
+#获取执行的数据库主机信息
 def get_execute_mysql_host():
     return cache.MyCache().get_mysql_host_info()
 
@@ -18,6 +27,8 @@ def get_execute_mysql_host():
 # 状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销
 def add_sql_work(obj):
     result = inception_util.sql_audit(obj.sql, cache.MyCache().get_mysql_host_info(obj.host_id))
+    if(get_sql_execute_status(result) == False):
+        return "提交的SQL有错误，请仔细检查！"
     status = settings.SQL_AUDIT_OK if (get_sql_execute_status(result)) else settings.SQL_AUDIT_FAIL
     sql = """INSERT INTO `mysql_audit`.`sql_work`
              (`create_user_id`, `audit_user_id`, `execute_user_id`, `audit_date_time`, `execute_date_time`,
@@ -26,6 +37,7 @@ def add_sql_work(obj):
              ({0}, {1}, {1}, NULL, NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}');""" \
         .format(obj.current_user_id, obj.dba_user_id, obj.host_id, obj.jira_url, obj.is_backup, db_util.DBUtil().escape(obj.sql), status, obj.title)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    return "提交SQL工单成功"
 
 # 根据id删除工单
 def delete_sql_work(id):
@@ -42,7 +54,8 @@ def get_sql_list(obj):
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
              left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
-             where 1 = 1 order by t1.id desc limit 20;"""
+             where 1 = 1 order by t1.id desc limit {0}, {1};"""
+    sql = sql.format((obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
     result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
     for info in result_list:
         get_sql_work_status_name(info)
