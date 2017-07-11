@@ -1,7 +1,13 @@
 function init_web(url) {
     set_tab_active(url)
     $.get(url, "", function (data) {
-        $("#div_web").html(data);
+        var login_flag = data.substring(0, 25);
+        if (login_flag == "<p hidden>login_error</p>") {
+            window.location.href = 'login';
+        }
+        else {
+            $("#div_web").html(data);
+        }
     });
 }
 
@@ -65,7 +71,7 @@ $("button[type='reset']").click(function () {
 
 function convert_int(id) {
     var value = $(id).val()
-    if(value == ""){
+    if (value == "") {
         return 0
     }
     return value
@@ -73,7 +79,7 @@ function convert_int(id) {
 
 function convert_string(id) {
     var value = $(id).val()
-    if(value.length <= 0){
+    if (value.length <= 0) {
         return ""
     }
     return value

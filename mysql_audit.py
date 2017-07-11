@@ -192,7 +192,7 @@ def load_user(user_id):
 
 @app.route("/login")
 def login_home():
-    return render_template("login.html")
+    return "<p hidden>login_error</p>" + render_template("login.html")
 
 #endregion
 
