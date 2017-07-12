@@ -69,6 +69,16 @@ CREATE TABLE sql_work
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
 ) COMMENT 'sql执行工单表' CHARSET utf8 ENGINE innodb;
 
+#准备把上面的表进行拆分
+#不过目前先不动，把功能先做好
+CREATE TABLE sql_work_sub
+(
+  id INT UNSIGNED NOT NULL PRIMARY KEY,
+  sql_value TEXT COMMENT '要执行的sql内容',
+  audit_result_value TEXT COMMENT '审核的结果',
+  execute_result_value TEXT COMMENT '执行的结果'
+) COMMENT 'sql执行工单子表' CHARSET utf8 ENGINE innodb;
+
 CREATE TABLE mysql_hosts
 (
   host_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
