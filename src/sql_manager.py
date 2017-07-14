@@ -127,3 +127,16 @@ def get_sql_execute_status(result):
         if (info.errlevel == settings.INCETION_SQL_ERROR):
             return False
     return True
+
+#获取对应数据库的所以库名称
+def get_database_names(host_id):
+    html_str = """<select id="database_name" class="selectpicker show-tick form-control bs-select-hidden">
+                      <option value="0" disabled selected style="color: black">--请选择要执行的库--</option>
+                      {0}
+                  </select>"""
+    options_str = ""
+    result = db_util.DBUtil().get_list_infos(cache.MyCache().get_mysql_host_info(host_id=host_id), "show databases;")
+    for num in range(0, len(result)):
+        options_str += "<option value=\"{0}\">{1}</option>".format(num + 1, result[num].Database)
+    return html_str.format(options_str)
+

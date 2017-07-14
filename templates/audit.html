@@ -1,14 +1,18 @@
 <div class="row">
     <div class="col-md-8">
-        <textarea id="sql_value" name="sql_value" class="form-control" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=21 required></textarea>
+        <textarea id="sql_value" class="form-control" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=21 required></textarea>
     </div>
     <div class="col-md-4">
-        <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" required>
+        <select id="host_id" class="selectpicker show-tick form-control bs-select-hidden" onchange="show_database_names()">
             <option value="0" disabled selected style="color: black">请选择要审核的集群:</option>
             {% for info in host_infos %}
                 <option value="{{ info.host_id }}">{{ info.host_name }}</option>
             {% endfor %}
         </select>
+        </br></br>
+    </div>
+    <div id="db_div" class="col-md-4">
+
     </div>
 </div>
 </br>
@@ -40,6 +44,13 @@
             return;
         }
         input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id, "#audit_info");
+    }
+
+    function show_database_names() {
+        $.post("/audit/db_names/" + $("#host_id").val(), "", function (data) {
+            $("#db_div").html(data);
+            $(".selectpicker").selectpicker({liveSearch: true});
+        });
     }
 </script>
 

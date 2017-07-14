@@ -46,6 +46,10 @@ def get_sql_audit_info():
 def get_sql_audit_info_by_sql_id(id):
     return sql_manager.audit_sql_by_sql_id(id)
 
+@app.route("/audit/db_names/<int:host_id>", methods=["GET", "POST"])
+@login_required
+def get_database_names(host_id):
+    return sql_manager.get_database_names(host_id)
 
 #endregion
 
