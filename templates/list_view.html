@@ -18,6 +18,9 @@
             上线集群
         </th>
         <th>
+            数据库名称
+        </th>
+        <th>
             是否备份
         </th>
         <th>
@@ -26,9 +29,9 @@
         <th>
             状态
         </th>
-        <th>
+        <!--<th>
             是否删除
-        </th>
+        </th>-->
         <th>
             创建时间
         </th>
@@ -56,6 +59,9 @@
                 {{ info.host_name }}
             </td>
             <td>
+                {{ info.execute_db_name }}
+            </td>
+            <td>
                 {{ info.is_backup }}
             </td>
             <td>
@@ -71,13 +77,13 @@
                     {% endif %}>
                 {{ info.status_name }}
             </td>
-            <td>
+            <!--<td>
                 {% if(info.is_deleted == 0) %}
                     Yes
                 {% else %}
                     No
                 {% endif %}
-            </td>
+            </td>-->
             <td>
                 {{ info.created_time }}
             </td>
