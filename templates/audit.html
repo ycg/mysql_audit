@@ -39,11 +39,13 @@
             $("#audit_info").html("请选择数据库集群");
             return;
         }
-        if (sql.length <= 0) {
+        else if (sql.length <= 0) {
             $("#audit_info").html("请输入要审核的SQL");
             return;
         }
-        input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id, "#audit_info");
+        else {
+            input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id, "#audit_info");
+        }
     }
 
     function show_database_names() {

@@ -10,11 +10,16 @@
             <input id="jira_url" type="text" name="jira_url" class="form-control" placeholder="请输入jira地址" required>
         </div>
         <div class="form-group">
-            <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" required>
+            <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" onchange="show_database_names()">
                 <option value="0" disabled selected style="color: black">请选择要上线的集群:</option>
                 {% for info in host_infos %}
                     <option value="{{ info.host_id }}">{{ info.host_name }}</option>
                 {% endfor %}
+            </select>
+        </div>
+        <div class="form-group" id="db_div">
+            <select id="database_name" name="database_name" class="selectpicker show-tick form-control bs-select-hidden">
+                <option value="0" disabled selected style="color: black">请选择要执行的库:</option>
             </select>
         </div>
         <div class="form-group">
@@ -115,6 +120,13 @@
             return;
         }
         input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id, "#audit_info");
+    }
+
+    function show_database_names() {
+        $.post("/audit/db_names/" + $("#host_id").val(), "", function (data) {
+            $("#db_div").html(data);
+            $(".selectpicker").selectpicker({liveSearch: true});
+        });
     }
 </script>
 

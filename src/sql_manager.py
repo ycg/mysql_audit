@@ -130,8 +130,8 @@ def get_sql_execute_status(result):
 
 #获取对应数据库的所以库名称
 def get_database_names(host_id):
-    html_str = """<select id="database_name" class="selectpicker show-tick form-control bs-select-hidden">
-                      <option value="0" disabled selected style="color: black">--请选择要执行的库--</option>
+    html_str = """<select id="database_name" name="database_name" class="selectpicker show-tick form-control bs-select-hidden">
+                      <option value="0" disabled selected style="color: black">请选择要执行的库:</option>
                       {0}
                   </select>"""
     options_str = ""

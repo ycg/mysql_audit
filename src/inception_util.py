@@ -59,7 +59,11 @@ def get_object(rows, fields=None):
 def execute_sql(sql):
     connection, cursor = None, None
     try:
-        connection = MySQLdb.connect(host=settings.inception_host, user=settings.inception_user, passwd=settings.inception_password, port=settings.inception_port, use_unicode=True, charset="utf8")
+        connection = MySQLdb.connect(host=settings.inception_host,
+                                     user=settings.inception_user,
+                                     passwd=settings.inception_password,
+                                     port=settings.inception_port,
+                                     use_unicode=True, charset="utf8", connect_timeout=2)
         cursor = connection.cursor()
         cursor.execute(sql)
         return cursor.fetchall()
