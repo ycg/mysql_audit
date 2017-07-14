@@ -20,34 +20,40 @@ sql_mode = """/*--host={0};--port={1};--user={2};--password={3};{4}*/
 
 sql_mode_no_host = "inception_magic_start;{0}inception_magic_commit;"
 
-#errlevel：0：正确 1：警告 2：严重错误必须修改
 osc_fields = ["DBNAME", "TABLENAME", "SQLSHA1", "PERCENT", "REMAINTIME", "INFORMATION"]
 execute_fields = ['ID', 'stage', 'errlevel', 'stagestatus', 'errormessage', 'SQL', 'Affected_rows', 'sequence', 'backup_dbname', 'execute_time', 'sqlsha1']
 
-#sql审核
+
+# sql审核
 def sql_audit(sql, host_info):
     sql = sql_mode.format(host_info.host, host_info.port, host_info.user, host_info.password, sql_audit_flag, sql)
     return get_object(execute_sql(sql), fields=execute_fields)
 
-#sql执行
+
+# sql执行
 def sql_execute(sql, host_info, is_backup=True, ignore_warnings=False):
     parameters = sql_execute_flag
-    parameters += sql_enable_ignore_warnings if(ignore_warnings) else ''
-    parameters += sql_enable_remote_backup if(is_backup) else sql_disable_remote_backup
+    parameters += sql_enable_ignore_warnings if (ignore_warnings) else ''
+    parameters += sql_enable_remote_backup if (is_backup) else sql_disable_remote_backup
     sql = sql_mode.format(host_info.host, host_info.port, host_info.user, host_info.password, parameters, sql)
     return get_object(execute_sql(sql), fields=execute_fields)
 
+
+# 停止使用pt-osc的任务sql
 def stop_osc_task(sha1_code):
     sql = "inception stop alter '{}';".format(sha1_code)
     return get_object(execute_sql(sql_mode_no_host.format(sql)), fields=osc_fields)
 
+
+# 获取使用pt-osc的执行精度
 def get_osc_info(sha1_code):
     sql = "inception get osc_percent '{}';".format(sha1_code)
     return get_object(execute_sql(sql_mode_no_host.format(sql)), fields=osc_fields)
 
+# 把返回数据转化为对象
 def get_object(rows, fields=None):
     result = []
-    if(rows == None or len(rows) <= 0 or fields == None or len(fields) <= 0):
+    if (rows == None or len(rows) <= 0 or fields == None or len(fields) <= 0):
         return result
     for row in rows:
         info = common_util.Entity()
@@ -56,6 +62,8 @@ def get_object(rows, fields=None):
         result.append(info)
     return result
 
+
+# 连接inception服务器执行sql
 def execute_sql(sql):
     connection, cursor = None, None
     try:
@@ -68,9 +76,8 @@ def execute_sql(sql):
         cursor.execute(sql)
         return cursor.fetchall()
     finally:
-        if(cursor != None):
+        if (cursor != None):
             cursor.close()
-        if(connection != None):
+        if (connection != None):
             connection.close()
     return []
-

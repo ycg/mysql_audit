@@ -44,7 +44,7 @@
 
     function query_sql_list() {
         var json_obj = get_form_json($("#sql_list_form"));
-        json_obj.page_number = page_number_global;
+        json_obj.page_number = 1;
         input_data_for_post("/list/query", json_obj, "#sql_list");
         return false;
     }
