@@ -7,6 +7,8 @@ import inception_util, cache, db_util, settings, common_util
 
 # 根据sql和主机id审核sql
 def audit_sql(obj):
+    if(obj.db_name != None):
+        obj.sql = "use {0};{1}".format(obj.db_name, obj.sql)
     return render_template("audit_view.html", audit_infos=inception_util.sql_audit(obj.sql, cache.MyCache().get_mysql_host_info(obj.host_id)))
 
 
@@ -29,7 +31,7 @@ def get_execute_mysql_host():
 # 添加工单时应该自动审核一下比较好
 # 状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销
 def add_sql_work(obj):
-    audit_result = inception_util.sql_audit(obj.sql, cache.MyCache().get_mysql_host_info(obj.host_id))
+    audit_result = inception_util.sql_audit(obj.sql_value, cache.MyCache().get_mysql_host_info(obj.host_id))
     if (get_sql_execute_status(audit_result) == False):
         return "提交的SQL有错误，请仔细检查！"
     if (hasattr(obj, "database_name") == False):
@@ -40,17 +42,17 @@ def add_sql_work(obj):
               `mysql_host_id`, `jira_url`, `is_backup`, `backup_table`, `sql_value`,
               `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`)
              VALUES
-             ({0}, {1}, {1}, NULL, NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}');""" \
-        .format(obj.current_user_id,
-                obj.dba_user_id,
-                obj.host_id,
-                db_util.DBUtil().escape(obj.jira_url),
-                obj.is_backup,
-                db_util.DBUtil().escape(obj.sql),
-                settings.SQL_AUDIT_OK,
-                db_util.DBUtil().escape(obj.title),
-                db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
-                obj.database_name)
+             ({0}, {1}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}');""" \
+             .format(obj.current_user_id,
+                     obj.dba_user_id,
+                     obj.host_id,
+                     db_util.DBUtil().escape(obj.jira_url),
+                     obj.is_backup,
+                     db_util.DBUtil().escape(obj.sql_value),
+                     settings.SQL_AUDIT_OK,
+                     db_util.DBUtil().escape(obj.title),
+                     db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
+                     obj.database_name)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     return "提交SQL工单成功"
 
@@ -105,16 +107,18 @@ def get_sql_info_by_id(id):
 def sql_execute(sql_id):
     sql_info = get_sql_info_by_id(sql_id)
     if (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
-        # 如果已经执行成功，直接返回结果
+        # 如果已经执行成功，直接返回执行结果
         return json.loads(sql_info.return_value)
     else:
+        if(len(sql_info.execute_db_name.strip()) > 0):
+            sql_info.sql_value = "use {0};{1}".format(sql_info.execute_db_name, sql_info.sql_value)
         result_obj = inception_util.sql_execute(sql_info.sql_value,
                                                 cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
                                                 is_backup=sql_info.is_backup)
-        sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {1} where id = {2};" \
-            .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
-                    settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
-                    sql_info.id)
+        sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {1}, `execute_date_time` = NOW() where id = {2};" \
+               .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
+                       settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
+                       sql_info.id)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         return result_obj
 
@@ -122,6 +126,7 @@ def sql_execute(sql_id):
 # 获取执行成功的SQL执行结果
 def get_sql_result(sql_id):
     sql_info = get_sql_info_by_id(sql_id)
+    # 根据状态返回相应的结果，审核状态返回审核结果，执行状态返回执行结果
     if (sql_info.status == settings.SQL_AUDIT_OK or sql_info.status == settings.SQL_AUDIT_FAIL):
         return render_template("audit_view.html", audit_infos=json.loads(sql_info.audit_result_value))
     elif (sql_info.status == settings.SQL_EXECUTE_ING or sql_info.status == settings.SQL_EXECUTE_FAIL or sql_info.status == settings.SQL_EXECUTE_SUCCESS):

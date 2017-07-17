@@ -27,7 +27,9 @@ function input_data_for_post_loding(url, json_data, div_id) {
     show_modal_dialog("#loading")
     $.post(url, json_data, function (data) {
         $(div_id).html(data)
-        hide_modal_dialog("#loading")
+        hide_modal_dialog("#loading");
+    }).error(function () {
+        hide_modal_dialog("#loading");
     });
 }
 
@@ -100,3 +102,20 @@ function get_form_json(frm) {
     });
     return o;
 }
+
+function get_audit_infos() {
+    var sql = $("#sql_value").val();
+    var host_id = $("#host_id").val();
+    if (host_id <= 0) {
+        $("#audit_info").html("请选择数据库集群");
+        return;
+    }
+    else if (jQuery.trim(sql).length <= 0) {
+        $("#audit_info").html("请输入要审核的SQL");
+        return;
+    }
+    else {
+        input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id + "&db_name=" + $("#database_name").val(), "#audit_info");
+    }
+}
+

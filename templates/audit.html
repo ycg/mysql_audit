@@ -34,22 +34,6 @@
 <script type="text/javascript">
     $(".selectpicker").selectpicker({liveSearch: true});
 
-    function get_audit_infos() {
-        var sql = $("#sql_value").val();
-        var host_id = $("#host_id").val();
-        if (host_id <= 0) {
-            $("#audit_info").html("请选择数据库集群");
-            return;
-        }
-        else if (sql.length <= 0) {
-            $("#audit_info").html("请输入要审核的SQL");
-            return;
-        }
-        else {
-            input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id, "#audit_info");
-        }
-    }
-
     function show_database_names() {
         $.post("/audit/db_names/" + $("#host_id").val(), "", function (data) {
             $("#db_div").html(data);
