@@ -6,7 +6,7 @@ from flask_login import login_user, login_required, logout_user, LoginManager, c
 import settings
 from src import common_util, cache, user_login, sql_manager, host_manager, user_manager
 
-app = Flask(__name__)
+app = Flask("mysql_audit")
 app.secret_key = os.urandom(24)
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
