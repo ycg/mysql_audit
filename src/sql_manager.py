@@ -91,7 +91,7 @@ def get_sql_list(obj):
 
 # 根据工单id获取全部信息
 def get_sql_info_by_id(id):
-    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup,
+    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup, t1.ignore_warnings,
              t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status, t1.return_value, t1.execute_db_name, t1.audit_result_value
              from `mysql_audit`.`sql_work` t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
@@ -113,7 +113,7 @@ def sql_execute(obj):
         result_obj = inception_util.sql_execute(sql_info.sql_value,
                                                 cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
                                                 is_backup=sql_info.is_backup,
-                                                ignore_warnings=True if(obj.ignore_warnings.upper == "TRUE") else False)
+                                                ignore_warnings=True if (obj.ignore_warnings.upper() == "TRUE") else False)
         sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {1}, `ignore_warnings` = {3}, `execute_date_time` = NOW() where id = {2};" \
             .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
                     settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
@@ -121,6 +121,12 @@ def sql_execute(obj):
                     obj.ignore_warnings)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         return result_obj
+
+
+# 如果审核结果有warning，那么要提示用户选择忽视警告执行SQL
+def check_sql_result_has_warnings(sql_id):
+    sql_info = get_sql_info_by_id(sql_id)
+    return get_sql_result_has_warning_status(json.loads(sql_info.audit_result_value))
 
 
 # 获取执行成功的SQL执行结果
@@ -159,6 +165,14 @@ def get_sql_work_status_name(sql_info):
 def get_sql_execute_status(result):
     for info in result:
         if (info.errlevel == settings.INCETION_SQL_ERROR):
+            return False
+    return True
+
+
+# 获取审核或执行结果是否有警告状态
+def get_sql_result_has_warning_status(result):
+    for info in result:
+        if (info.errlevel == settings.INCETION_SQL_Waring):
             return False
     return True
 
