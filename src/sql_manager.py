@@ -7,14 +7,14 @@ import inception_util, cache, db_util, settings, common_util
 
 # 根据sql和主机id审核sql
 def audit_sql(obj):
-    if(obj.db_name != None):
-        obj.sql = "use {0};{1}".format(obj.db_name, obj.sql)
+    obj.sql = get_use_db_sql(obj.sql, obj.db_name)
     return render_template("audit_view.html", audit_infos=inception_util.sql_audit(obj.sql, cache.MyCache().get_mysql_host_info(obj.host_id)))
 
 
 # 根据sql_id获取sql进行审核
 def audit_sql_by_sql_id(sql_id):
     sql_info = get_sql_info_by_id(sql_id)
+    sql_info.sql_value = get_use_db_sql(sql_info.sql_value, sql_info.execute_db_name)
     return render_template("audit_view.html", audit_infos=inception_util.sql_audit(sql_info.sql_value, cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id)))
 
 
@@ -31,11 +31,9 @@ def get_execute_mysql_host():
 # 添加工单时应该自动审核一下比较好
 # 状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销
 def add_sql_work(obj):
-    audit_result = inception_util.sql_audit(obj.sql_value, cache.MyCache().get_mysql_host_info(obj.host_id))
+    audit_result = inception_util.sql_audit(get_use_db_sql(obj.sql_value, obj.db_name), cache.MyCache().get_mysql_host_info(obj.host_id))
     if (get_sql_execute_status(audit_result) == False):
-        return "提交的SQL有错误，请仔细检查！"
-    if (hasattr(obj, "database_name") == False):
-        obj.database_name = ""
+        return "提交的SQL有错误，请审核之后在提交！"
     sql = """INSERT INTO `mysql_audit`.`sql_work`
              (`create_user_id`, `audit_user_id`, `execute_user_id`,
               `audit_date_time`, `execute_date_time`,
@@ -43,16 +41,16 @@ def add_sql_work(obj):
               `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`)
              VALUES
              ({0}, {1}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}');""" \
-             .format(obj.current_user_id,
-                     obj.dba_user_id,
-                     obj.host_id,
-                     db_util.DBUtil().escape(obj.jira_url),
-                     obj.is_backup,
-                     db_util.DBUtil().escape(obj.sql_value),
-                     settings.SQL_AUDIT_OK,
-                     db_util.DBUtil().escape(obj.title),
-                     db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
-                     obj.database_name)
+        .format(obj.current_user_id,
+                obj.dba_user_id,
+                obj.host_id,
+                db_util.DBUtil().escape(obj.jira_url),
+                obj.is_backup,
+                db_util.DBUtil().escape(obj.sql_value),
+                settings.SQL_AUDIT_OK,
+                db_util.DBUtil().escape(obj.title),
+                db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
+                obj.db_name)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     return "提交SQL工单成功"
 
@@ -104,21 +102,23 @@ def get_sql_info_by_id(id):
 
 # 执行sql并更新工单状态
 # 状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功
-def sql_execute(sql_id):
-    sql_info = get_sql_info_by_id(sql_id)
+def sql_execute(obj):
+    sql_info = get_sql_info_by_id(obj.sql_id)
     if (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
         # 如果已经执行成功，直接返回执行结果
         return json.loads(sql_info.return_value)
     else:
-        if(len(sql_info.execute_db_name.strip()) > 0):
+        if (len(sql_info.execute_db_name.strip()) > 0):
             sql_info.sql_value = "use {0};{1}".format(sql_info.execute_db_name, sql_info.sql_value)
         result_obj = inception_util.sql_execute(sql_info.sql_value,
                                                 cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
-                                                is_backup=sql_info.is_backup)
-        sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {1}, `execute_date_time` = NOW() where id = {2};" \
-               .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
-                       settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
-                       sql_info.id)
+                                                is_backup=sql_info.is_backup,
+                                                ignore_warnings=True if(obj.ignore_warnings.upper == "TRUE") else False)
+        sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {1}, `ignore_warnings` = {3}, `execute_date_time` = NOW() where id = {2};" \
+            .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
+                    settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
+                    sql_info.id,
+                    obj.ignore_warnings)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         return result_obj
 
@@ -131,6 +131,7 @@ def get_sql_result(sql_id):
         return render_template("audit_view.html", audit_infos=json.loads(sql_info.audit_result_value))
     elif (sql_info.status == settings.SQL_EXECUTE_ING or sql_info.status == settings.SQL_EXECUTE_FAIL or sql_info.status == settings.SQL_EXECUTE_SUCCESS):
         return render_template("sql_execute_view.html", audit_infos=json.loads(sql_info.return_value))
+
 
 # 获取sql执行状态的中文
 # 状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销
@@ -164,7 +165,7 @@ def get_sql_execute_status(result):
 
 # 获取对应数据库的所以库名称
 def get_database_names(host_id):
-    html_str = """<select id="database_name" name="database_name" class="selectpicker show-tick form-control bs-select-hidden">
+    html_str = """<select id="db_name" name="db_name" class="selectpicker show-tick form-control bs-select-hidden">
                       <option value="0" disabled selected style="color: black">请选择要执行的库:</option>
                       {0}
                   </select>"""
@@ -173,3 +174,10 @@ def get_database_names(host_id):
     for num in range(0, len(result)):
         options_str += "<option value=\"{0}\">{1}</option>".format(result[num].Database, result[num].Database)
     return html_str.format(options_str)
+
+
+# 获取使用use db的完整sql
+def get_use_db_sql(sql_value, db_name):
+    if (db_name != None):
+        return "use {0};{1}".format(db_name, sql_value)
+    return sql_value

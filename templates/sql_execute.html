@@ -7,39 +7,7 @@
         <textarea id="sql_value" name="sql_value" class="form-control" rows=20>{{ sql_info.sql_value }}</textarea>
     </div>
     <div class="col-md-4">
-        <!--<form id="host_add_form">
-            <div class="form-group" hidden>
-                <input id="host_id" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label id="host_name_lable" class="control-label" for="host_name">工单名称:</label>
-                <input id="host_name" type="text" class="form-control" value="{{ sql_info.title }}">
-            </div>
-            <div class="form-group">
-                <label id="host_ip_lable" class="control-label" for="host_ip">Jira地址:</label>
-                <input id="host_ip" type="text" class="form-control" value="{{ sql_info.jira_url }}">
-            </div>
-            <div class="form-group">
-                <label id="host_ip_lable" class="control-label" for="host_ip">创建用户:</label>
-                <input id="host_ip" type="text" class="form-control" value="{{ sql_info.chinese_name }}">
-            </div>
-            <div class="form-group">
-                <label id="host_port_lable" class="control-label" for="host_port">上线集群:</label>
-                <input id="host_port" type="text" class="form-control" value="{{ sql_info.host_name }}">
-            </div>
-            <div class="form-group">
-                <label id="host_user_lable" class="control-label" for="is_backup">是否备份:</label>
-                <input id="is_backup" type="text" class="form-control" value= {% if(sql_info.is_backup == 1) %} Yes {% else %} No {% endif %}>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input id="ignore_warning" type="checkbox"> 是否忽视警告
-                    </label>
-                </div>
-            </div>
-        </form>-->
-        <form id="host_add_form">
+        <form id="sql_info_form">
             <div class="form-group" hidden>
                 <input id="host_id" type="text" class="form-control">
             </div>
@@ -96,7 +64,8 @@
 
 <script type="text/javascript">
     function sql_execute(sql_id) {
-        input_data_for_post("/execute/now/" + sql_id, "", "#sql_execute_result")
+        var json = "ignore_warnings=" + $("#ignore_warning").prop("checked");
+        input_data_for_post("/execute/now/" + sql_id, json, "#sql_execute_result")
     }
 
     function sql_audit_again(sql_id) {

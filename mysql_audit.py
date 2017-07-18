@@ -78,7 +78,9 @@ def get_sql_execute_home(id):
 @app.route("/execute/now/<int:sql_id>", methods=["GET", "POST"])
 @login_required
 def sql_execute_by_sql_id(sql_id):
-    return render_template("sql_execute_view.html", audit_infos=sql_manager.sql_execute(sql_id))
+    obj = get_object_from_json(request.form)
+    obj.sql_id = sql_id
+    return render_template("sql_execute_view.html", audit_infos=sql_manager.sql_execute(obj))
 
 @app.route("/execute/result/<int:sql_id>", methods=["GET", "POST"])
 @login_required

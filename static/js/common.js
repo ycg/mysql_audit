@@ -115,7 +115,7 @@ function get_audit_infos() {
         return;
     }
     else {
-        input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id + "&db_name=" + $("#database_name").val(), "#audit_info");
+        input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id + "&db_name=" + $("#db_name").val(), "#audit_info");
     }
 }
 
