@@ -32,18 +32,18 @@
             <div class="form-group">
                 <strong>执行状态：</strong>
                 <label style="font-weight: normal"
-                    {% if(sql_info.status == 1 or sql_info.status == 4) %}
-                        class = "text-success"
-                    {% elif(sql_info.status == 0) %}
-                        class = "text-warning"
-                    {% elif(sql_info.status == 2 or sql_info.status == 3) %}
-                        class = "text-danger"
-                    {% endif %}>{{ sql_info.status_name }}</label>
+                        {% if(sql_info.status == 1 or sql_info.status == 4) %}
+                       class="text-success"
+                        {% elif(sql_info.status == 0) %}
+                       class="text-warning"
+                        {% elif(sql_info.status == 2 or sql_info.status == 3) %}
+                       class="text-danger"
+                        {% endif %}>{{ sql_info.status_name }}</label>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input id="ignore_warning" type="checkbox"> 执行时是否忽视警告
+                        <input id="ignore_warning" type="checkbox" {% if(sql_info.ignore_warnings == True) %} checked {% endif %}> 执行时是否忽视警告
                     </label>
                 </div>
             </div>
@@ -58,14 +58,39 @@
     </div>
 </div>
 </br>
+<div class="modal fade" id="sql_has_warnings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">SQL执行提示</h4>
+            </div>
+            <div class="modal-body">
+                SQL有警告不能执行，如果执行请勾选忽视警告！！！
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12" id="sql_execute_result"></div>
 </div>
 
 <script type="text/javascript">
     function sql_execute(sql_id) {
-        var json = "ignore_warnings=" + $("#ignore_warning").prop("checked");
-        input_data_for_post("/execute/now/" + sql_id, json, "#sql_execute_result")
+        // 先检查审核有没有warning，如果有要提示用户勾选忽视警告
+        var checked = $("#ignore_warning").prop("checked");
+        $.get("/execute/check/warnings/" + sql_id, "", function (data) {
+            var json_obj = JSON.parse(data);
+            if (json_obj.has_warnings == true && checked == false) {
+                show_modal_dialog("#sql_has_warnings")
+            }
+            else {
+                var json = "ignore_warnings=" + checked;
+                input_data_for_post("/execute/now/" + sql_id, json, "#sql_execute_result")
+            }
+        });
     }
 
     function sql_audit_again(sql_id) {

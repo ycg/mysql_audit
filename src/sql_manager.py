@@ -124,9 +124,17 @@ def sql_execute(obj):
 
 
 # 如果审核结果有warning，那么要提示用户选择忽视警告执行SQL
-def check_sql_result_has_warnings(sql_id):
+def check_sql_audit_result_has_warnings(sql_id):
+    result = common_util.Entity()
     sql_info = get_sql_info_by_id(sql_id)
-    return get_sql_result_has_warning_status(json.loads(sql_info.audit_result_value))
+    for info in json.loads(sql_info.audit_result_value):
+        obj = common_util.get_object(info)
+        if (obj.errlevel == settings.INCETION_SQL_WARNING):
+            result.has_warnings = True
+            break
+        else:
+            result.has_warnings = False
+    return json.dumps(result, default=lambda o: o.__dict__)
 
 
 # 获取执行成功的SQL执行结果
@@ -172,7 +180,7 @@ def get_sql_execute_status(result):
 # 获取审核或执行结果是否有警告状态
 def get_sql_result_has_warning_status(result):
     for info in result:
-        if (info.errlevel == settings.INCETION_SQL_Waring):
+        if (info.errlevel == settings.INCETION_SQL_WARNING):
             return False
     return True
 
