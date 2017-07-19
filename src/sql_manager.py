@@ -150,20 +150,7 @@ def get_sql_result(sql_id):
 # 获取sql执行状态的中文
 # 状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销
 def get_sql_work_status_name(sql_info):
-    if (sql_info.status == settings.SQL_NO_AUDIT):
-        sql_info.status_name = "未审核"
-    elif (sql_info.status == settings.SQL_AUDIT_OK):
-        sql_info.status_name = "审核成功"
-    elif (sql_info.status == settings.SQL_AUDIT_FAIL):
-        sql_info.status_name = "审核错误"
-    elif (sql_info.status == settings.SQL_EXECUTE_FAIL):
-        sql_info.status_name = "执行错误"
-    elif (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
-        sql_info.status_name = "执行成功"
-    elif (sql_info.status == settings.SQL_EXECUTE_ING):
-        sql_info.status_name = "执行中..."
-    elif (sql_info.status == settings.SQL_WORK_CANCEL):
-        sql_info.status_name = "工单已撤销"
+    sql_info.status_name = settings.SQL_WORK_STATUS_DICT[sql_info.status]
     return sql_info
 
 

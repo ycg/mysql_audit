@@ -73,6 +73,21 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="sql_execute_status" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">SQL执行进度</h4>
+            </div>
+            <div class="modal-body">
+                SQL正在执行中，请稍候......
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12" id="sql_execute_result"></div>
 </div>
@@ -80,6 +95,7 @@
 <script type="text/javascript">
     function sql_execute(sql_id) {
         // 先检查审核有没有warning，如果有要提示用户勾选忽视警告
+        // 勾选之后才进行真正的SQL执行操作
         var checked = $("#ignore_warning").prop("checked");
         $.get("/execute/check/warnings/" + sql_id, "", function (data) {
             var json_obj = JSON.parse(data);
@@ -88,7 +104,13 @@
             }
             else {
                 var json = "ignore_warnings=" + checked;
-                input_data_for_post("/execute/now/" + sql_id, json, "#sql_execute_result")
+                show_modal_dialog("#sql_execute_status");
+                $.post("/execute/now/" + sql_id, json, function (data) {
+                    $("#sql_execute_result").html(data)
+                    hide_modal_dialog("#sql_execute_status");
+                }).error(function () {
+                    hide_modal_dialog("#sql_execute_status");
+                });
             }
         });
     }
