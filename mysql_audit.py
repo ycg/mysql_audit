@@ -87,11 +87,15 @@ def sql_execute_by_sql_id(sql_id):
 def get_sql_result(sql_id):
     return sql_manager.get_sql_result(sql_id)
 
-
 @app.route("/execute/check/warnings/<int:sql_id>", methods=["GET", "POST"])
 @login_required
 def get_sql_audit_result_has_warnings(sql_id):
     return sql_manager.check_sql_audit_result_has_warnings(sql_id)
+
+@app.route("/execute/rollback/sql/<int:sql_id>", methods=["GET", "POST"])
+@login_required
+def get_rollback_sql(sql_id):
+    return json.dumps(sql_manager.get_rollback_sql(sql_id), default=lambda o: o.__dict__)
 
 #endregion
 
