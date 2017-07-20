@@ -1,6 +1,7 @@
 # mysql_audit
-一个轻量级，小巧的SQL审核和执行的自动化平台
+杞婚噺绾х殑SQL瀹℃牳鍜屾墽琛屽钩鍙帮紝鏀寔鍥炴粴SQL鍔熻兘
 
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/1.png)
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/2.png)
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/3.png)
+![image](https://github.com/ycg/mysql_audit/blob/master/static/img/4.png)
