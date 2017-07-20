@@ -10,6 +10,8 @@ class Entity():
 def get_object(row):
     info = Entity()
     for key, value in row.items():
+        if(value == "None"):
+            value = None
         setattr(info, key, value)
     return info
 

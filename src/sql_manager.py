@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import json
+import json, time
 from flask import render_template
 import inception_util, cache, db_util, settings, common_util
 
@@ -74,7 +74,7 @@ def get_sql_list(obj):
         sql_where += " and t1.stop_datetime <= '{0}'".format(obj.stop_datetime)
 
     sql = """select t1.id, t1.title, t1.create_user_id, t1.audit_user_id, t1.execute_user_id, t1.audit_date_time,
-                    t1.execute_date_time, t1.mysql_host_id, t1.jira_url, if(t1.is_backup = 0, 'No', 'Yes') as is_backup,
+                    t1.execute_date_time, t1.mysql_host_id, t1.jira_url, t1.is_backup,
                     t1.backup_table, left(sql_value, 50) as sql_value, t1.return_value, t1.status, t1.is_deleted, t1.created_time,
                     t2.host_name, t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name, t1.execute_db_name
              from mysql_audit.sql_work t1
@@ -190,3 +190,40 @@ def get_use_db_sql(sql_value, db_name):
     if (db_name != None):
         return "use {0};{1}".format(db_name, sql_value)
     return sql_value
+
+
+# 查看回滚SQL语句
+def get_rollback_sql(sql_id):
+    aa = time.time()
+    result = common_util.Entity()
+    sql_info = get_sql_info_by_id(sql_id)
+    result.rollback_sql = []
+    result.rollback_sql_value = ""
+    result.is_backup = sql_info.is_backup
+    if(sql_info.is_backup):
+        for info in json.loads(sql_info.return_value):
+            info = common_util.get_object(info)
+            if(info.backup_dbname == None):
+                continue
+            sql = "select schema_name from information_schema.SCHEMATA where schema_name = '{0}';".format(info.backup_dbname)
+            db_name = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
+            if(db_name == None):
+                continue
+            sql = "select tablename from {0}.$_$Inception_backup_information$_$ where opid_time = {1}".format(info.backup_dbname, info.sequence)
+            table_name_dict = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
+            if(table_name_dict == None):
+                continue
+            sql = "select rollback_statement from {0}.{1} where opid_time = {2}".format(info.backup_dbname, table_name_dict["tablename"], info.sequence)
+            for list_dict in db_util.DBUtil().fetchall(settings.MySQL_HOST, sql):
+                result.rollback_sql.append(list_dict.values()[0])
+    bb = time.time()
+    print(">>>>>>>>>>>>>>get rollback sql time:{0}<<<<<<<<<<<<<<<<<<<".format(bb - aa))
+    if(len(result.rollback_sql) > 0):
+        result.rollback_sql_value = "\n".join(result.rollback_sql)
+        result.rollback_sql = []
+    return result
+
+
+# 执行回滚语句
+def execute_rollback_sql(sql_id):
+    pass
