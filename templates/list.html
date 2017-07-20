@@ -31,6 +31,23 @@
 
 </div>
 
+<div class="modal fade" id="rollback_sql_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">回滚SQL</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="rollback_sql" class="form-control" rows=21></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger">执行回滚SQL</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     var page_number_global = 1;
 
@@ -59,6 +76,14 @@
     function get_execute_html(id) {
         $("#sql_list_form").hide();
         input_data_for_post("/execute/sql/exeucte/" + id, "", "#sql_list")
+    }
+
+    function get_rollback_sql(sql_id) {
+        $.post("/execute/rollback/sql/" + sql_id, "", function (data) {
+            var json_obj = JSON.parse(data);
+            $("#rollback_sql").text(json_obj.rollback_sql_value);
+            show_modal_dialog("#rollback_sql_dialog");
+        });
     }
 
     query_sql_list();
