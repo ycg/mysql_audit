@@ -12,7 +12,6 @@ login_manager = LoginManager()
 login_manager.session_protection = "strong"
 login_manager.login_view = "login_home"
 login_manager.init_app(app=app)
-
 cache.MyCache().load_all_cache()
 
 #region tab
