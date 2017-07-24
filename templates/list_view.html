@@ -87,7 +87,7 @@
                     <button class="btn-danger btn btn-xs" onclick=get_rollback_sql({{ info.id }}) {% if(info.is_backup == 0) %} disabled {% endif %}>回滚</button>
                 {% else %}
                     <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>执行</button>
-                    <button class="btn-danger btn btn-xs">编辑</button>
+                    <button class="btn-danger btn btn-xs" onclick=show_delete_sql_work_dialog({{ info.id }})>删除</button>
                 {% endif %}
             </td>
         </tr>

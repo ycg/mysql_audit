@@ -48,8 +48,27 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="sql_work_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">删除工单</h4>
+            </div>
+            <div class="modal-body">
+                是否确认删除工单？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="delete_sql_work()">删除</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     var page_number_global = 1;
+    var delete_sql_work_id = 0;
 
     $(".form_datetime").datetimepicker({
         format: "yyyy-mm-dd hh:ii",
@@ -84,6 +103,22 @@
             $("#rollback_sql").text(json_obj.rollback_sql_value);
             show_modal_dialog("#rollback_sql_dialog");
         });
+    }
+
+    function delete_sql_work() {
+        $.post("/list/delete/" + delete_sql_work_id, "", function (data) {
+            alert("删除成功");
+            hide_modal_dialog("#sql_work_delete");
+            query_sql_list();
+        }).error(function () {
+            alert("删除失败");
+            hide_modal_dialog("#sql_work_delete");
+        });
+    }
+
+    function show_delete_sql_work_dialog(sql_id) {
+        delete_sql_work_id = sql_id
+        show_modal_dialog("#sql_work_delete")
     }
 
     query_sql_list();

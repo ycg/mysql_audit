@@ -114,10 +114,10 @@ def query_sql_list():
                            page_number=obj.page_number,
                            page_list=get_page_number_list(obj.page_number))
 
-@app.route("/list/delete/<int:id>", methods=["GET", "POST"])
+@app.route("/list/delete/<int:sql_id>", methods=["GET", "POST"])
 @login_required
-def delete_sql_list(id):
-    pass
+def delete_sql_list(sql_id):
+    return sql_manager.delete_sql_work(sql_id)
 
 def get_page_number_list(page_number):
     if(page_number <= 5):

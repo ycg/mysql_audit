@@ -1,9 +1,11 @@
 import pymysql, traceback
 from DBUtils.PooledDB import PooledDB
 
+
 class Entity():
     def __init__(self):
         pass
+
 
 class DBUtil(object):
     __instance = None
@@ -13,7 +15,7 @@ class DBUtil(object):
         pass
 
     def __new__(cls, *args, **kwargs):
-        if(DBUtil.__instance is None):
+        if (DBUtil.__instance is None):
             DBUtil.__instance = object.__new__(cls, *args, **kwargs)
         return DBUtil.__instance
 
@@ -22,10 +24,11 @@ class DBUtil(object):
         connection, cursor = None, None
         try:
             connection, cursor = self.execute_for_db(host_info, sql)
-        except Exception as e:
+        except:
             result = False
-            connection.rollback()
             traceback.print_exc()
+            if (connection != None):
+                connection.rollback()
         finally:
             self.close(connection, cursor)
         return result
@@ -58,15 +61,15 @@ class DBUtil(object):
         return cursor.fetchall()
 
     def cursor_execute(self, connection, cursor, sql):
-        if(cursor == None):
+        if (cursor == None):
             cursor = connection.cursor()
         cursor.execute(sql)
         return cursor
 
     def close(self, connection, cursor):
-        if(cursor != None):
+        if (cursor != None):
             cursor.close()
-        if(connection != None):
+        if (connection != None):
             connection.commit()
             connection.close()
 
@@ -81,10 +84,10 @@ class DBUtil(object):
         return connection, cursor
 
     def get_mysql_connection(self, host_info):
-        if(self.__connection_pools.get(host_info.key) == None):
+        if (self.__connection_pools.get(host_info.key) == None):
             pool = PooledDB(creator=pymysql, mincached=5, maxcached=20,
                             host=host_info.host, port=host_info.port, user=host_info.user, passwd=host_info.password,
-                            use_unicode=False, charset="utf8", cursorclass=pymysql.cursors.DictCursor,reset=False, autocommit=True)
+                            use_unicode=False, charset="utf8", cursorclass=pymysql.cursors.DictCursor, reset=False, autocommit=True)
             self.__connection_pools[host_info.key] = pool
         return self.__connection_pools[host_info.key].connection()
 
@@ -107,8 +110,9 @@ class DBUtil(object):
             cursor = connection.cursor()
             cursor.execute(sql)
         finally:
-            if(cursor != None):
+            if (cursor != None):
                 cursor.close()
-            if(connection != None):
+            if (connection != None):
                 connection.close()
+
 

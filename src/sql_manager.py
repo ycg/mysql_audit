@@ -56,8 +56,8 @@ def add_sql_work(obj):
 
 
 # 根据id删除工单
-def delete_sql_work(id):
-    db_util.DBUtil().execute(settings.MySQL_HOST, "update `mysql_audit`.`sql_work` set is_deleted = 1 where id = {0}".format(id))
+def delete_sql_work(sql_id):
+    db_util.DBUtil().execute(settings.MySQL_HOST, "update `mysql_audit`.`sql_work` set is_deleted = 1 where id = {0}".format(sql_id))
     return "delete ok."
 
 
@@ -81,7 +81,7 @@ def get_sql_list(obj):
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
              left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
-             where 1 = 1 {0} order by t1.id desc limit {1}, {2};"""
+             where t1.is_deleted = 0 {0} order by t1.id desc limit {1}, {2};"""
     sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
     result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
     for info in result_list:
