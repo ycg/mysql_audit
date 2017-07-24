@@ -4,8 +4,8 @@
 </br>
 
 # 未完成的功能
->>> 目前还不支持pt-osc的执行
->>> 还不支持查看pt-osc执行的进度
+目前还不支持pt-osc的执行</br>
+还不支持查看pt-osc执行的进度</br>
 
 
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/1.png)
