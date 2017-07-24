@@ -62,6 +62,7 @@ CREATE TABLE sql_work
   is_backup TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否要备份，默认是备份',
   backup_table VARCHAR(50) NOT NULL DEFAULT '' COMMENT '备份之后的表名称',
   sql_value TEXT COMMENT '要执行的sql内容',
+  rollback_sql TEXT COMMENT '要回滚的SQL',
   audit_result_value TEXT COMMENT '审核的内容',
   return_value TEXT COMMENT '执行SQL返回的结果值',
   `status` TINYINT UNSIGNED NOT NULL COMMENT '状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销 7：工单已回滚',

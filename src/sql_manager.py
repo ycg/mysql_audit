@@ -91,7 +91,7 @@ def get_sql_list(obj):
 
 # 根据工单id获取全部信息
 def get_sql_info_by_id(id):
-    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup, t1.ignore_warnings,
+    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup, t1.ignore_warnings, rollback_sql,
              t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status, t1.return_value, t1.execute_db_name, t1.audit_result_value
              from `mysql_audit`.`sql_work` t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
@@ -202,33 +202,42 @@ def get_rollback_sql(sql_id):
     result.is_backup = sql_info.is_backup
     result.host_id = sql_info.mysql_host_id
     if(sql_info.is_backup):
-        for info in json.loads(sql_info.return_value):
-            info = common_util.get_object(info)
-            if(info.backup_dbname == None):
-                continue
-            sql = "select schema_name from information_schema.SCHEMATA where schema_name = '{0}';".format(info.backup_dbname)
-            db_name = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
-            if(db_name == None):
-                continue
-            sql = "select tablename from {0}.$_$Inception_backup_information$_$ where opid_time = {1}".format(info.backup_dbname, info.sequence)
-            table_name_dict = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
-            if(table_name_dict == None):
-                continue
-            sql = "select rollback_statement from {0}.{1} where opid_time = {2}".format(info.backup_dbname, table_name_dict["tablename"], info.sequence)
-            for list_dict in db_util.DBUtil().fetchall(settings.MySQL_HOST, sql):
-                result.rollback_sql.append(list_dict.values()[0])
+        if (sql_info.rollback_sql != None):
+            result.rollback_sql_value = sql_info.rollback_sql
+        else:
+            for info in json.loads(sql_info.return_value):
+                info = common_util.get_object(info)
+                if(info.backup_dbname == None):
+                    continue
+                sql = "select schema_name from information_schema.SCHEMATA where schema_name = '{0}';".format(info.backup_dbname)
+                db_name = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
+                if(db_name == None):
+                    continue
+                sql = "select tablename from {0}.$_$Inception_backup_information$_$ where opid_time = {1}".format(info.backup_dbname, info.sequence)
+                table_name_dict = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
+                if(table_name_dict == None):
+                    continue
+                sql = "select rollback_statement from {0}.{1} where opid_time = {2}".format(info.backup_dbname, table_name_dict["tablename"], info.sequence)
+                for list_dict in db_util.DBUtil().fetchall(settings.MySQL_HOST, sql):
+                    result.rollback_sql.append(list_dict.values()[0])
     bb = time.time()
     print(">>>>>>>>>>>>>>get rollback sql time:{0}<<<<<<<<<<<<<<<<<<<".format(bb - aa))
     if(len(result.rollback_sql) > 0):
         result.rollback_sql_value = "\n".join(result.rollback_sql)
         result.rollback_sql = []
+        db_util.DBUtil().execute(settings.MySQL_HOST,
+                                 "update mysql_audit.sql_work set `rollback_sql` = '{0}' where id = {1};".format(db_util.DBUtil().escape(result.rollback_sql_value), sql_id))
     return result
 
 
 # 执行回滚语句
 def execute_rollback_sql(sql_id):
+    sql_info = get_sql_info_by_id(sql_id)
+    rollback_host = cache.MyCache().get_mysql_host_info(int(sql_info.mysql_host_id))
     rollback_sql = "start transaction;" + get_rollback_sql(sql_id).rollback_sql_value + "commit;"
-    if(db_util.DBUtil().execute(settings.MySQL_HOST, rollback_sql)):
+    if(db_util.DBUtil().execute(rollback_host, rollback_sql)):
+        db_util.DBUtil().execute(settings.MySQL_HOST,
+                                 "update mysql_audit.sql_work set `status` = {0} where id = {1};".format(settings.SQL_WORK_ROLLBACK, sql_id))
         return "回滚成功"
     return "回滚失败"
 
