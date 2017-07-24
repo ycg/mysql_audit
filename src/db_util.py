@@ -1,4 +1,4 @@
-import pymysql
+import pymysql, traceback
 from DBUtils.PooledDB import PooledDB
 
 class Entity():
@@ -18,11 +18,17 @@ class DBUtil(object):
         return DBUtil.__instance
 
     def execute(self, host_info, sql):
+        result = True
         connection, cursor = None, None
         try:
             connection, cursor = self.execute_for_db(host_info, sql)
+        except Exception as e:
+            result = False
+            connection.rollback()
+            traceback.print_exc()
         finally:
             self.close(connection, cursor)
+        return result
 
     def fetchone(self, host_info, sql):
         connection, cursor = None, None

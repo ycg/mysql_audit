@@ -200,6 +200,7 @@ def get_rollback_sql(sql_id):
     result.rollback_sql = []
     result.rollback_sql_value = ""
     result.is_backup = sql_info.is_backup
+    result.host_id = sql_info.mysql_host_id
     if(sql_info.is_backup):
         for info in json.loads(sql_info.return_value):
             info = common_util.get_object(info)
@@ -226,4 +227,8 @@ def get_rollback_sql(sql_id):
 
 # 执行回滚语句
 def execute_rollback_sql(sql_id):
-    pass
+    rollback_sql = "start transaction;" + get_rollback_sql(sql_id).rollback_sql_value + "commit;"
+    if(db_util.DBUtil().execute(settings.MySQL_HOST, rollback_sql)):
+        return "回滚成功"
+    return "回滚失败"
+
