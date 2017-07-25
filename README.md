@@ -6,9 +6,16 @@
 还不支持查看pt-osc执行的进度</br>
 目前暂时只支持DBA的工单提交</br>
 
+# inception安装
+安装还是看文档吧</br>
+http://mysql-inception.github.io/inception-document/inception/</br>
+
 # 需要安装的python包
 python2.7的环境</br>
 pip install flask flask-login gevent threadpool pymysql DBUtils six packaging appdirs</br>
+
+# 导入表结构
+mysql -h -u -p -P < table.sql</br>
 
 # 修改配置文件
 修改inception的服务地址：</br>
@@ -34,6 +41,8 @@ python mysql_audit.py runserver</br>
 
 # 访问web服务
 http://115.29.195.82:5200/login</br>
+用户名：yangcg</br>
+密码：yangcaogui</br>
 
 # 界面展示
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/1.png)
