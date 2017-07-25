@@ -13,22 +13,22 @@ pip install flask flask-login gevent threadpool pymysql DBUtils six packaging ap
 
 # 修改配置文件
 修改inception的服务地址：</br>
-`
+```python
 inception_host = "192.168.11.101"
 inception_port = 6669
 inception_user = "yangcg"
 inception_password = "yangcaogui"
-`
+```
 
 修改MySQL数据库的地址：</br>
-`
+```python
 MySQL_HOST = common_util.Entity()
 MySQL_HOST.key = 99999
 MySQL_HOST.host = "192.168.11.101"
 MySQL_HOST.port = 3306
 MySQL_HOST.user = "yangcg"
 MySQL_HOST.password = "yangcaogui"
-`
+```
 
 # 启动mysql_audit
 python mysql_audit.py runserver</br>
