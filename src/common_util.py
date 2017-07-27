@@ -41,3 +41,4 @@ def send_mail(subject, to_list, content, mail_type):
     finally:
         if(server != None):
             server.close()
+

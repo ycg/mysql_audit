@@ -18,6 +18,7 @@ MySQL_HOST.port = 3306
 MySQL_HOST.user = "yangcg"
 MySQL_HOST.password = "yangcaogui"
 
+THREAD_POOL_SIZE = 20
 
 ROLE_DEV = 1000
 ROLE_LEADER = 1001
@@ -54,4 +55,4 @@ EMAIL_PORT = 25
 EMAIL_USER = ""
 EMAIL_PASSWORD = ""
 EMAIL_SEND_USERS = ""
-
+EMAIL_SEND_ENABLE = False
