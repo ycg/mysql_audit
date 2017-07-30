@@ -37,9 +37,6 @@
                 {% endfor %}
             </select>
         </div>
-        <!--<div class="form-group">
-            <input id="file_upload" type="file" name="file_upload" class="form-control file" placeholder="SQL过多请上传文件:" required>
-        </div>-->
         <div class="form-group">
             <button type="button" class="btn btn-success" onclick="get_audit_infos()">SQL审核</button>
             <button type="button" class="btn btn-primary" onclick="check_input_value()">创建SQL工单</button>
@@ -71,7 +68,6 @@
 </div>
 
 <script type="text/javascript">
-    //$("#file_upload").fileinput({showUpload: false});
     $(".selectpicker").selectpicker({liveSearch: true});
 
     function check_input_value() {
@@ -103,7 +99,7 @@
     }
 
     function add_sql_work() {
-        post_request("/execute/add", get_form_json($("#sql_work_form")))
+        post_request("/execute/add", JSON.stringify(get_form_json($("#sql_work_form"))));
         hide_modal_dialog("#sql_create_dialog")
     }
 

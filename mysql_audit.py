@@ -1,6 +1,6 @@
 import os, json
 from gevent import pywsgi
-from flask import Flask, app, render_template, request, redirect, url_for
+from flask import Flask, app, render_template, request, redirect, url_for, Markup
 from flask_login import login_user, login_required, logout_user, LoginManager, current_user
 
 import settings
@@ -38,7 +38,7 @@ def sql_audit():
 @app.route("/audit/check", methods=["POST"])
 @login_required
 def get_sql_audit_info():
-    return sql_manager.audit_sql(get_object_from_json(request.form))
+    return sql_manager.audit_sql(get_object_from_json_tmp(json.loads(request.get_data())))
 
 @app.route("/audit/check/<int:id>", methods=["GET", "POST"])
 @login_required
@@ -62,7 +62,8 @@ def sql_work():
 @app.route("/execute/add", methods=["POST"])
 @login_required
 def add_sql_work():
-    return sql_manager.add_sql_work(get_object_from_json(request.form))
+    print(request.get_data())
+    return sql_manager.add_sql_work(get_object_from_json_tmp(json.loads(request.get_data())))
 
 @app.route("/execute/delete/<int:id>")
 @login_required
@@ -223,6 +224,20 @@ def get_object_from_json(json_value):
                 setattr(obj, key, None)
             else:
                 setattr(obj, key, value[0])
+    obj.current_user_id = current_user.id
+    return obj
+
+
+def get_object_from_json_tmp(json_value):
+    obj = common_util.Entity()
+    for key, value in dict(json_value).items():
+        if(value.isdigit()):
+            setattr(obj, key, int(value))
+        else:
+            if(value[0] == "null"):
+                setattr(obj, key, None)
+            else:
+                setattr(obj, key, value)
     obj.current_user_id = current_user.id
     return obj
 

@@ -114,8 +114,16 @@ function get_audit_infos() {
         $("#audit_info").html("请输入要审核的SQL");
         return;
     }
+    else if ($("#db_name").val() == null) {
+        $("#audit_info").html("请选择要执行的数据库");
+        return;
+    }
     else {
-        input_data_for_post_loding("/audit/check", "sql=" + sql + "&host_id=" + host_id + "&db_name=" + $("#db_name").val(), "#audit_info");
+        var json_obj = new Object();
+        json_obj.sql = $("#sql_value").val();
+        json_obj.host_id = $("#host_id").val();
+        json_obj.db_name = $("#db_name").val();
+        input_data_for_post_loding("/audit/check", JSON.stringify(json_obj), "#audit_info");
     }
 }
 
