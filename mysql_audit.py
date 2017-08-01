@@ -62,7 +62,6 @@ def sql_work():
 @app.route("/execute/add", methods=["POST"])
 @login_required
 def add_sql_work():
-    print(request.get_data())
     return sql_manager.add_sql_work(get_object_from_json_tmp(json.loads(request.get_data())))
 
 @app.route("/execute/delete/<int:id>")
