@@ -3,13 +3,13 @@
         <textarea id="sql_value" name="sql_value" class="form-control" style="resize: none" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=20 required></textarea>
     </div>
     <div class="col-md-4">
-        <div class="form-group">
+        <div class="form-group" style="margin-left: 0px;margin-right: 0px">
             <input id="title" type="text" name="title" class="form-control" placeholder="请输入上线工单名称，如:修改房源宝后台bug" required>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-left: 0px;margin-right: 0px">
             <input id="jira_url" type="text" name="jira_url" class="form-control" placeholder="请输入jira地址" required>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-left: 0px;margin-right: 0px">
             <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" onchange="show_database_names()">
                 <option value="0" disabled selected style="color: black">请选择要上线的集群:</option>
                 {% for info in host_infos %}
@@ -17,19 +17,19 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="form-group" id="db_div">
+        <div class="form-group" id="db_div" style="margin-left: 0px;margin-right: 0px">
             <select id="db_name" name="db_name" class="selectpicker show-tick form-control bs-select-hidden">
                 <option value="0" disabled selected style="color: black">请选择要执行的库:</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-left: 0px;margin-right: 0px">
             <select id="is_backup" name="is_backup" class="selectpicker show-tick form-control bs-select-hidden" required>
                 <option value="3" disabled selected style="color: black">请选择是否要备份:</option>
                 <option value="1">是</option>
                 <option value="0">否</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-left: 0px;margin-right: 0px">
             <select id="dba_user_id" name="dba_user_id" class="selectpicker show-tick form-control bs-select-hidden" required>
                 <option value="0" disabled selected style="color: black">请选择执行SQL的DBA:</option>
                 {% for info in dba_users %}
@@ -37,7 +37,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-left: 0px;margin-right: 0px">
             <button type="button" class="btn btn-success" onclick="get_audit_infos()">SQL审核</button>
             <button type="button" class="btn btn-primary" onclick="check_input_value()">创建SQL工单</button>
             <button type="reset" class="btn btn-default">清空重填</button>
