@@ -40,7 +40,7 @@ MySQL_HOST.password = "yangcaogui"
 python mysql_audit.py runserver</br>
 
 # 访问web服务
-http://115.29.195.82:5200/login</br>
+http://192.168.1.101:5200/login</br>
 用户名：yangcg</br>
 密码：yangcaogui</br>
 
