@@ -44,6 +44,12 @@ http://192.168.1.101:5200/login</br>
 用户名：yangcg</br>
 密码：yangcaogui</br>
 
+# 备份注意点
+1.表必须有主键</br>
+2.必须开启binlog日志</br>
+3.binlog_row_image必须为FULL</br>
+4.必须使用参数--enable-remote-backup才能备份</br>
+
 # 界面展示
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/1.png)
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/2.png)
