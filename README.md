@@ -9,10 +9,15 @@
 # inception安装
 安装还是看文档吧</br>
 http://mysql-inception.github.io/inception-document/inception/</br>
+```sql
+-- 创建inception用户
+grant all on *.* to yangcg@'%' identified by 'yangcaogui';
+```
 
 # 需要安装的python包
-python2.7的环境</br>
-pip install flask flask-login gevent threadpool pymysql DBUtils six packaging appdirs</br>
+1.python2.7的环境</br>
+2.调用inception只能使用MySQLdb</br>
+3.pip install flask flask-login gevent threadpool pymysql DBUtils six packaging appdirs MySQLdb</br>
 
 # 导入表结构
 mysql -h -u -p -P < table.sql</br>
