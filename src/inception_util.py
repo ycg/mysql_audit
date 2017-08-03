@@ -3,15 +3,17 @@
 import MySQLdb, sys
 import settings, common_util
 
+# sql执行备份有两个要求
+# 1.必须要有主键
+# 2.而且还需要开启binlog
+# 3.要使用下面的参数--enable-remote-backup;
+
 reload(sys)
 sys.setdefaultencoding("utf8")
 
 sql_audit_flag = "--enable-check;"
 sql_execute_flag = "--enable-execute;"
 sqL_enable_split_flag = "--enable-split;"
-# sql执行备份有两个要求
-# 1.要使用下面的参数
-# 2.必须要有主键
 sql_enable_remote_backup = "--enable-remote-backup;"
 sql_disable_remote_backup = "--disable-remote-backup;"
 sql_enable_ignore_warnings = "--enable-ignore-warnings;"
