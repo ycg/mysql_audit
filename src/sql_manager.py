@@ -181,7 +181,10 @@ def get_database_names(host_id):
     options_str = ""
     result = db_util.DBUtil().get_list_infos(cache.MyCache().get_mysql_host_info(host_id=host_id), "show databases;")
     for num in range(0, len(result)):
-        options_str += "<option value=\"{0}\">{1}</option>".format(result[num].Database, result[num].Database)
+        db_name = result[num].Database;
+        # 过滤掉系统库
+        if (db_name != "information_schema" and db_name != "mysql" and db_name != "sys" and db_name != "performance_schema"):
+            options_str += "<option value=\"{0}\">{1}</option>".format(db_name, db_name)
     return html_str.format(options_str)
 
 
