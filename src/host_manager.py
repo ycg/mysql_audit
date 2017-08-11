@@ -4,23 +4,22 @@ import traceback, json
 import settings, cache, db_util, common_util
 
 
-def query_host_infos(obj):
+def query_host_infos():
     return cache.MyCache().get_mysql_host_info()
-    '''result = cache.MyCache().get_mysql_host_info(host_id=obj.host_id)
-    if (obj.host_type > 0):
-        pass
-    if (len(obj.host_name) > 0):
-        pass
-    return result'''
 
 
 def add(obj):
-    sql = """insert into mysql_audit.mysql_hosts
-             (ip, port, `user`, `password`, host_name)
-             VALUES
-             ({0}, {1}, {2}, {3}, {4})""".format(obj.host_ip, obj.host_port, obj.host_user, obj.host_password, obj.host_name)
-    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-    cache.MyCache().load_mysql_host_infos()
+    try:
+        sql = """insert into mysql_audit.mysql_hosts
+                 (ip, port, `user`, `password`, host_name)
+                 VALUES
+                 ({0}, {1}, {2}, {3}, {4})""".format(obj.host_ip, obj.host_port, obj.host_user, obj.host_password, obj.host_name)
+        db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
+        cache.MyCache().load_mysql_host_infos()
+        return "add host ok."
+    except:
+        traceback.print_exc()
+        return "add host error."
 
 
 def update(obj):

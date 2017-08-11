@@ -138,13 +138,12 @@ def get_host():
 @app.route("/host/query", methods=["POST"])
 @login_required
 def query_host():
-    return render_template("host_view.html", host_infos=host_manager.query_host_infos(get_object_from_json(request.form)))
+    return render_template("host_view.html", host_infos=host_manager.query_host_infos())
 
 @app.route("/host/add", methods=["POST"])
 @login_required
 def add_host():
-    host_manager.add(get_object_from_json(request.form))
-    return "add mysql host ok!"
+    return host_manager.add(get_object_from_json(request.form))
 
 @app.route("/host/update", methods=["POST"])
 @login_required

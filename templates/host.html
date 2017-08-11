@@ -127,8 +127,7 @@
         //var parameter = "host_id=" + convert_int("#host_id") + "&host_name=" + convert_string("#host_name_tmp") + "&host_type=" + convert_int("#host_type");
         //input_data_for_post("/host/query", parameter, "#host_data")
 
-        var parameter = "host_id=" + 0 + "&host_name=" + "" + "&host_type=" + 0;
-        input_data_for_post("/host/query", parameter, "#host_data")
+        input_data_for_post("/host/query", "", "#host_data")
     }
 
     query_host_info();

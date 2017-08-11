@@ -85,7 +85,7 @@ class DBUtil(object):
 
     def get_mysql_connection(self, host_info):
         if (self.__connection_pools.get(host_info.key) == None):
-            pool = PooledDB(creator=pymysql, mincached=5, maxcached=20,
+            pool = PooledDB(creator=pymysql, mincached=5, maxcached=10, maxconnections=15,
                             host=host_info.host, port=host_info.port, user=host_info.user, passwd=host_info.password,
                             use_unicode=False, charset="utf8", cursorclass=pymysql.cursors.DictCursor, reset=False, autocommit=True)
             self.__connection_pools[host_info.key] = pool
