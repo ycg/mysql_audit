@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-2">
+    <!--<div class="col-md-2">
         <input id="host_id" type="text" class="form-control" placeholder="input host id">
     </div>
     <div class="col-md-2">
@@ -15,12 +15,16 @@
     <div class="col-md-4">
         <button class="btn btn-primary" onclick="query_host_info()">查询</button>
         <button class="btn btn-primary" onclick=show_update_dialog(0,1)>添加MySQL主机</button>
+    </div>-->
+
+    <div class="col-md-4">
+        <button class="btn btn-primary" onclick=show_update_dialog(0,1)>添加MySQL主机</button>
     </div>
 </div>
 
 </br>
 <div class="row">
-    <div class="col-md-6" id="host_data">
+    <div class="col-md-5" id="host_data">
 
     </div>
 </div>
@@ -35,7 +39,7 @@
                 <h4 class="modal-title" id="exampleModalLabel">添加MySQL实例</h4>
             </div>
             <div class="modal-body">
-                <form id="host_add_form">
+                <form id="host_add_form" role="form">
                     <div class="form-group">
                         <label id="host_name_lable" name="host_name_lable" class="control-label" for="host_name">数据库名称:</label>
                         <input id="host_name" name="host_name" type="text" class="form-control" placeholder="input mysql name">
@@ -56,7 +60,7 @@
                         <label id="host_password_lable" name="host_password_lable" class="control-label" for="host_password">密码:</label>
                         <input id="host_password" name="host_password" type="password" class="form-control" placeholder="input mysql password">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" hidden>
                         <select id="host_tpye" name="host_tpye" class="selectpicker show-tick form-control bs-select-hidden">
                             <option value="0" selected disabled style="color: black">请选择实例类型</option>
                             <option value="1">测试实例</option>
@@ -84,7 +88,7 @@
     function show_update_dialog(host_id, type) {
         var obj_json = "";
         if (type == 1) {
-            $("#host_port").val(3360);
+            $("#host_port").val(3306);
             $("#operation_btn").text("添加");
             $("#host_ip").val("");
             $("#host_user").val("");
@@ -120,7 +124,10 @@
     }
 
     function query_host_info() {
-        var parameter = "host_id=" + convert_int("#host_id") + "&host_name=" + convert_string("#host_name_tmp") + "&host_type=" + convert_int("#host_type");
+        //var parameter = "host_id=" + convert_int("#host_id") + "&host_name=" + convert_string("#host_name_tmp") + "&host_type=" + convert_int("#host_type");
+        //input_data_for_post("/host/query", parameter, "#host_data")
+
+        var parameter = "host_id=" + 0 + "&host_name=" + "" + "&host_type=" + 0;
         input_data_for_post("/host/query", parameter, "#host_data")
     }
 

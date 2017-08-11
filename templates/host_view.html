@@ -16,12 +16,12 @@
         <th>
             User
         </th>
-        <th>
+        <!--<th>
             Test_Host
         </th>
         <th>
             Online_Host
-        </th>
+        </th>-->
         <th>
 
         </th>
@@ -45,7 +45,7 @@
             <td>
                 {{ info.user }}
             </td>
-            <td class="text-center">
+            <!--<td class="text-center">
                 {% if(info.is_test_host == 0) %}
                     No
                 {% else %}
@@ -58,10 +58,9 @@
                 {% else %}
                     Yes
                 {% endif %}
-            </td>
+            </td>-->
             <td class="text-center">
                 <button class="btn btn-primary btn-xs" onclick=show_update_dialog({{ info.host_id }},2)>编辑</button>
-                &nbsp;&nbsp;
                 <button class="btn btn-danger btn-xs" onclick=delete_mysql_host({{ info.host_id }})>删除</button>
             </td>
         </tr>
