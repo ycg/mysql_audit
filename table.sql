@@ -28,7 +28,7 @@ CREATE TABLE role_info
 ) COMMENT '角色信息表例如：开发人员-组长-DBA' CHARSET utf8 ENGINE innodb;
 
 INSERT INTO role_info (role_id, role_name, remark) VALUES (1000, '开发', '开发人员只能查看自己创建的工具');
-INSERT INTO role_info (role_id, role_name, remark) VALUES (1001, '开发组长', '开发组长能够查看本小组所有开发人员的历史数据');
+INSERT INTO role_info (role_id, role_name, remark) VALUES (1001, '组长', '开发组长能够查看本小组所有开发人员的历史数据');
 INSERT INTO role_info (role_id, role_name, remark) VALUES (1002, 'DBA', '后台管理员的权限');
 
 CREATE TABLE group_info

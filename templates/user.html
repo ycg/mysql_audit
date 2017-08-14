@@ -11,7 +11,7 @@
         </select>
     </div>
     <div class="col-md-4">
-        <button class="btn btn-primary">查询</button>
+        <button class="btn btn-default">查询</button>
         <button class="btn btn-primary" onclick=show_add_user_dialog()>添加用户</button>
     </div>
 </div>
@@ -72,6 +72,25 @@
                 <button type="button" class="btn btn-primary">添加</button>
             </div>
         </div>
+    </div>
+</div>
+
+
+<ul id="user_manager" class="nav nav-tabs">
+    <li class="active">
+        <a href="#user" data-toggle="tab">用户管理</a>
+    </li>
+    <li>
+        <a href="#group" data-toggle="tab">用户组管理</a>
+    </li>
+</ul>
+
+<div id="tab_content" class="tab-content">
+    <div class="tab-pane fade in active" id="user">
+        user
+    </div>
+    <div class="tab-pane fade" id="group">
+        group
     </div>
 </div>
 

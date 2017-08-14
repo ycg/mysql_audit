@@ -75,7 +75,7 @@ def get_sql_list(obj):
 
     sql = """select t1.id, t1.title, t1.create_user_id, t1.audit_user_id, t1.execute_user_id, t1.audit_date_time,
                     t1.execute_date_time, t1.mysql_host_id, t1.jira_url, t1.is_backup,
-                    t1.backup_table, left(sql_value, 30) as sql_value, t1.return_value, t1.status, t1.is_deleted, t1.created_time,
+                    t1.backup_table, left(sql_value, 10) as sql_value, t1.return_value, t1.status, t1.is_deleted, t1.created_time,
                     t2.host_name, t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name, t1.execute_db_name
              from mysql_audit.sql_work t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id

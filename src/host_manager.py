@@ -9,17 +9,13 @@ def query_host_infos():
 
 
 def add(obj):
-    try:
-        sql = """insert into mysql_audit.mysql_hosts
-                 (ip, port, `user`, `password`, host_name)
-                 VALUES
-                 ({0}, {1}, {2}, {3}, {4})""".format(obj.host_ip, obj.host_port, obj.host_user, obj.host_password, obj.host_name)
-        db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
-        cache.MyCache().load_mysql_host_infos()
-        return "add host ok."
-    except:
-        traceback.print_exc()
-        return "add host error."
+    sql = """insert into mysql_audit.mysql_hosts
+             (ip, port, `user`, `password`, host_name)
+             VALUES
+             ('{0}', {1}, '{2}', '{3}', '{4}')""".format(obj.host_ip, obj.host_port, obj.host_user, obj.host_password, obj.host_name)
+    db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
+    cache.MyCache().load_mysql_host_infos()
+    return "ok"
 
 
 def update(obj):

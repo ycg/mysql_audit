@@ -110,7 +110,14 @@
     }
 
     function add_mysql_host() {
-        post_request("/host/add", get_form_json($("#host_add_form")))
+        $.post("/host/add", get_form_json($("#host_add_form")), function (data) {
+            alert("添加成功");
+            hide_modal_dialog("#host_add");
+            query_host_info();
+        }).error(function () {
+            alert("添加失败");
+            hide_modal_dialog("#host_add");
+        });
     }
 
     function update_mysql_host(host_id) {
@@ -119,7 +126,12 @@
 
     function delete_mysql_host(host_id) {
         if (confirm("是否确认删除?") == true) {
-            post_request("/host/delete", "host_id=" + host_id)
+            $.post("/host/delete", "host_id=" + host_id, function (data) {
+                alert(data);
+                query_host_info();
+            }).error(function () {
+                alert("添加失败");
+            });
         }
     }
 

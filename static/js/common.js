@@ -33,6 +33,14 @@ function input_data_for_post_loding(url, json_data, div_id) {
     });
 }
 
+function input_data_for_dialog(url, json_data, dialog_name) {
+    $.post(url, json_data, function (data) {
+        hide_modal_dialog(dialog_name);
+    }).error(function () {
+        hide_modal_dialog(dialog_name);
+    });
+}
+
 function post_request(url, json_data) {
     $.post(url, json_data, function (data) {
         alert(data)
