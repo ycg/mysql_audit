@@ -25,7 +25,7 @@ def update(obj):
 
 
 def delete(obj):
-    sql = "update mysql_audit.mysql_hosts set is_deleted = 1 where host_id = {0};".format(obj.host_id)
+    sql = "delete from mysql_audit.mysql_hosts where host_id = {0};".format(obj.host_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     cache.MyCache().load_mysql_host_infos()
 

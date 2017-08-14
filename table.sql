@@ -95,7 +95,8 @@ CREATE TABLE mysql_hosts
   remark VARCHAR(50) NOT NULL DEFAULT '' COMMENT '备注',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
-  updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
+  updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间',
+  UNIQUE KEY ip_port(`ip`, `port`) COMMENT '添加唯一键限制'
 ) COMMENT 'mysql主机地址信息表' CHARSET utf8 ENGINE innodb;
 
 insert into mysql_hosts (ip,user,password,is_test_host,host_name,remark)values("192.168.11.101","yangcg","yangcaogui", 1, "jumpserver","jump server");
