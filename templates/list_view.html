@@ -68,8 +68,7 @@
             <td>
                 {{ info.execute_user_name }}
             </td>
-            <td
-                    {% if(info.status == 1 or info.status == 4) %}
+            <td     {% if(info.status == 1 or info.status == 4) %}
                         class="text-success"
                     {% elif(info.status == 0) %}
                         class="text-warning"

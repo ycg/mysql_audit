@@ -50,6 +50,7 @@ CREATE TABLE sql_work
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(100) NOT NULL COMMENT '标题，此sql对应的是什么业务',
   create_user_id SMALLINT UNSIGNED NOT NULL COMMENT '创建sql工单用户id',
+  create_user_group_id SMALLINT UNSIGNED NOT NULL DEFAULT 0  COMMENT '提交工单的用户组id',
   audit_user_id SMALLINT UNSIGNED NOT NULL COMMENT '审核用户id',
   execute_user_id SMALLINT UNSIGNED NOT NULL COMMENT '执行用户id',
   create_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '创建sql工单用户名冗余字段',
@@ -70,7 +71,8 @@ CREATE TABLE sql_work
   ignore_warnings TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '0：不忽略警告 | 1：忽略警告',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
-  updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
+  updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间',
+  KEY idx_create_user_id(`create_user_id`)
 ) COMMENT 'sql执行工单表' CHARSET utf8 ENGINE innodb;
 
 #准备把上面的表进行拆分
