@@ -36,10 +36,11 @@ CREATE TABLE group_info
   group_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
   group_name VARCHAR(10) NOT NULL DEFAULT '' COMMENT '组名称',
   remark varchar(100) NOT NULL DEFAULT '' COMMENT '备注',
+  user_count SMALLINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '组内用户数量',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
-) COMMENT '组信息表' CHARSET utf8 ENGINE innodb;
+) COMMENT '用户组信息表' CHARSET utf8 ENGINE innodb;
 
 INSERT INTO group_info(group_id, group_name, remark) VALUES (10000, 'DBA组', '');
 INSERT INTO group_info(group_id, group_name, remark) VALUES (10001, '运维组', '');

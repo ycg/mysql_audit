@@ -180,6 +180,11 @@ def get_user():
 def query_user():
     return render_template("user_view.html", user_infos=user_manager.query_user(None))
 
+@app.route("/user/group/query", methods=["POST"])
+@login_required
+def query_group():
+    return render_template("user_group_view.html", user_group_infos=user_manager.get_user_group_infos())
+
 #endregion
 
 #region login api

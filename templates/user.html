@@ -1,28 +1,3 @@
-<div class="row">
-    <div class="col-md-2">
-        <input id="user_name_query" type="text" class="form-control" placeholder="input user name">
-    </div>
-    <div class="col-md-2">
-        <select id="role_id_query" name="role_id" class="selectpicker show-tick form-control bs-select-hidden" required>
-            <option value="0" selected>所有用户角色</option>
-            {% for info in role_infos %}
-                <option value="{{ info.role_id }}">{{ info.role_name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-md-4">
-        <button class="btn btn-default">查询</button>
-        <button class="btn btn-primary" onclick=show_add_user_dialog()>添加用户</button>
-    </div>
-</div>
-
-</br>
-<div class="row">
-    <div class="col-md-8" id="user_data">
-
-    </div>
-</div>
-
 <div class="modal fade" id="user_add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -76,21 +51,64 @@
 </div>
 
 
-<ul id="user_manager" class="nav nav-tabs">
+<ul id="myTab" class="nav nav-tabs">
     <li class="active">
-        <a href="#user" data-toggle="tab">用户管理</a>
+        <a href="#user_manager" data-toggle="tab">用户管理</a>
     </li>
     <li>
-        <a href="#group" data-toggle="tab">用户组管理</a>
+        <a href="#user_group" data-toggle="tab">用户组管理</a>
+    </li>
+    <li>
+        <a href="#user_role" data-toggle="tab">用户角色管理</a>
     </li>
 </ul>
 
-<div id="tab_content" class="tab-content">
-    <div class="tab-pane fade in active" id="user">
-        user
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="user_manager">
+        </br>
+        <div class="row">
+            <div class="col-md-2">
+                <input id="user_name_query" type="text" class="form-control" placeholder="input user name">
+            </div>
+            <div class="col-md-2">
+                <select id="role_id_query" name="role_id" class="selectpicker show-tick form-control bs-select-hidden" required>
+                    <option value="0" selected>所有用户角色</option>
+                    {% for info in role_infos %}
+                        <option value="{{ info.role_id }}">{{ info.role_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-default">查询</button>
+                <button class="btn btn-primary" onclick=show_add_user_dialog()>添加用户</button>
+            </div>
+        </div>
+        </br>
+        <div class="row">
+            <div class="col-md-8" id="user_data">
+            </div>
+        </div>
     </div>
-    <div class="tab-pane fade" id="group">
-        group
+    <div class="tab-pane fade" id="user_group">
+        </br>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-primary">添加用户组</button>
+            </div>
+        </div>
+        </br>
+        <div class="row">
+            <div class="col-md-6" id="group_data">
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="user_role">
+        </br>
+        <div class="row">
+            <div class="col-md-6" id="user_role_data">
+                user role
+            </div>
+        </div>
     </div>
 </div>
 
@@ -110,5 +128,10 @@
         input_data_for_post("/user/query", parameter, "#user_data");
     }
 
+    function query_group() {
+        input_data_for_post("/user/group/query", "", "#group_data");
+    }
+
     query_user();
+    query_group();
 </script>

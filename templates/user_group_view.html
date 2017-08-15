@@ -1,0 +1,50 @@
+{% if(user_group_infos != None) %}
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                组名
+            </th>
+            <th>
+                用户数
+            </th>
+            <th>
+                备注
+            </th>
+            <th>
+                创建时间
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for info in user_group_infos %}
+                <tr>
+                    <td>
+                        {{ info.group_id }}
+                    </td>
+                    <td>
+                        {{ info.group_name }}
+                    </td>
+                    <td>
+                        {{ info.user_count }}
+                    </td>
+                    <td>
+                        {{ info.remark }}
+                    </td>
+                    <td>
+                        {{ info.created_time }}
+                    </td>
+                    <th class="text-center">
+                        <button class="btn btn-danger btn-xs">删除</button>
+                    </th>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

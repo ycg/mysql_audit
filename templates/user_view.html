@@ -1,66 +1,70 @@
-<table class="table table-bordered table-hover">
-    <thead>
-    <tr>
-        <th></th>
-        <th colspan="3" class="text-center">
-            用户信息
-        </th>
-        <th colspan="2" class="text-center">
-            权限
-        </th>
-        <th></th>
-    </tr>
-    <tr>
-        <th>
-            ID
-        </th>
-        <th>
-            用户名
-        </th>
-        <th>
-            中文名
-        </th>
-        <th>
-            邮件
-        </th>
-        <th>
-            角色
-        </th>
-        <th>
-            组名
-        </th>
-        <th>
-
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for info in user_infos %}
+{% if(user_infos != None) %}
+    <table class="table table-bordered table-hover">
+        <thead>
         <tr>
-            <td>
-                {{ info.user_id }}
-            </td>
-            <td>
-                {{ info.user_name }}
-            </td>
-            <td>
-                {{ info.chinese_name }}
-            </td>
-            <td>
-                {{ info.email }}
-            </td>
-            <td>
-                {{ info.role_name }}
-            </td>
-            <td>
-                {{ info.group_name }}
-            </td>
-            <td class="text-center" style="width: 230px">
-                <button class="btn btn-primary btn-xs">编辑信息</button>
-                <button class="btn btn-danger btn-xs">禁用</button>
-                <button class="btn btn-danger btn-xs">修改权限</button>
-            </td>
+            <th></th>
+            <th colspan="3" class="text-center">
+                用户信息
+            </th>
+            <th colspan="2" class="text-center">
+                权限
+            </th>
+            <th></th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                用户名
+            </th>
+            <th>
+                中文名
+            </th>
+            <th>
+                邮件
+            </th>
+            <th>
+                角色
+            </th>
+            <th>
+                组名
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for info in user_infos %}
+            <tr>
+                <td>
+                    {{ info.user_id }}
+                </td>
+                <td>
+                    {{ info.user_name }}
+                </td>
+                <td>
+                    {{ info.chinese_name }}
+                </td>
+                <td>
+                    {{ info.email }}
+                </td>
+                <td>
+                    {{ info.role_name }}
+                </td>
+                <td>
+                    {{ info.group_name }}
+                </td>
+                <td class="text-center" style="width: 230px">
+                    <button class="btn btn-primary btn-xs">编辑信息</button>
+                    <button class="btn btn-danger btn-xs">禁用</button>
+                    <button class="btn btn-danger btn-xs">修改权限</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+
