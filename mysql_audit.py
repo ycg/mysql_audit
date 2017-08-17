@@ -40,7 +40,7 @@ def sql_audit():
 @app.route("/audit/check", methods=["POST"])
 @login_required
 def get_sql_audit_info():
-    return sql_manager.audit_sql(get_object_from_json_tmp(json.loads(request.get_data())))
+    return sql_manager.audit_sql(get_object_from_json_tmp(request.get_data()))
 
 @app.route("/audit/check/<int:id>", methods=["GET", "POST"])
 @login_required
@@ -64,7 +64,7 @@ def sql_work():
 @app.route("/execute/add", methods=["POST"])
 @login_required
 def add_sql_work():
-    return sql_manager.add_sql_work(get_object_from_json_tmp(json.loads(request.get_data())))
+    return sql_manager.add_sql_work(get_object_from_json_tmp(request.get_data()))
 
 @app.route("/execute/delete/<int:id>")
 @login_required
@@ -191,12 +191,19 @@ def get_host_info():
 @app.route("/user")
 @login_required
 def get_user():
-    return render_template("user.html", role_infos=cache.MyCache().get_role_info())
+    return render_template("user.html", role_infos=cache.MyCache().get_role_info(), group_infos=cache.MyCache().get_group_info())
+
+
+@app.route("/user/add", methods=["GET", "POST"])
+@login_required
+def add_user():
+    return user_manager.add_user(get_object_from_json_tmp(request.get_data()))
+
 
 @app.route("/user/query", methods=["POST"])
 @login_required
 def query_user():
-    return render_template("user_view.html", user_infos=user_manager.query_user(None))
+    return render_template("user_view.html", user_infos=user_manager.query_user(get_object_from_json_tmp(request.get_data())))
 
 @app.route("/user/group/query", methods=["POST"])
 @login_required
@@ -251,11 +258,11 @@ def get_object_from_json(json_value):
 
 def get_object_from_json_tmp(json_value):
     obj = common_util.Entity()
-    for key, value in dict(json_value).items():
+    for key, value in json.loads(json_value).items():
         if(value.isdigit()):
             setattr(obj, key, int(value))
         else:
-            if(value[0] == "null"):
+            if(value == "null"):
                 setattr(obj, key, None)
             else:
                 setattr(obj, key, value)

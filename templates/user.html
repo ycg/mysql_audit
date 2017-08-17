@@ -8,7 +8,7 @@
                 <h4 class="modal-title" id="exampleModalLabel">添加用户</h4>
             </div>
             <div class="modal-body">
-                <form id="host_add_form">
+                <form id="user_add_form">
                     <div class="form-group">
                         <label id="user_name_lable" name="user_name_lable" class="control-label" for="user_name">用户名:</label>
                         <input id="user_name" name="user_name" type="text" class="form-control" placeholder="input user name">
@@ -28,8 +28,9 @@
                     <div class="form-group">
                         <select id="group_id" name="group_id" class="selectpicker show-tick form-control bs-select-hidden">
                             <option value="0" selected>请选择用户组</option>
-                            <option value="1">组1</option>
-                            <option value="2">组1</option>
+                            {% for info in group_infos %}
+                                <option value="{{ info.group_id }}">{{ info.group_name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
@@ -44,12 +45,36 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">添加</button>
+                <button type="button" class="btn btn-primary" onclick=add_user()>添加</button>
             </div>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="group_add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel">添加用户组</h4>
+            </div>
+            <div class="modal-body">
+                <form id="host_add_form">
+                    <div class="form-group">
+                        <label id="user_name_lable" name="user_name_lable" class="control-label" for="user_name">组名:</label>
+                        <input id="group_name" name="group_name" type="text" class="form-control" placeholder="input group name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick=add_user()>添加</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <ul id="myTab" class="nav nav-tabs">
     <li class="active">
@@ -71,7 +96,15 @@
                 <input id="user_name_query" type="text" class="form-control" placeholder="input user name">
             </div>
             <div class="col-md-2">
-                <select id="role_id_query" name="role_id" class="selectpicker show-tick form-control bs-select-hidden" required>
+                <select id="user_group_query" name="user_group_query" class="selectpicker show-tick form-control bs-select-hidden" required>
+                    <option value="0" selected>所有用户组</option>
+                    {% for info in group_infos %}
+                        <option value="{{ info.group_id }}">{{ info.group_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select id="user_role_query" name="user_role_query" class="selectpicker show-tick form-control bs-select-hidden" required>
                     <option value="0" selected>所有用户角色</option>
                     {% for info in role_infos %}
                         <option value="{{ info.role_id }}">{{ info.role_name }}</option>
@@ -79,7 +112,7 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <button class="btn btn-default">查询</button>
+                <button class="btn btn-default" onclick="query_user()">查询</button>
                 <button class="btn btn-primary" onclick=show_add_user_dialog()>添加用户</button>
             </div>
         </div>
@@ -93,12 +126,12 @@
         </br>
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary">添加用户组</button>
+                <button class="btn btn-primary" onclick=show_modal_dialog("#group_add")>添加用户组</button>
             </div>
         </div>
         </br>
         <div class="row">
-            <div class="col-md-6" id="group_data">
+            <div class="col-md-5" id="group_data">
             </div>
         </div>
     </div>
@@ -123,9 +156,24 @@
         show_modal_dialog("#user_add");
     }
 
+
+    function add_user() {
+        $.post("/user/add", JSON.stringify(get_form_json($("#user_add_form"))), function (data) {
+            alert(data);
+            query_user();
+            hide_modal_dialog("#user_add")
+        }).error(function () {
+            alert("添加失败!");
+        });
+    }
+
     function query_user() {
-        var parameter = "user_name=" + convert_string("#user_name_query") + "&role_id=" + convert_int("#role_id_query");
-        input_data_for_post("/user/query", parameter, "#user_data");
+        var json_obj = new Object()
+        json_obj.user_name = $("#user_name_query").val();
+        json_obj.group_id = $("#user_group_query").val();
+        json_obj.role_id = $("#user_role_query").val();
+        console.log(JSON.stringify(json_obj))
+        input_data_for_post("/user/query", JSON.stringify(json_obj), "#user_data");
     }
 
     function query_group() {
