@@ -16,6 +16,9 @@
         <th>
             User
         </th>
+        <th>
+            Created_Time
+        </th>
         <!--<th>
             Test_Host
         </th>
@@ -59,6 +62,9 @@
                     Yes
                 {% endif %}
             </td>-->
+            <td>
+                {{ info.created_time }}
+            </td>
             <td class="text-center">
                 <button class="btn btn-primary btn-xs" onclick=show_update_dialog({{ info.host_id }},2)>编辑</button>
                 <button class="btn btn-danger btn-xs" onclick=delete_mysql_host({{ info.host_id }})>删除</button>

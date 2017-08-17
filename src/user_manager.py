@@ -9,13 +9,13 @@ def add_user(obj):
         return "请选择用户组!"
     elif (obj.role_id <= 0):
         return "请选择用户角色!"
-    elif (len(obj.email) <= 0):
+    elif (len(str(obj.email)) <= 0):
         return "请输入用户邮箱!"
-    elif (len(obj.user_name) <= 0):
+    elif (len(str(obj.user_name)) <= 0):
         return "请输入用户名!"
-    elif (len(obj.user_password) <= 0):
+    elif (len(str(obj.user_password)) <= 0):
         return "请输入密码!"
-    elif (len(obj.chinese_name) <= 0):
+    elif (len(str(obj.chinese_name)) <= 0):
         return "请输入中文名!"
 
     sql = """insert into mysql_audit.work_user(user_name, user_password, chinese_name, group_id, role_id, email)
@@ -51,10 +51,10 @@ def query_user(obj):
         where_sql += " and t1.role_id = {0}".format(obj.role_id)
     elif (obj.group_id > 0):
         where_sql += " and t1.group_id = {0}".format(obj.group_id)
-    elif (len(obj.user_name) > 0):
+    elif (len(str(obj.user_name)) > 0):
         where_sql += " and t1.user_name like '%{0}%'".format(obj.user_name)
 
-    sql = """select t1.user_id, t1.user_name, t1.chinese_name,
+    sql = """select t1.user_id, t1.user_name, t1.chinese_name, t1.created_time,
                     t1.email, ifnull(t2.role_name, '') as role_name, ifnull(t3.group_name, '') as group_name, t1.is_deleted
              from mysql_audit.work_user t1
              left join mysql_audit.role_info t2 on t1.role_id = t2.role_id
