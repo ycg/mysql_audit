@@ -25,7 +25,7 @@ CREATE TABLE role_info
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
-) COMMENT '角色信息表例如：开发人员-组长-DBA' CHARSET utf8 ENGINE innodb;
+) COMMENT '角色信息表例如：开发人员-组长-DBA' AUTO_INCREMENT=1003 CHARSET utf8 ENGINE innodb;
 
 INSERT INTO role_info (role_id, role_name, remark) VALUES (1000, '开发', '开发人员只能查看自己创建的工具');
 INSERT INTO role_info (role_id, role_name, remark) VALUES (1001, '组长', '开发组长能够查看本小组所有开发人员的历史数据');
@@ -40,7 +40,7 @@ CREATE TABLE group_info
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
-) COMMENT '用户组信息表' CHARSET utf8 ENGINE innodb;
+) COMMENT '用户组信息表' AUTO_INCREMENT=10002 CHARSET utf8 ENGINE innodb;
 
 INSERT INTO group_info(group_id, group_name, remark) VALUES (10000, 'DBA组', '');
 INSERT INTO group_info(group_id, group_name, remark) VALUES (10001, '运维组', '');

@@ -70,7 +70,26 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onclick=add_user()>添加</button>
+                <button type="button" class="btn btn-primary" onclick=add_group()>添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="user_start" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>是否启用该用户?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">启用</button>
             </div>
         </div>
     </div>
@@ -156,7 +175,6 @@
         show_modal_dialog("#user_add");
     }
 
-
     function add_user() {
         $.post("/user/add", JSON.stringify(get_form_json($("#user_add_form"))), function (data) {
             alert(data);
@@ -165,6 +183,10 @@
         }).error(function () {
             alert("添加失败!");
         });
+    }
+
+    function add_group() {
+
     }
 
     function query_user() {

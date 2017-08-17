@@ -57,9 +57,13 @@
                     {{ info.group_name }}
                 </td>
                 <td class="text-center" style="width: 230px">
-                    <button class="btn btn-default btn-xs">编辑</button>
-                    <button class="btn btn-primary btn-xs">权限</button>
-                    <button class="btn btn-danger btn-xs">禁用</button>
+                    {% if(info.is_deleted == 1) %}
+                        <button class="btn btn-danger btn-xs" onclick=show_modal_dialog("#user_start")>已删除</button>
+                    {% else %}
+                        <button class="btn btn-default btn-xs">编辑</button>
+                        <button class="btn btn-primary btn-xs">权限</button>
+                        <button class="btn btn-danger btn-xs">禁用</button>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

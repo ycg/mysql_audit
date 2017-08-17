@@ -3,6 +3,7 @@
 import db_util, settings, cache
 
 
+# 添加用户并刷新缓存
 def add_user(obj):
     if (obj.group_id <= 0):
         return "请选择用户组!"
@@ -27,8 +28,20 @@ def add_user(obj):
     return "添加用户成功!"
 
 
-def delete_user():
-    pass
+# 禁用用户
+def delete_user(obj):
+    sql = """update mysql_audit.work_user set is_deleted = 1 where user_id = {0};
+             update mysql_audit.group_info set user_count = user_count + 1 where group_id = {6};""" .format(obj.user_id)
+    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    cache.MyCache().load_all_cache()
+
+
+# 启用用户
+def start_user(obj):
+    sql = """update mysql_audit.work_user set is_deleted = 0 where user_id = {0};
+             update mysql_audit.group_info set user_count = user_count + 1 where group_id = {6};""" .format(obj.user_id)
+    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    cache.MyCache().load_all_cache()
 
 
 # 查询用户信息
@@ -41,21 +54,24 @@ def query_user(obj):
     elif (len(obj.user_name) > 0):
         where_sql += " and t1.user_name like '%{0}%'".format(obj.user_name)
 
-    sql = """select t1.user_id, t1.user_name, t1.chinese_name, t1.email, ifnull(t2.role_name, '') as role_name, ifnull(t3.group_name, '') as group_name
+    sql = """select t1.user_id, t1.user_name, t1.chinese_name,
+                    t1.email, ifnull(t2.role_name, '') as role_name, ifnull(t3.group_name, '') as group_name, t1.is_deleted
              from mysql_audit.work_user t1
              left join mysql_audit.role_info t2 on t1.role_id = t2.role_id
              left join mysql_audit.group_info t3 on t1.group_id = t3.group_id WHERE {0};""".format(where_sql)
     return db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
 
 
-def query_user_by_role(role_id):
-    pass
-
-
 # 获取用户组信息
 def get_user_group_infos():
     return db_util.DBUtil().get_list_infos(settings.MySQL_HOST, "select * from mysql_audit.group_info where is_deleted = 0;")
 
+
+def add_group_info(obj):
+    sql = "insert into mysql_audit.group_info (group_name, remark) VALUES ('{0}', '{1}');".format(obj.group_name, obj.remark)
+    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    cache.MyCache().load_group_infos()
+    return "添加用户组成功!"
 
 # 更新用户组信息
 def update_user_group_info(group_id):
@@ -65,3 +81,4 @@ def update_user_group_info(group_id):
 # 删除用户组信息
 def delete_user_group_info(group_id):
     pass
+

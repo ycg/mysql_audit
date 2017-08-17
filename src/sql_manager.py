@@ -80,11 +80,11 @@ def get_sql_list(obj):
     # 管理员可以看所有的用户
     # 开发只能看到自己提交的工单
     # 组长只能看到组员提交的所有工单
-    user_info = cache.MyCache().get_user_info(obj.current_user_id)
+    '''user_info = cache.MyCache().get_user_info(obj.current_user_id)
     if (user_info.role_id == settings.ROLE_DEV):
         sql_where += " and create_user_id = {0}".format(obj.current_user_id)
     elif (user_info.role_id == settings.ROLE_LEADER):
-        sql_where += " and create_user_group_id = {0}".format(user_info.group_id)
+        sql_where += " and create_user_group_id = {0}".format(user_info.group_id)'''
 
     """sql = select t1.id, t1.title, t1.create_user_id, t1.audit_user_id, t1.execute_user_id, t1.audit_date_time,
                     t1.execute_date_time, t1.mysql_host_id, t1.jira_url, t1.is_backup,
@@ -101,7 +101,7 @@ def get_sql_list(obj):
              (
                  select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
                         execute_date_time, mysql_host_id, jira_url, is_backup, execute_db_name
-                        backup_table, left(sql_value, 10) as sql_value, return_value, status, is_deleted, created_time
+                        backup_table, left(sql_value, 10) as sql_value, status, is_deleted, created_time
                  from mysql_audit.sql_work
                  where is_deleted = 0 {0} order by id desc limit {1}, {2}
              ) t1
