@@ -19,10 +19,7 @@ class MyCache():
         rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.work_user")
         self.__user_infos.clear()
         for row in rows:
-            info = common_util.get_object(row)
-            info.user = custom_algorithm.decrypt(settings.MY_KEY, info.user)
-            info.password = custom_algorithm.decrypt(settings.MY_KEY, info.password)
-            self.__user_infos[row["user_id"]] = info
+            self.__user_infos[row["user_id"]] = common_util.get_object(row)
 
     def load_role_infos(self):
         rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.role_info")
@@ -43,6 +40,8 @@ class MyCache():
             info = common_util.get_object(row)
             info.host = info.ip
             info.key = info.host_id
+            info.user = custom_algorithm.decrypt(settings.MY_KEY, info.user)
+            info.password = custom_algorithm.decrypt(settings.MY_KEY, info.password)
             self.__mysql_host_infos[row["host_id"]] = info
 
     def get_value_by_key(self, dic, key=None):
