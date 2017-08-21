@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import traceback, json
-import settings, cache, db_util, common_util
+import settings, cache, db_util, common_util, custom_algorithm
 
 
 def query_host_infos():
@@ -12,7 +12,12 @@ def add(obj):
     sql = """insert into mysql_audit.mysql_hosts
              (ip, port, `user`, `password`, host_name)
              VALUES
-             ('{0}', {1}, '{2}', '{3}', '{4}')""".format(obj.host_ip, obj.host_port, obj.host_user, obj.host_password, obj.host_name)
+             ('{0}', {1}, '{2}', '{3}', '{4}')"""\
+             .format(obj.host_ip,
+                     obj.host_port,
+                     custom_algorithm.encrypt(settings.MY_KEY, obj.host_user),
+                     custom_algorithm.encrypt(settings.MY_KEY, obj.host_password),
+                     obj.host_name)
     db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
     cache.MyCache().load_mysql_host_infos()
     return "ok"

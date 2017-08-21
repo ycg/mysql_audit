@@ -24,7 +24,8 @@ def add_user(obj):
              update mysql_audit.group_info set user_count = user_count + 1 where group_id = {6};""" \
              .format(obj.user_name, obj.user_password, obj.chinese_name, obj.group_id, obj.role_id, obj.email, obj.group_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-    cache.MyCache().load_all_cache()
+    cache.MyCache().load_user_infos()
+    cache.MyCache().load_group_infos()
     return "添加用户成功!"
 
 
