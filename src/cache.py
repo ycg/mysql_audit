@@ -1,4 +1,4 @@
-import db_util, settings, common_util
+import db_util, settings, common_util, custom_algorithm
 
 class MyCache():
     __user_infos = {}
@@ -19,7 +19,10 @@ class MyCache():
         rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.work_user")
         self.__user_infos.clear()
         for row in rows:
-            self.__user_infos[row["user_id"]] = common_util.get_object(row)
+            info = common_util.get_object(row)
+            info.user = custom_algorithm.decrypt(settings.MY_KEY, info.user)
+            info.password = custom_algorithm.decrypt(settings.MY_KEY, info.password)
+            self.__user_infos[row["user_id"]] = info
 
     def load_role_infos(self):
         rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.role_info")

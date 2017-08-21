@@ -31,7 +31,7 @@ def add_user(obj):
 # 禁用用户
 def delete_user(obj):
     sql = """update mysql_audit.work_user set is_deleted = 1 where user_id = {0};
-             update mysql_audit.group_info set user_count = user_count + 1 where group_id = {6};""" .format(obj.user_id)
+             update mysql_audit.group_info set user_count = user_count - 1 where group_id = {6};""" .format(obj.user_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     cache.MyCache().load_all_cache()
 
@@ -67,11 +67,13 @@ def get_user_group_infos():
     return db_util.DBUtil().get_list_infos(settings.MySQL_HOST, "select * from mysql_audit.group_info where is_deleted = 0;")
 
 
+# 添加用户组信息
 def add_group_info(obj):
     sql = "insert into mysql_audit.group_info (group_name, remark) VALUES ('{0}', '{1}');".format(obj.group_name, obj.remark)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     cache.MyCache().load_group_infos()
     return "添加用户组成功!"
+
 
 # 更新用户组信息
 def update_user_group_info(group_id):
