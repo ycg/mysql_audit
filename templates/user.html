@@ -177,9 +177,12 @@
 
     function add_user() {
         $.post("/user/add", JSON.stringify(get_form_json($("#user_add_form"))), function (data) {
-            alert(data);
-            query_user();
-            hide_modal_dialog("#user_add")
+            var json_obj = JSON.parse(data);
+            alert(json_obj.message);
+            if (json_obj.flag == true) {
+                hide_modal_dialog("#user_add");
+                query_user();
+            }
         }).error(function () {
             alert("添加失败!");
         });

@@ -1,33 +1,40 @@
 # -*- coding: utf-8 -*-
 
+import json
+from common_util import Entity
 import db_util, settings, cache
 
 
 # 添加用户并刷新缓存
 def add_user(obj):
-    if (obj.group_id <= 0):
-        return "请选择用户组!"
-    elif (obj.role_id <= 0):
-        return "请选择用户角色!"
-    elif (len(str(obj.email)) <= 0):
-        return "请输入用户邮箱!"
-    elif (len(str(obj.user_name)) <= 0):
-        return "请输入用户名!"
+    result_json = Entity()
+    result_json.flag = False
+    if (len(str(obj.user_name)) <= 0):
+        result_json.message = "请输入用户名!"
     elif (len(str(obj.user_password)) <= 0):
-        return "请输入密码!"
+        result_json.message = "请输入密码!"
     elif (len(str(obj.chinese_name)) <= 0):
-        return "请输入中文名!"
+        result_json.message = "请输入中文名!"
+    elif (len(str(obj.email)) <= 0):
+        result_json.message = "请输入用户邮箱!"
+    elif (obj.group_id <= 0):
+        result_json.message = "请选择用户组!"
+    elif (obj.role_id <= 0):
+        result_json.message = "请选择用户角色!"
+    else:
+        result_json.flag = True
 
-    sql = """insert into mysql_audit.work_user(user_name, user_password, chinese_name, group_id, role_id, email)
-             VALUES
-             ('{0}', md5('{1}'), '{2}', {3}, {4}, '{5}');
-             update mysql_audit.group_info set user_count = user_count + 1 where group_id = {6};""" \
-             .format(obj.user_name, obj.user_password, obj.chinese_name, obj.group_id, obj.role_id, obj.email, obj.group_id)
-    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-    cache.MyCache().load_user_infos()
-    cache.MyCache().load_group_infos()
-    return "添加用户成功!"
-
+    if (result_json.flag):
+        sql = """insert into mysql_audit.work_user(user_name, user_password, chinese_name, group_id, role_id, email)
+                 VALUES
+                 ('{0}', md5('{1}'), '{2}', {3}, {4}, '{5}');
+                 update mysql_audit.group_info set user_count = user_count + 1 where group_id = {6};""" \
+                 .format(obj.user_name, obj.user_password, obj.chinese_name, obj.group_id, obj.role_id, obj.email, obj.group_id)
+        db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+        cache.MyCache().load_user_infos()
+        cache.MyCache().load_group_infos()
+        result_json.message = "添加用户成功!"
+    return json.dumps(result_json, default=lambda o: o.__dict__)
 
 # 禁用用户
 def delete_user(obj):
