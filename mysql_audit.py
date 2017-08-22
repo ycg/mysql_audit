@@ -233,6 +233,12 @@ def delete_group(group_id):
     return user_manager.delete_user_group_info(group_id)
 
 
+@app.route("/user/group/update", methods=["POST"])
+@login_required
+def update_group():
+    return user_manager.update_user_group_info(get_object_from_json_tmp(request.get_data()))
+
+
 #endregion
 
 #region login api

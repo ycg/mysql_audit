@@ -97,8 +97,10 @@ def add_group_info(obj):
 
 
 # 更新用户组信息
-def update_user_group_info(group_id):
-    pass
+def update_user_group_info(obj):
+    sql = "update mysql_audit.group_info set group_name = '{0}', remark = '{1}' where group_id = {2};".format(obj.group_name, obj.remark_value, obj.group_id)
+    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    return "更新成功"
 
 
 # 删除用户组信息
