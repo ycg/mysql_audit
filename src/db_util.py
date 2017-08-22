@@ -20,18 +20,13 @@ class DBUtil(object):
         return DBUtil.__instance
 
     def execute(self, host_info, sql):
-        result = True
         connection, cursor = None, None
         try:
             connection, cursor = self.execute_for_db(host_info, sql)
-        except:
-            result = False
-            traceback.print_exc()
-            if (connection != None):
-                connection.rollback()
+            return True
         finally:
             self.close(connection, cursor)
-        return result
+        return False
 
     def fetchone(self, host_info, sql):
         connection, cursor = None, None
@@ -70,7 +65,6 @@ class DBUtil(object):
         if (cursor != None):
             cursor.close()
         if (connection != None):
-            connection.commit()
             connection.close()
 
     def execute_for_db(self, host_info, sql):
@@ -85,9 +79,9 @@ class DBUtil(object):
 
     def get_mysql_connection(self, host_info):
         if (self.__connection_pools.get(host_info.key) == None):
-            pool = PooledDB(creator=pymysql, mincached=5, maxcached=10, maxconnections=15,
+            pool = PooledDB(creator=pymysql, mincached=2, maxcached=4, maxconnections=10,
                             host=host_info.host, port=host_info.port, user=host_info.user, passwd=host_info.password,
-                            use_unicode=False, charset="utf8", cursorclass=pymysql.cursors.DictCursor, reset=False, autocommit=True)
+                            use_unicode=False, charset="utf8", cursorclass=pymysql.cursors.DictCursor, reset=False, autocommit=True, connect_timeout=1)
             self.__connection_pools[host_info.key] = pool
         return self.__connection_pools[host_info.key].connection()
 
