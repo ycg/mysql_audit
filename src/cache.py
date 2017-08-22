@@ -55,7 +55,7 @@ class MyCache():
     def get_user_info_by_role(self, role_id):
         user_list = []
         for info in self.__user_infos.values():
-            if(info.role_id == role_id):
+            if(info.role_id == role_id and info.is_deleted == 0):
                 user_list.append(info)
         return user_list
 
