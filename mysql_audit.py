@@ -205,6 +205,13 @@ def add_user():
 def query_user():
     return render_template("user_view.html", user_infos=user_manager.query_user(get_object_from_json_tmp(request.get_data())))
 
+
+@app.route("/user/delete/<int:user_id>", methods=["GET", "POST"])
+@login_required
+def delete_user(user_id):
+    return user_manager.delete_user(user_id)
+
+
 @app.route("/user/group/query", methods=["POST"])
 @login_required
 def query_group():

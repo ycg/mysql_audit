@@ -37,17 +37,25 @@ def add_user(obj):
     return json.dumps(result_json, default=lambda o: o.__dict__)
 
 # 禁用用户
-def delete_user(obj):
+def delete_user(user_id):
     sql = """update mysql_audit.work_user set is_deleted = 1 where user_id = {0};
-             update mysql_audit.group_info set user_count = user_count - 1 where group_id = {6};""" .format(obj.user_id)
+             update mysql_audit.group_info t1
+             left join mysql_audit.work_user t2 on t1.group_id = t2.group_id
+             set t1.user_count = t1.user_count - 1
+             where t2.user_id = {0};""" .format(user_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-    cache.MyCache().load_all_cache()
+    cache.MyCache().load_user_infos()
+    cache.MyCache().load_group_infos()
+    return "delete ok!"
 
 
 # 启用用户
-def start_user(obj):
+def start_user(user_id):
     sql = """update mysql_audit.work_user set is_deleted = 0 where user_id = {0};
-             update mysql_audit.group_info set user_count = user_count + 1 where group_id = {6};""" .format(obj.user_id)
+             update mysql_audit.group_info t1
+             left join mysql_audit.work_user t2 on t1.group_id = t2.group_id
+             set t1.user_count = t1.user_count - 1
+             where t2.user_id = {0};""" .format(user_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     cache.MyCache().load_all_cache()
 

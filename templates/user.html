@@ -205,6 +205,17 @@
         input_data_for_post("/user/group/query", "", "#group_data");
     }
 
+    function delete_user(user_id) {
+        if (window.confirm("是否确认删除用户?")) {
+            $.post("/user/delete/" + user_id, "", function (data) {
+                alert(data);
+                query_user();
+            }).error(function () {
+                alert("删除失败！");
+            });
+        }
+    }
+
     query_user();
     query_group();
 </script>
