@@ -29,12 +29,13 @@ def add_user(obj):
                  VALUES
                  ('{0}', md5('{1}'), '{2}', {3}, {4}, '{5}');
                  update mysql_audit.group_info set user_count = user_count + 1 where group_id = {6};""" \
-                 .format(obj.user_name, obj.user_password, obj.chinese_name, obj.group_id, obj.role_id, obj.email, obj.group_id)
+            .format(obj.user_name, obj.user_password, obj.chinese_name, obj.group_id, obj.role_id, obj.email, obj.group_id)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         cache.MyCache().load_user_infos()
         cache.MyCache().load_group_infos()
         result_json.message = "添加用户成功!"
     return json.dumps(result_json, default=lambda o: o.__dict__)
+
 
 # 禁用用户
 def delete_user(user_id):
@@ -42,11 +43,13 @@ def delete_user(user_id):
              update mysql_audit.group_info t1
              left join mysql_audit.work_user t2 on t1.group_id = t2.group_id
              set t1.user_count = t1.user_count - 1
-             where t2.user_id = {0};""" .format(user_id)
+             where t2.user_id = {0};""".format(user_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     cache.MyCache().load_user_infos()
     cache.MyCache().load_group_infos()
-    return "delete ok!"
+    # 这边要注意下，需要把删除的用户清除登录session
+    # TO DO
+    return "删除用户成功"
 
 
 # 启用用户
@@ -54,10 +57,12 @@ def start_user(user_id):
     sql = """update mysql_audit.work_user set is_deleted = 0 where user_id = {0};
              update mysql_audit.group_info t1
              left join mysql_audit.work_user t2 on t1.group_id = t2.group_id
-             set t1.user_count = t1.user_count - 1
-             where t2.user_id = {0};""" .format(user_id)
+             set t1.user_count = t1.user_count + 1
+             where t2.user_id = {0};""".format(user_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-    cache.MyCache().load_all_cache()
+    cache.MyCache().load_user_infos()
+    cache.MyCache().load_group_infos()
+    return "启用用户成功"
 
 
 # 查询用户信息
@@ -85,7 +90,7 @@ def get_user_group_infos():
 
 # 添加用户组信息
 def add_group_info(obj):
-    sql = "insert into mysql_audit.group_info (group_name, remark) VALUES ('{0}', '{1}');".format(obj.group_name, obj.remark)
+    sql = "insert into mysql_audit.group_info (group_name, remark) VALUES ('{0}', '{1}');".format(obj.group_name, obj.remark_value)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     cache.MyCache().load_group_infos()
     return "添加用户组成功!"
@@ -98,5 +103,15 @@ def update_user_group_info(group_id):
 
 # 删除用户组信息
 def delete_user_group_info(group_id):
-    pass
+    # 删除用户组必须要判断组内是否还有用户
+    sql = "SELECT user_count FROM mysql_audit.group_info where group_id = {0};".format(group_id)
+    result = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
+    if (int(result["user_count"]) > 0):
+        return "该组内还有用户，请先删除用户再删除组!"
+    else:
+        sql = "update mysql_audit.group_info set is_deleted = 1 where group_id = {0};".format(group_id)
+        db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+        cache.MyCache().load_group_infos()
+        return "用户组删除成功!"
+
 

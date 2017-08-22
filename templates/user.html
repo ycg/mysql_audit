@@ -61,35 +61,20 @@
                 <h4 class="modal-title" id="exampleModalLabel">添加用户组</h4>
             </div>
             <div class="modal-body">
-                <form id="host_add_form">
+                <form id="group_add_form">
                     <div class="form-group">
                         <label id="user_name_lable" name="user_name_lable" class="control-label" for="user_name">组名:</label>
                         <input id="group_name" name="group_name" type="text" class="form-control" placeholder="input group name">
+                    </div>
+                    <div class="form-group">
+                        <label id="remark_lable" name="remark_lable" class="control-label" for="remark_value">备注:</label>
+                        <textarea id="remark_value" name="remark_value" class="form-control" placeholder="请添加备注" rows=10></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-primary" onclick=add_group()>添加</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="user_start" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h4>是否启用该用户?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">启用</button>
             </div>
         </div>
     </div>
@@ -185,11 +170,21 @@
             }
         }).error(function () {
             alert("添加失败!");
+            hide_modal_dialog("#user_add");
         });
     }
 
     function add_group() {
-
+        $.post("/user/group/add", JSON.stringify(get_form_json($("#group_add_form"))), function (data) {
+            alert(data);
+            hide_modal_dialog("#group_add");
+            query_group();
+            $("#group_name").val("");
+            $("#remark_value").val("");
+        }).error(function () {
+            alert("添加失败!");
+            hide_modal_dialog("#group_add");
+        });
     }
 
     function query_user() {
@@ -205,6 +200,17 @@
         input_data_for_post("/user/group/query", "", "#group_data");
     }
 
+    function delete_group(group_id) {
+        if (window.confirm("是否确认删除该组?")) {
+            $.post("/user/group/delete/" + group_id, "", function (data) {
+                alert(data);
+                query_group();
+            }).error(function () {
+                alert("删除失败！");
+            });
+        }
+    }
+
     function delete_user(user_id) {
         if (window.confirm("是否确认删除用户?")) {
             $.post("/user/delete/" + user_id, "", function (data) {
@@ -212,6 +218,17 @@
                 query_user();
             }).error(function () {
                 alert("删除失败！");
+            });
+        }
+    }
+
+    function start_user(user_id) {
+        if (window.confirm("是否启用该用户?")) {
+            $.post("/user/start/" + user_id, "", function (data) {
+                alert(data);
+                query_user();
+            }).error(function () {
+                alert("启用失败！");
             });
         }
     }

@@ -211,11 +211,27 @@ def query_user():
 def delete_user(user_id):
     return user_manager.delete_user(user_id)
 
+@app.route("/user/start/<int:user_id>", methods=["GET", "POST"])
+@login_required
+def start_user(user_id):
+    return user_manager.start_user(user_id)
+
+@app.route("/user/group/add", methods=["POST"])
+@login_required
+def add_group():
+    return user_manager.add_group_info(get_object_from_json_tmp(request.get_data()))
+
 
 @app.route("/user/group/query", methods=["POST"])
 @login_required
 def query_group():
     return render_template("user_group_view.html", user_group_infos=user_manager.get_user_group_infos())
+
+@app.route("/user/group/delete/<int:group_id>", methods=["POST"])
+@login_required
+def delete_group(group_id):
+    return user_manager.delete_user_group_info(group_id)
+
 
 #endregion
 
