@@ -28,7 +28,7 @@ class MyCache():
             self.__role_infos[row["role_id"]] = common_util.get_object(row)
 
     def load_group_infos(self):
-        rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.group_info")
+        rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.group_info where is_deleted = 0;")
         self.__group_infos.clear()
         for row in rows:
             self.__group_infos[row["group_id"]] = common_util.get_object(row)

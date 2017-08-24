@@ -62,7 +62,7 @@
                 <td>
                     {{ info.group_name }}
                 </td>
-                <td class="text-center" style="width: 230px">
+                <td class="text-center">
                     {% if(info.is_deleted == 1) %}
                         <button class="btn btn-danger btn-xs" onclick=start_user({{ info.user_id }})>已删除</button>
                     {% else %}
