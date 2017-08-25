@@ -100,14 +100,14 @@ def get_sql_list(obj):
              from
              (
                  select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
-                        execute_date_time, mysql_host_id, jira_url, is_backup, execute_db_name
+                        execute_date_time, mysql_host_id, jira_url, is_backup, execute_db_name,
                         backup_table, left(sql_value, 10) as sql_value, status, is_deleted, created_time
                  from mysql_audit.sql_work
                  where is_deleted = 0 {0} order by id desc limit {1}, {2}
              ) t1
              left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id"""
+             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id ORDER BY t1.id DESC """
     sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
     result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
     for info in result_list:

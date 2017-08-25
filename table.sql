@@ -15,7 +15,7 @@ CREATE TABLE work_user
   UNIQUE KEY userName (`user_name`)
 ) COMMENT '用户表' CHARSET utf8 ENGINE innodb;
 
-insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg", md5("yangcaogui"), '杨曹贵', 10002, 1002, 'ycg166911@163.com');
+insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("admin", md5("yang123!.+"), '超级管理员', 10002, 1002, 'ycg166911@163.com');
 
 CREATE TABLE role_info
 (
