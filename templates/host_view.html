@@ -68,6 +68,12 @@
             <td class="text-center">
                 <button class="btn btn-primary btn-xs" onclick=show_update_dialog({{ info.host_id }},2)>编辑</button>
                 <button class="btn btn-danger btn-xs" onclick=delete_mysql_host({{ info.host_id }})>删除</button>
+
+                {% if(info.is_alive == 1) %}
+                    <button class="btn btn-success btn-xs" disabled>连接成功</button>
+                {% else %}
+                    <button class="btn btn-danger btn-xs" disabled>连接失败</button>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}

@@ -100,7 +100,7 @@ class DBUtil(object):
     def execute_sql(self, ip, port, user, password, sql):
         connection, cursor = None, None
         try:
-            connection = pymysql.connect(host=ip, user=user, passwd=password, port=port, use_unicode=True, charset="utf8")
+            connection = pymysql.connect(host=ip, user=user, passwd=password, port=port, use_unicode=True, charset="utf8", connect_timeout=1)
             cursor = connection.cursor()
             cursor.execute(sql)
         finally:

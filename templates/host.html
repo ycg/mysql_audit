@@ -92,9 +92,14 @@
 
     function add_mysql_host() {
         $.post("/host/add", get_form_json($("#host_add_form")), function (data) {
-            alert("添加成功");
-            hide_modal_dialog("#host_add");
-            query_host_info();
+            if (data == "1") {
+                alert("IP地址和端口已经存在!")
+            }
+            else if (data == "2") {
+                alert("添加成功");
+                hide_modal_dialog("#host_add");
+                query_host_info();
+            }
         }).error(function () {
             alert("添加失败");
         });

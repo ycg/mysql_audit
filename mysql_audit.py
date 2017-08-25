@@ -21,7 +21,7 @@ cache.MyCache().load_all_cache()
 @app.route("/main")
 @login_required
 def main():
-    return render_template("main.html")
+    return render_template("main.html", user_info=cache.MyCache().get_user_info(current_user.id), administrator_role=settings.ROLE_ADMINISTRATOR)
 
 @app.route("/home")
 @login_required
@@ -59,7 +59,7 @@ def get_database_names(host_id):
 @app.route("/execute")
 @login_required
 def sql_work():
-    return render_template("sql_work_add.html", host_infos=sql_manager.get_execute_mysql_host(), dba_users=cache.MyCache().get_user_info_by_role(settings.ROLE_DBA))
+    return render_template("sql_work_add.html", host_infos=sql_manager.get_execute_mysql_host(), dba_users=cache.MyCache().get_user_info_by_group_id(settings.DBA_GROUP_ID))
 
 @app.route("/execute/add", methods=["POST"])
 @login_required

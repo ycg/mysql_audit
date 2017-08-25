@@ -1,4 +1,5 @@
-import db_util, settings, common_util, custom_algorithm
+import db_util, settings, common_util, custom_algorithm, host_manager
+
 
 class MyCache():
     __user_infos = {}
@@ -35,17 +36,22 @@ class MyCache():
 
     def load_mysql_host_infos(self):
         rows = db_util.DBUtil().fetchall(settings.MySQL_HOST, "select * from mysql_audit.mysql_hosts WHERE is_deleted = 0;")
-        self.__mysql_host_infos.clear()
         for row in rows:
             info = common_util.get_object(row)
-            info.host = info.ip
-            info.key = info.host_id
-            info.user = custom_algorithm.decrypt(settings.MY_KEY, info.user)
-            info.password = custom_algorithm.decrypt(settings.MY_KEY, info.password)
-            self.__mysql_host_infos[row["host_id"]] = info
+            if (info.host_id not in self.__mysql_host_infos.keys()):
+                info.host = info.ip
+                info.key = info.host_id
+                info.user = custom_algorithm.decrypt(settings.MY_KEY, info.user)
+                info.password = custom_algorithm.decrypt(settings.MY_KEY, info.password)
+                info.host_ip = info.host
+                info.host_port = info.port
+                info.host_user = info.user
+                info.host_password = info.password
+                info.is_alive = host_manager.test_connection_new(info)
+                self.__mysql_host_infos[info.host_id] = info
 
     def get_value_by_key(self, dic, key=None):
-        if(key in dic.keys()):
+        if (key in dic.keys()):
             return dic[key]
         return dic.values()
 
@@ -55,7 +61,14 @@ class MyCache():
     def get_user_info_by_role(self, role_id):
         user_list = []
         for info in self.__user_infos.values():
-            if(info.role_id == role_id and info.is_deleted == 0):
+            if (info.role_id == role_id and info.is_deleted == 0):
+                user_list.append(info)
+        return user_list
+
+    def get_user_info_by_group_id(self, group_id):
+        user_list = []
+        for info in self.__user_infos.values():
+            if (info.group_id == group_id and info.is_deleted == 0):
                 user_list.append(info)
         return user_list
 
@@ -67,3 +80,8 @@ class MyCache():
 
     def get_mysql_host_info(self, host_id=None):
         return self.get_value_by_key(self.__mysql_host_infos, host_id)
+
+    def delete_host_info_by_host_id(self, host_id):
+        if (host_id in self.__mysql_host_infos.keys()):
+            self.__mysql_host_infos.pop(host_id)
+

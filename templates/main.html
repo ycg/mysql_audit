@@ -53,8 +53,11 @@ font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', A
                 <!--<a href="javascript:void(0)" id="audit" class="list-group-item" onclick=init_web("audit")><span class="glyphicon glyphicon-education"> SQL审核</span></a>-->
                 <a href="javascript:void(0)" id="execute" class="list-group-item" onclick=init_web("execute")><span class="glyphicon glyphicon-cog"> 创建SQL工单</span></a>
                 <a href="javascript:void(0)" id="list" class="list-group-item" onclick=init_web("list")><span class="glyphicon glyphicon-list"> SQL工单列表</span></a>
-                <a href="javascript:void(0)" id="host" class="list-group-item" onclick=init_web("host")><span class="glyphicon glyphicon-magnet"> 集群机器管理</span></a>
-                <a href="javascript:void(0)" id="user" class="list-group-item" onclick=init_web("user")><span class="glyphicon glyphicon-user"> 用户帐号管理</span></a>
+
+                {% if(user_info.role_id == administrator_role) %}
+                    <a href="javascript:void(0)" id="host" class="list-group-item" onclick=init_web("host")><span class="glyphicon glyphicon-magnet"> 集群机器管理</span></a>
+                    <a href="javascript:void(0)" id="user" class="list-group-item" onclick=init_web("user")><span class="glyphicon glyphicon-user"> 用户帐号管理</span></a>
+                {% endif %}
                 <!--<a href="javascript:void(0)" id="host" class="list-group-item" onclick=init_web("host")><span class="glyphicon glyphicon-magnet"> 主机帐号管理</span></a>
                 <a href="javascript:void(0)" id="user" class="list-group-item" onclick=init_web("user")><span class="glyphicon glyphicon-user"> 用户帐号管理</span></a>-->
             </div>

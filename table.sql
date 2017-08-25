@@ -15,21 +15,21 @@ CREATE TABLE work_user
   UNIQUE KEY userName (`user_name`)
 ) COMMENT '用户表' CHARSET utf8 ENGINE innodb;
 
-insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg", md5("yangcaogui"), '杨曹贵', 10000, 1002, 'ycg166911@163.com');
+insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("yangcg", md5("yangcaogui"), '杨曹贵', 10002, 1002, 'ycg166911@163.com');
 
 CREATE TABLE role_info
 (
   role_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  role_name VARCHAR(10) NOT NULL COMMENT '角色名称',
+  role_name VARCHAR(30) NOT NULL COMMENT '角色名称',
   remark varchar(100) NOT NULL DEFAULT '' COMMENT '备注',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
 ) COMMENT '角色信息表例如：开发人员-组长-DBA' AUTO_INCREMENT=1003 CHARSET utf8 ENGINE innodb;
 
-INSERT INTO role_info (role_id, role_name, remark) VALUES (1000, '开发', '开发人员只能查看自己创建的工具');
+INSERT INTO role_info (role_id, role_name, remark) VALUES (1000, '组员', '开发人员只能查看自己创建的工具');
 INSERT INTO role_info (role_id, role_name, remark) VALUES (1001, '组长', '开发组长能够查看本小组所有开发人员的历史数据');
-INSERT INTO role_info (role_id, role_name, remark) VALUES (1002, 'DBA', '后台管理员的权限');
+INSERT INTO role_info (role_id, role_name, remark) VALUES (1002, 'Administrator', '超级管理员具有添加用户和主机的权限');
 
 CREATE TABLE group_info
 (
@@ -40,10 +40,11 @@ CREATE TABLE group_info
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
-) COMMENT '用户组信息表' AUTO_INCREMENT=10002 CHARSET utf8 ENGINE innodb;
+) COMMENT '用户组信息表' AUTO_INCREMENT=10003 CHARSET utf8 ENGINE innodb;
 
 INSERT INTO group_info(group_id, group_name, remark) VALUES (10000, 'DBA组', '');
 INSERT INTO group_info(group_id, group_name, remark) VALUES (10001, '运维组', '');
+INSERT INTO group_info(group_id, group_name, remark) VALUES (10002, '管理员组', '');
 
 CREATE TABLE sql_work
 (
@@ -96,10 +97,10 @@ CREATE TABLE mysql_hosts
   is_online_host TINYINT NOT NULL DEFAULT 0 COMMENT '是否是线上实例',
   host_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '主机名称，界面都是以这个内容显示',
   remark VARCHAR(50) NOT NULL DEFAULT '' COMMENT '备注',
+  is_alive TINYINT NOT NULL DEFAULT 0 COMMENT '当前host是否连接正常',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间',
   UNIQUE KEY ip_port(`ip`, `port`) COMMENT '添加唯一键限制'
 ) COMMENT 'mysql主机地址信息表' CHARSET utf8 ENGINE innodb;
 
-insert into mysql_hosts (ip,user,password,is_test_host,host_name,remark)values("192.168.11.101","yangcg","yangcaogui", 1, "jumpserver","jump server");
