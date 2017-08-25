@@ -15,9 +15,9 @@ grant all on *.* to yangcg@'%' identified by 'yangcaogui';
 ```
 
 # 需要安装的python包
-1.python2.7的环境</br>
-2.调用inception只能使用MySQLdb</br>
-3.pip install flask flask-login gevent threadpool pymysql DBUtils six packaging appdirs MySQLdb</br>
+1. python2.7的环境
+2. 调用inception只能使用MySQLdb
+3. pip install flask flask-login gevent threadpool pymysql DBUtils six packaging appdirs MySQLdb
 
 # 导入表结构
 mysql -h -u -p -P < table.sql</br>
@@ -50,14 +50,14 @@ nohup python mysql_audit.py runserver &</br>
 # 访问web服务
 http://192.168.1.101:5200/login</br>
 超级管理员登录：</br>
-* 户名：admin</br>
-* 密码：yang123!.+</br>
+* 户名：admin
+* 密码：yang123!.+
 
 # 备份注意点
-1.表必须有主键</br>
-2.必须开启binlog日志</br>
-3.binlog_row_image必须为FULL</br>
-4.必须使用参数--enable-remote-backup才能备份</br>
+1. 表必须有主键
+2. 必须开启binlog日志
+3. binlog_row_image必须为FULL
+4. 必须使用参数--enable-remote-backup才能备份
 
 # 界面展示
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/1.png)
