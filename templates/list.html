@@ -4,7 +4,9 @@
             <select id="user_id" name="user_id" class="selectpicker show-tick form-control bs-select-hidden" style="width: 500px" required>
                 <option value="0" selected>查询所有用户</option>
                 {% for info in user_infos %}
-                    <option value="{{ info.user_id }}">{{ info.chinese_name }}</option>
+                    {% if(info.is_deleted == 0) %}
+                        <option value="{{ info.user_id }}">{{ info.chinese_name }}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
         </div>
