@@ -135,3 +135,12 @@ function get_audit_infos() {
     }
 }
 
+function logout() {
+    if (window.confirm("是否确认退出?")) {
+        $.post("/logout", "", function (data) {
+            alert("logout ok!");
+            window.location.href = 'login';
+        });
+    }
+}
+

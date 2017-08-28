@@ -253,11 +253,11 @@ def login_verfiy():
         login_user(user_tmp)
     return json.dumps(result, default=lambda o: o.__dict__)
 
-@app.route("/logout")
+@app.route("/logout", methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("login"))
+    return "ok"
 
 @login_manager.user_loader
 def load_user(user_id):
