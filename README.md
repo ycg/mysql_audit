@@ -50,7 +50,7 @@ nohup python mysql_audit.py runserver &</br>
 # 访问web服务
 http://192.168.1.101:5200/login</br>
 超级管理员登录：</br>
-* 户名：admin
+* 用户名：admin
 * 密码：yang123!.+
 
 # 备份注意点
