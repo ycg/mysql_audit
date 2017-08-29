@@ -2,7 +2,7 @@
 
 import os, json
 from gevent import pywsgi
-from flask import Flask, app, render_template, request, redirect, url_for, Markup
+from flask import Flask, app, render_template, request
 from flask_login import login_user, login_required, logout_user, LoginManager, current_user
 
 import settings
@@ -105,13 +105,14 @@ def get_rollback_sql(sql_id):
 @app.route("/list")
 @login_required
 def sql_list_home():
-    user_info = cache.MyCache().get_user_info(current_user.id)
+    """user_info = cache.MyCache().get_user_info(current_user.id)
     if (user_info.role_id == settings.ROLE_DEV):
         return render_template("list_for_dev.html")
     elif (user_info.role_id == settings.ROLE_LEADER):
         return render_template("list_for_leader.html")
     elif (user_info.role_id == settings.ROLE_ADMINISTRATOR):
-        return render_template("list.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)
+        return render_template("list.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)"""
+    return render_template("list.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)
 
 @app.route("/list/query", methods=["POST"])
 @login_required
