@@ -1,0 +1,59 @@
+<div class="modal fade" id="sql_work_update_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel">工单修改</h4>
+            </div>
+            <div class="modal-body">
+                <form id="user_add_form">
+                    <div class="form-group">
+                        <label id="user_name_lable" name="user_name_lable" class="control-label" for="user_name">标题:</label>
+                        <input id="title" type="text" name="title" class="form-control" value="{{ work_info.title }}">
+                    </div>
+                    <div class="form-group">
+                        <label id="user_password_lable" name="user_password_lable" class="control-label" for="user_password">jira地址:</label>
+                        <input id="jira_url" type="text" name="jira_url" class="form-control" value="{{ work_info.jira_url }}">
+                    </div>
+                    <!--<div class="form-group">
+                        <label id="chinese_name_lable" name="chinese_name_lable" class="control-label" for="chinese_name">请选择要上线的集群:</label>
+                        <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" onchange="show_database_names()">
+                            {% for info in host_infos %}
+                                <option value="{{ info.host_id }}" {% if(work_info.mysql_host_id == info.host_id) %} selected {% endif %}>{{ info.host_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id="email_lable" name="email_lable" class="control-label" for="email">请选择要执行的库:</label>
+                        <select id="db_name" name="db_name" class="selectpicker show-tick form-control bs-select-hidden">
+                        </select>
+                    </div>-->
+                    <div class="form-group">
+                        <label id="email_lable" name="email_lable" class="control-label" for="email">请选择是否要备份:</label>
+                        <select id="is_backup" name="is_backup" class="selectpicker show-tick form-control bs-select-hidden" required>
+                            <option value="0" {% if(work_info.is_backup == 0) %} selected {% endif %}>否</option>
+                            <option value="1" {% if(work_info.is_backup == 1) %} selected {% endif %}>是</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id="email_lable" name="email_lable" class="control-label" for="email">请选择执行SQL的DBA:</label>
+                        <select id="dba_user_id" name="dba_user_id" class="selectpicker show-tick form-control bs-select-hidden" required>
+                            {% for info in dba_users %}
+                                <option value="{{ info.user_id }}" {% if(work_info.execute_user_id == info.user_id) %} selected {% endif %}>{{ info.chinese_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">保存工单修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(".selectpicker").selectpicker({liveSearch: true});
+</script>

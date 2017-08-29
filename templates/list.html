@@ -71,6 +71,12 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-12" id="sql_update_div">
+
+    </div>
+</div>
+
 <script type="text/javascript">
     var page_number_global = 1;
     var delete_sql_work_id = 0;
@@ -100,6 +106,15 @@
     function get_execute_html(id) {
         $("#sql_list_form").hide();
         input_data_for_post("/execute/sql/exeucte/" + id, "", "#sql_list")
+    }
+
+    function get_sql_update_work_html(id) {
+        $.post("/work/update/" + id, "", function (data) {
+            $("#sql_update_div").html(data);
+            show_modal_dialog("#sql_work_update_dialog");
+        }).error(function () {
+            alert("error");
+        });
     }
 
     function get_rollback_sql(sql_id) {

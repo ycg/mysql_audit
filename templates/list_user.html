@@ -1,0 +1,68 @@
+<ul id="myTab" class="nav nav-tabs">
+    <li class="active">
+        <a href="#user_manager" data-toggle="tab">我的工单</a>
+    </li>
+    <li>
+        <a href="#user_group" data-toggle="tab">审核中</a>
+    </li>
+    <!--<li>
+        <a href="#user_role" data-toggle="tab" hidden>用户角色管理</a>
+    </li>-->
+</ul>
+
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="user_manager">
+        </br>
+        <div class="row">
+            <div class="col-md-2">
+                <input id="user_name_query" type="text" class="form-control" placeholder="input user name">
+            </div>
+            <div class="col-md-2">
+                <select id="user_group_query" name="user_group_query" class="selectpicker show-tick form-control bs-select-hidden" required>
+                    <option value="0" selected>所有用户组</option>
+                    {% for info in group_infos %}
+                        <option value="{{ info.group_id }}">{{ info.group_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select id="user_role_query" name="user_role_query" class="selectpicker show-tick form-control bs-select-hidden" required>
+                    <option value="0" selected>所有用户角色</option>
+                    {% for info in role_infos %}
+                        <option value="{{ info.role_id }}">{{ info.role_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-default" onclick="query_user()">查询</button>
+                <button class="btn btn-primary" onclick=show_add_user_dialog()>添加用户</button>
+            </div>
+        </div>
+        </br>
+        <div class="row">
+            <div class="col-md-8" id="user_data">
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="user_group" hidden>
+        </br>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-primary" onclick=show_modal_dialog("#group_add")>添加用户组</button>
+            </div>
+        </div>
+        </br>
+        <div class="row">
+            <div class="col-md-5" id="group_data">
+            </div>
+        </div>
+    </div>
+    <!--<div class="tab-pane fade" id="user_role">
+        </br>
+        <div class="row">
+            <div class="col-md-6" id="user_role_data">
+                user role
+            </div>
+        </div>
+    </div>-->
+</div>

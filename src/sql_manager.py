@@ -58,6 +58,17 @@ def add_sql_work(obj):
     return "提交SQL工单成功"
 
 
+# 增加编辑未执行的工单功能
+# 修改标题，jira地址，是否备份，执行sql的DBA
+# sql和上线的库为什么不可以修改，主要是如果你写错了，那么审核的时候肯定就不通过的
+def update_sql_work(obj):
+    sql = """update `mysql_audit`.`sql_work` set `title` = '{0}', `jira_url` = '{1}', `execute_user_id` = {2}, is_backup = {3} where id = {4};""" \
+        .format(db_util.DBUtil().escape(obj.title),
+                db_util.DBUtil().escape(obj.jira_url), obj.dba_user_id, obj.is_backup, obj.sql_id)
+    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    return "update ok."
+
+
 # 根据id删除工单
 def delete_sql_work(sql_id):
     db_util.DBUtil().execute(settings.MySQL_HOST, "update `mysql_audit`.`sql_work` set is_deleted = 1 where id = {0}".format(sql_id))
@@ -96,6 +107,12 @@ def get_sql_list(obj):
              left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
              where t1.is_deleted = 0 {0} order by t1.id desc limit {1}, {2};"""
 
+    # 下周来完成权限控制
+    # 除了DBA组和Admin可以执行SQL以外，任何组都没有执行权限
+    # 不过可以考虑一下组长可以执行
+    # DBA只能看到指定给自己执行的工单以及自己创建的工单
+    # 只有admin才能看到所以的工单
+
     sql = """select t1.*, t2.host_name, t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name
              from
              (
@@ -115,10 +132,22 @@ def get_sql_list(obj):
     return result_list
 
 
+# 组员账号获取工单列表的方法
+def get_sql_list_for_dev(type_id):
+    # 所有工单
+    # 审核中的工单
+    # 已执行的工单
+    if (type_id == 1):
+        sql = ""
+    pass
+
+
 # 根据工单id获取全部信息
 def get_sql_info_by_id(id):
-    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup, t1.ignore_warnings, rollback_sql,
-             t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status, t1.return_value, t1.execute_db_name, t1.audit_result_value
+    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup,
+                    t1.ignore_warnings, rollback_sql,
+                    t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status,
+                    t1.return_value, t1.execute_db_name, t1.audit_result_value, t1.execute_user_id
              from `mysql_audit`.`sql_work` t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id

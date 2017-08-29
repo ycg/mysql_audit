@@ -105,7 +105,13 @@ def get_rollback_sql(sql_id):
 @app.route("/list")
 @login_required
 def sql_list_home():
-    return render_template("list.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)
+    user_info = cache.MyCache().get_user_info(current_user.id)
+    if (user_info.role_id == settings.ROLE_DEV):
+        return render_template("list_for_dev.html")
+    elif (user_info.role_id == settings.ROLE_LEADER):
+        return render_template("list_for_leader.html")
+    elif (user_info.role_id == settings.ROLE_ADMINISTRATOR):
+        return render_template("list.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)
 
 @app.route("/list/query", methods=["POST"])
 @login_required
@@ -238,6 +244,18 @@ def delete_group(group_id):
 def update_group():
     return user_manager.update_user_group_info(get_object_from_json_tmp(request.get_data()))
 
+
+#endregion
+
+#region sql work update
+
+@app.route("/work/update/<int:sql_id>", methods=["GET", "POST"])
+@login_required
+def get_update_sql_work_html(sql_id):
+    return render_template("sql_update_view.html",
+                           work_info=sql_manager.get_sql_info_by_id(sql_id),
+                           host_infos=sql_manager.get_audit_mysql_host(),
+                           dba_users=cache.MyCache().get_user_info_by_group_id(settings.DBA_GROUP_ID))
 
 #endregion
 
