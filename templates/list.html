@@ -117,6 +117,19 @@
         });
     }
 
+    function update_sql_work(sql_id) {
+        var json_obj = get_form_json($("#sql_work_update_form"));
+        json_obj.sql_id = sql_id;
+        $.post("/work/update/sql/save", JSON.stringify(json_obj), function (data) {
+            alert(data);
+            hide_modal_dialog("#sql_work_update_dialog")
+            query_sql_list();
+        }).error(function () {
+            alert("error");
+            hide_modal_dialog("#sql_work_update_dialog")
+        });
+    }
+
     function get_rollback_sql(sql_id) {
         $.post("/execute/rollback/sql/" + sql_id, "", function (data) {
             var json_obj = JSON.parse(data);

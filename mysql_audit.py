@@ -257,6 +257,12 @@ def get_update_sql_work_html(sql_id):
                            host_infos=sql_manager.get_audit_mysql_host(),
                            dba_users=cache.MyCache().get_user_info_by_group_id(settings.DBA_GROUP_ID))
 
+@app.route("/work/update/sql/save", methods=["GET", "POST"])
+@login_required
+def update_sql_work():
+    return sql_manager.update_sql_work(get_object_from_json_tmp(request.get_data()))
+
+
 #endregion
 
 #region login api
@@ -306,7 +312,7 @@ def get_object_from_json(json_value):
 def get_object_from_json_tmp(json_value):
     obj = common_util.Entity()
     for key, value in json.loads(json_value).items():
-        if(value.isdigit()):
+        if(str(value).isdigit()):
             setattr(obj, key, int(value))
         else:
             if(value == "null"):
