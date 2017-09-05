@@ -147,7 +147,7 @@ def get_sql_info_by_id(id):
     sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup,
                     t1.ignore_warnings, rollback_sql,
                     t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status,
-                    t1.return_value, t1.execute_db_name, t1.audit_result_value, t1.execute_user_id
+                    t1.return_value, t1.execute_db_name, t1.audit_result_value, t1.execute_user_id, t1.created_time, ifnull(t1.execute_date_time, '') as execute_date_time
              from `mysql_audit`.`sql_work` t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
