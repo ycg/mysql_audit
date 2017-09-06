@@ -59,6 +59,8 @@ CREATE TABLE sql_work
   execute_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '执行用户名冗余字段',
   audit_date_time DATETIME DEFAULT NULL COMMENT 'sql审核时间',
   execute_date_time DATETIME DEFAULT NULL COMMENT 'sql执行时间',
+  execute_start_date_time DATETIME DEFAULT NULL COMMENT 'sql执行开始时间',
+  execute_finish_date_time DATETIME DEFAULT NULL COMMENT 'sql执行完成时间',
   mysql_host_id SMALLINT UNSIGNED NOT NULL COMMENT '要执行的数据主机id',
   execute_db_name VARCHAR(50) NOT NULL DEFAULT 0 COMMENT '要执行的库名，如果不选，就需要在sql上使用use db',
   jira_url VARCHAR(100) NOT NULL DEFAULT '' COMMENT '对应的jira地址',

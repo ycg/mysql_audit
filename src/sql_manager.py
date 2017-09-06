@@ -163,17 +163,21 @@ def sql_execute(obj):
         # 如果已经执行成功，直接返回执行结果
         return json.loads(sql_info.return_value)
     else:
+        # 更新工单状态为执行中
+        sql = "update mysql_audit.sql_work set `status` = {0}, `execute_start_date_time` = NOW(), `execute_date_time` = NOW() where id = {1};".format(settings.SQL_EXECUTE_ING, sql_info.id)
+        db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+
         if (len(sql_info.execute_db_name.strip()) > 0):
             sql_info.sql_value = "use {0};{1}".format(sql_info.execute_db_name, sql_info.sql_value)
         result_obj = inception_util.sql_execute(sql_info.sql_value,
                                                 cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
                                                 is_backup=sql_info.is_backup,
                                                 ignore_warnings=True if (obj.ignore_warnings.upper() == "TRUE") else False)
-        sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {1}, `ignore_warnings` = {3}, `execute_date_time` = NOW() where id = {2};" \
-            .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
-                    settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
-                    sql_info.id,
-                    obj.ignore_warnings)
+        sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {1}, `ignore_warnings` = {2}, `execute_finish_date_time` = NOW() where id = {3};" \
+              .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
+                      settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
+                      obj.ignore_warnings,
+                      sql_info.id,)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         return result_obj
 

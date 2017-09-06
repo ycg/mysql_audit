@@ -90,6 +90,9 @@
                 <!--执行错误-->
                 {% elif(info.status == 3) %}
                     <button class="btn-danger btn btn-xs" onclick=show_delete_sql_work_dialog({{ info.id }})>删除</button>
+                {% elif(info.status == 5) %}
+                    <button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>
+                    <button class="btn-danger btn btn-xs">停止</button>
                 <!--其它状态-->
                 {% else %}
                     <button class="btn-info btn btn-xs" onclick=get_sql_update_work_html({{ info.id }})>编辑</button>
