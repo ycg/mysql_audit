@@ -85,7 +85,7 @@ def get_sql_list(obj):
     if (len(obj.start_datetime) > 0):
         sql_where += " and created_time >= '{0}'".format(obj.start_datetime)
     if (len(obj.stop_datetime) > 0):
-        sql_where += " and stop_datetime <= '{0}'".format(obj.stop_datetime)
+        sql_where += " and created_time <= '{0}'".format(obj.stop_datetime)
 
     # 这边要根据用户权限进行查询
     # 管理员可以看所有的用户
@@ -180,6 +180,11 @@ def sql_execute(obj):
                       sql_info.id,)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         return result_obj
+
+
+# 停止正在执行的sql
+def stop_sql_execute(obj):
+    pass
 
 
 # 如果审核结果有warning，那么要提示用户选择忽视警告执行SQL

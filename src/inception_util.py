@@ -28,6 +28,18 @@ sql_mode_no_host = "inception_magic_start;{0}inception_magic_commit;"
 osc_fields = ["DBNAME", "TABLENAME", "SQLSHA1", "PERCENT", "REMAINTIME", "INFORMATION"]
 execute_fields = ['ID', 'stage', 'errlevel', 'stagestatus', 'errormessage', 'SQL', 'Affected_rows', 'sequence', 'backup_dbname', 'execute_time', 'sqlsha1']
 
+'''
+id:一个简单的计数。
+dest_user:表示当前执行语句访问数据库时所用的用户名。
+dest_host:表示当前执行语句要访问的数据库地址。
+dest_port:表示当前执行语句要访问的数据库的端口。
+from_host:表示当前执行语句是从机器上发起的。
+command:表示当前执行的是什么操作，包括CHECK（简单审核），EXECUTE（执行），SPLIT（拆分），PRINT（打印计划树），LOCAL（本地命令）。
+state:表示在当前命令下，执行的状态是什么，状态包括INIT（初始阶段），CHECKING（正在审核），EXECUTING（正在执行），DEINIT（退出），BACKUP（正在备份）。
+time:表示当前语句执行所用时间。
+info:显示当前正在执行的语句。
+'''
+processlist_fields = ["id", "dest_user", "dest_host", "dest_port", "from_host", "command", "state", "time", "info"]
 
 # sql审核
 def sql_audit(sql, host_info):
@@ -54,6 +66,11 @@ def stop_osc_task(sha1_code):
 def get_osc_info(sha1_code):
     sql = "inception get osc_percent '{}';".format(sha1_code)
     return get_object(execute_sql(sql_mode_no_host.format(sql)), fields=osc_fields)
+
+
+# 获取inception的processlist信息
+def get_processlist():
+    return get_object(execute_sql("inception get processlist;"), fields=processlist_fields)
 
 
 # 把返回数据转化为对象
