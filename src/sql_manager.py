@@ -164,7 +164,8 @@ def sql_execute(obj):
         return json.loads(sql_info.return_value)
     else:
         # 更新工单状态为执行中
-        sql = "update mysql_audit.sql_work set `status` = {0}, `execute_start_date_time` = NOW(), `execute_date_time` = NOW() where id = {1};".format(settings.SQL_EXECUTE_ING, sql_info.id)
+        sql = "update mysql_audit.sql_work set `status` = {0}, `execute_start_date_time` = NOW(), `execute_date_time` = NOW() where id = {1};"\
+              .format(settings.SQL_EXECUTE_ING, sql_info.id)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
 
         if (len(sql_info.execute_db_name.strip()) > 0):
@@ -301,7 +302,7 @@ def get_rollback_sql(sql_id):
 def execute_rollback_sql(sql_id):
     sql_info = get_sql_info_by_id(sql_id)
     rollback_host = cache.MyCache().get_mysql_host_info(int(sql_info.mysql_host_id))
-    rollback_sql = "start transaction;" + get_rollback_sql(sql_id).rollback_sql_value + "commit;"
+    rollback_sql = "start transaction; " + get_rollback_sql(sql_id).rollback_sql_value + " commit;"
     if (db_util.DBUtil().execute(rollback_host, rollback_sql)):
         db_util.DBUtil().execute(settings.MySQL_HOST, "update mysql_audit.sql_work set `status` = {0} where id = {1};".format(settings.SQL_WORK_ROLLBACK, sql_id))
         return "回滚成功"
