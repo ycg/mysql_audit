@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json, time
-from flask import render_template
+from flask import render_template, request
 import inception_util, cache, db_util, settings, common_util
 
 
@@ -181,7 +181,7 @@ def sql_execute(obj):
                       obj.ignore_warnings,
                       sql_info.id,)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-        common_util.join_thread_pool(send_mail_for_execute_success, (sql_info.id,))
+        send_mail_for_execute_success(sql_info.id)
         return result_obj
 
 
@@ -322,6 +322,7 @@ def send_mail_for_execute_success(sql_id):
     if (settings.EMAIL_SEND_ENABLE):
         sql_info = get_sql_info_by_id(sql_id)
         sql_info.status_str = settings.SQL_WORK_STATUS_DICT[sql_info.status]
+        sql_info.host_url = request.host_url
         if (len(sql_info.email) > 0):
             subject = "SQL工单-[{0}]-执行完成".format(sql_info.title)
             content = render_template("mail_template.html", sql_info=sql_info)
