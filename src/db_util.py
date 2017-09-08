@@ -1,10 +1,7 @@
-import pymysql, traceback
+from custom_entity import Entity
+
+import pymysql
 from DBUtils.PooledDB import PooledDB
-
-
-class Entity():
-    def __init__(self):
-        pass
 
 
 class DBUtil(object):

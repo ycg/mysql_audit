@@ -145,12 +145,13 @@ def get_sql_list_for_dev(type_id):
 # 根据工单id获取全部信息
 def get_sql_info_by_id(id):
     sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup,
-                    t1.ignore_warnings, rollback_sql,
-                    t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status,
+                    t1.ignore_warnings, rollback_sql, ifnull(t4.chinese_name, '') as execute_user_name,
+                    t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status, t3.email,
                     t1.return_value, t1.execute_db_name, t1.audit_result_value, t1.execute_user_id, t1.created_time, ifnull(t1.execute_date_time, '') as execute_date_time
              from `mysql_audit`.`sql_work` t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
+             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
              where t1.id = {0};""".format(id)
     return get_sql_work_status_name(common_util.get_object(db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)))
 
@@ -180,6 +181,7 @@ def sql_execute(obj):
                       obj.ignore_warnings,
                       sql_info.id,)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+        common_util.join_thread_pool(send_mail_for_execute_success, (sql_info.id,))
         return result_obj
 
 
@@ -319,3 +321,9 @@ def send_mail_for_audit_success():
 def send_mail_for_execute_success(sql_id):
     if (settings.EMAIL_SEND_ENABLE):
         sql_info = get_sql_info_by_id(sql_id)
+        sql_info.status_str = settings.SQL_WORK_STATUS_DICT[sql_info.status]
+        if (len(sql_info.email) > 0):
+            subject = "SQL工单-[{0}]-执行完成".format(sql_info.title)
+            content = render_template("mail_template.html", sql_info=sql_info)
+            common_util.send_html(subject, sql_info.email, content)
+

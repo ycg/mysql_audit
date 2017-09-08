@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import platform
-from src import common_util
+from src.custom_entity import Entity
 
 inception_host = "192.168.11.101"
 inception_port = 6669
@@ -11,7 +11,7 @@ inception_password = "yangcaogui"
 LINUX_OS = 'Linux' in platform.system()
 WINDOWS_OS = 'Windows' in platform.system()
 
-MySQL_HOST = common_util.Entity()
+MySQL_HOST = Entity()
 MySQL_HOST.key = 99999
 MySQL_HOST.host = "192.168.11.101"
 MySQL_HOST.port = 3306

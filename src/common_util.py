@@ -1,30 +1,39 @@
-import smtplib, traceback
-from email.mime.text import MIMEText
+# -*- coding: utf-8 -*-
 
 import settings
+from custom_entity import Entity
 
-class Entity():
-    def __init__(self):
-        pass
+from email.mime.text import MIMEText
+import smtplib, traceback, threadpool
 
+threadpool_cache = threadpool.ThreadPool(settings.THREAD_POOL_SIZE)
+
+
+# 把数据行转化为对象
 def get_object(row):
     info = Entity()
     for key, value in row.items():
-        if(value == "None"):
+        if (value == "None"):
             value = None
         setattr(info, key, value)
     return info
 
+
+# 发生文本邮件
 def send_text(subject, to_list, content):
     send_mail(subject, to_list, content, "plain")
 
+
+# 发送html邮件
 def send_html(subject, to_list, content):
     send_mail(subject, to_list, content, "html")
 
+
+# 发送邮件代码
 def send_mail(subject, to_list, content, mail_type):
     list_t = []
     server = None
-    if(isinstance(to_list, list) == False):
+    if (isinstance(to_list, list) == False):
         list_t.append(to_list)
     try:
         message = MIMEText(content, _subtype=mail_type, _charset="utf8")
@@ -39,6 +48,14 @@ def send_mail(subject, to_list, content, mail_type):
     except:
         traceback.print_exc()
     finally:
-        if(server != None):
+        if (server != None):
             server.close()
+
+
+# 创建线程处理任务
+def join_thread_pool(method_name, arg_list):
+    requests = threadpool.makeRequests(method_name, arg_list, None)
+    for request in requests:
+        threadpool_cache.putRequest(request)
+    threadpool_cache.poll()
 
