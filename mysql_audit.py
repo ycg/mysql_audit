@@ -130,13 +130,17 @@ def query_sql_list():
 def delete_sql_list(sql_id):
     return sql_manager.delete_sql_work(sql_id)
 
+@app.route("/sql/work/<int:sql_id>", methods=["GET", "POST"])
+@login_required
+def show_sql_work(sql_id):
+    return render_template("work_show_template.html", sql_info=sql_manager.get_sql_info_by_id(sql_id))
+
 def get_page_number_list(page_number):
     if(page_number <= 5):
         page_list = range(1, 10)
     else:
         page_list = range(page_number - 5, page_number + 6)
     return page_list
-
 
 # 获取当前列表中的最小id，用于提高分页效率
 def get_min_id(sql_list, page_number):
