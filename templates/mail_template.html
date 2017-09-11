@@ -2,17 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SQL执行成功</title>
+    <style type="text/css">
+        .text-danger {
+            color: #FF0000;
+            font-weight: bold;
+        }
+
+        .text-success {
+            color: #3c763d;
+        }
+
+        .title_label {
+            display: inline;
+            padding: .2em .6em .3em;
+            font-weight: bold;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25em;
+        }
+
+        a {
+            color: #337ab7;
+            text-decoration: none;
+        }
+
+        a:hover,
+        a:focus {
+            color: #23527c;
+            text-decoration: underline;
+        }
+
+        a:focus {
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: -2px;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 20px;
+            line-height: 1.42857143;
+        }
+    </style>
 </head>
 <body>
-<div><label>工单地址:</label><a href="{{ sql_info.host_url }}/{{ sql_info.id }}">{{ sql_info.host_url }}/{{ sql_info.id }}</a></div>
+<div>
+    <label class="title_label">标题:</label>
+    <label>{{ sql_info.title }}</label>
+</div>
 
-<div><label>标题:</label><label>{{ sql_info.title }}</label></div>
+<div>
+    <label class="title_label">执行人:</label>
+    <label>{{ sql_info.execute_user_name }}</label>
+</div>
 
-<div><label>执行人:</label><label>{{ sql_info.execute_user_name }}</label></div>
+<div>
+    <label class="title_label">执行状态:</label>
+    <label {% if(sql_info.status != 4) %} class="text-danger" {% else %} class="text-success" {% endif %}>{{ sql_info.status_str }}</label>
+</div>
 
-<div><label>执行状态:</label><label>{{ sql_info.status_str }}</label></div>
+<div>
+    <label class="title_label">执行时间:</label>
+    <label>{{ sql_info.execute_date_time }}</label>
+</div>
 
-<div><label>执行时间:</label><label>{{ sql_info.execute_date_time }}</label></div>
+<div>
+    <label class="title_label">工单地址:</label>
+    <a href="{{ sql_info.host_url }}/{{ sql_info.id }}">{{ sql_info.host_url }}/{{ sql_info.id }}</a>
+</div>
 </body>
 </html>
