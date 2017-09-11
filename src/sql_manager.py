@@ -325,6 +325,7 @@ def send_mail_for_execute_success(sql_id):
         sql_info.host_url = request.host_url
         if (len(sql_info.email) > 0):
             subject = "SQL工单-[{0}]-执行完成".format(sql_info.title)
+            sql_info.work_url = "{0}sql/work/{1}".format(request.host_url, sql_info.id)
             content = render_template("mail_template.html", sql_info=sql_info)
             common_util.send_html(subject, sql_info.email, content)
 
