@@ -118,7 +118,7 @@ def get_sql_list(obj):
              (
                  select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
                         execute_date_time, mysql_host_id, jira_url, is_backup, execute_db_name,
-                        backup_table, left(sql_value, 10) as sql_value, status, is_deleted, created_time
+                        backup_table, left(sql_value, 10) as sql_value, status, is_deleted, created_time, execute_finish_date_time
                  from mysql_audit.sql_work
                  where is_deleted = 0 {0} order by id desc limit {1}, {2}
              ) t1

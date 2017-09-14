@@ -11,9 +11,9 @@
         <th>
             创建用户
         </th>
-        <th>
+        <!--<th>
             SQL
-        </th>
+        </th>-->
         <th>
             上线集群
         </th>
@@ -33,13 +33,16 @@
             创建时间
         </th>
         <th>
+            结束时间
+        </th>
+        <th>
 
         </th>
     </tr>
     </thead>
     <tbody>
     {% for info in sql_list %}
-        <tr>
+        <tr {% if(info.status == 3) %} class="bg-danger" {% endif %}>
             <td>
                 {{ info.id }}
             </td>
@@ -49,9 +52,9 @@
             <td>
                 {{ info.chinese_name }}
             </td>
-            <td>
+            <!--<td>
                 {{ info.sql_value }}
-            </td>
+            </td>-->
             <td class="text-info">
                 {{ info.host_name }}
             </td>
@@ -82,6 +85,9 @@
             <td>
                 {{ info.created_time }}
             </td>
+            <td>
+                {{ info.execute_finish_date_time }}
+            </td>
             <td class="text-center">
                 <!--执行成功-->
                 {% if(info.status == 4) %}
@@ -89,6 +95,7 @@
                     <button class="btn-danger btn btn-xs" onclick=get_rollback_sql({{ info.id }}) {% if(info.is_backup == 0) %} disabled {% endif %}>回滚</button>
                 <!--执行错误-->
                 {% elif(info.status == 3) %}
+                    <button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>
                     <button class="btn-danger btn btn-xs" onclick=show_delete_sql_work_dialog({{ info.id }})>删除</button>
                 {% elif(info.status == 5) %}
                     <button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>
