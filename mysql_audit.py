@@ -250,6 +250,15 @@ def update_group():
     return user_manager.update_user_group_info(get_object_from_json_tmp(request.get_data()))
 
 
+@app.route("/user/update/dialog/<int:user_id>", methods=["GET", "POST"])
+@login_required
+def get_show_update_user_dialog(user_id):
+    return render_template("user_update_view.html",
+                           role_infos=cache.MyCache().get_role_info(),
+                           group_infos=cache.MyCache().get_group_info(),
+                           user_info=cache.MyCache().get_user_info(user_id))
+
+
 #endregion
 
 #region sql work update

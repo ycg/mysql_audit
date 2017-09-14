@@ -40,7 +40,7 @@
         </thead>
         <tbody>
         {% for info in user_infos %}
-            <tr>
+            <tr {% if(info.is_deleted == 1) %} class="bg-danger" {% endif %}>
                 <td>
                     {{ info.user_id }}
                 </td>
@@ -66,8 +66,8 @@
                     {% if(info.is_deleted == 1) %}
                         <button class="btn btn-danger btn-xs" onclick=start_user({{ info.user_id }})>已删除</button>
                     {% else %}
-                        <button class="btn btn-default btn-xs">编辑</button>
-                        <button class="btn btn-primary btn-xs">权限</button>
+                        <button class="btn btn-default btn-xs" onclick="show_update_user_dialog({{ info.user_id }})">编辑</button>
+                        <!--<button class="btn btn-primary btn-xs">权限</button>-->
                         <button class="btn btn-danger btn-xs" onclick="delete_user({{ info.user_id }})">禁用</button>
                     {% endif %}
                 </td>

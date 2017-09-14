@@ -90,6 +90,11 @@ def query_user(obj):
     return db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
 
 
+# 更新用户信息
+def update_user(obj):
+    pass
+
+
 # 获取用户组信息
 def get_user_group_infos():
     return db_util.DBUtil().get_list_infos(settings.MySQL_HOST, "select * from mysql_audit.group_info where is_deleted = 0;")

@@ -15,7 +15,7 @@ CREATE TABLE work_user
   UNIQUE KEY userName (`user_name`)
 ) COMMENT '用户表' CHARSET utf8 ENGINE innodb;
 
-insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("admin", md5("yang123!.+"), '超级管理员', 10002, 1002, 'ycg166911@163.com');
+insert into work_user (user_name, user_password, chinese_name, group_id, role_id,email) VALUES ("admin", md5("yang123!.+"), '超级管理员', 10002, 1001, 'ycg166911@163.com');
 
 CREATE TABLE role_info
 (
@@ -29,7 +29,6 @@ CREATE TABLE role_info
 
 INSERT INTO role_info (role_id, role_name, remark) VALUES (1000, '组员', '开发人员只能查看自己创建的工具');
 INSERT INTO role_info (role_id, role_name, remark) VALUES (1001, '组长', '开发组长能够查看本小组所有开发人员的历史数据');
-INSERT INTO role_info (role_id, role_name, remark) VALUES (1002, 'Administrator', '超级管理员具有添加用户和主机的权限');
 
 CREATE TABLE group_info
 (
@@ -42,18 +41,18 @@ CREATE TABLE group_info
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
 ) COMMENT '用户组信息表' AUTO_INCREMENT=10003 CHARSET utf8 ENGINE innodb;
 
-INSERT INTO group_info(group_id, group_name, remark) VALUES (10000, 'DBA组', '');
-INSERT INTO group_info(group_id, group_name, remark) VALUES (10001, '运维组', '');
-INSERT INTO group_info(group_id, group_name, remark) VALUES (10002, '管理员组', '');
+INSERT INTO group_info(group_id, group_name, remark) VALUES (10000, 'DBA组', '负责执行SQL的DBA小组');
+INSERT INTO group_info(group_id, group_name, remark, user_count) VALUES (10002, '管理员组', '超级管理员权限', 1);
 
 CREATE TABLE sql_work
 (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(100) NOT NULL COMMENT '标题，此sql对应的是什么业务',
   create_user_id SMALLINT UNSIGNED NOT NULL COMMENT '创建sql工单用户id',
+  create_user_group_id SMALLINT UNSIGNED NOT NULL COMMENT '创建sql工单用户组id',
   audit_user_id SMALLINT UNSIGNED NOT NULL COMMENT '审核用户id',
   execute_user_id SMALLINT UNSIGNED NOT NULL COMMENT '创建工单的时候指定执行用户id',
-  real_execute_user_id SMALLINT UNSIGNED NOT NULL COMMENT '真实执行SQL的用户id，一般和execute_user_id的值是一样的',
+  real_execute_user_id SMALLINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '真实执行SQL的用户id，一般和execute_user_id的值是一样的',
   create_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '创建sql工单用户名冗余字段',
   audit_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '审核用户名冗余字段',
   execute_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '执行用户名冗余字段',

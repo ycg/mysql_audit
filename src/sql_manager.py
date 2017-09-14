@@ -91,11 +91,18 @@ def get_sql_list(obj):
     # 管理员可以看所有的用户
     # 开发只能看到自己提交的工单
     # 组长只能看到组员提交的所有工单
-    '''user_info = cache.MyCache().get_user_info(obj.current_user_id)
-    if (user_info.role_id == settings.ROLE_DEV):
+    user_info = cache.MyCache().get_user_info(obj.current_user_id)
+    if (user_info.group_id == settings.ADMIN_GROUP_ID):
+        pass
+    elif (user_info.group_id == settings.DBA_GROUP_ID):
+        if (user_info.role_id == settings.ROLE_DEV):
+            sql_where += " and (create_user_id = {0} or execute_user_id = {0})".format(obj.current_user_id)
+        else:
+            pass
+    elif (user_info.role_id == settings.ROLE_DEV):
         sql_where += " and create_user_id = {0}".format(obj.current_user_id)
     elif (user_info.role_id == settings.ROLE_LEADER):
-        sql_where += " and create_user_group_id = {0}".format(user_info.group_id)'''
+        sql_where += " and create_user_group_id = {0}".format(user_info.group_id)
 
     """sql = select t1.id, t1.title, t1.create_user_id, t1.audit_user_id, t1.execute_user_id, t1.audit_date_time,
                     t1.execute_date_time, t1.mysql_host_id, t1.jira_url, t1.is_backup,
@@ -127,6 +134,7 @@ def get_sql_list(obj):
              left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id ORDER BY t1.id DESC """
     sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
     result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
+    print(sql)
     for info in result_list:
         get_sql_work_status_name(info)
     return result_list
@@ -175,10 +183,17 @@ def sql_execute(obj):
                                                 cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
                                                 is_backup=sql_info.is_backup,
                                                 ignore_warnings=True if (obj.ignore_warnings.upper() == "TRUE") else False)
-        sql = "update mysql_audit.sql_work set return_value = '{0}', `status` = {1}, `ignore_warnings` = {2}, `execute_finish_date_time` = NOW() where id = {3};" \
+        sql = """update mysql_audit.sql_work
+                 set
+                 return_value = '{0}',
+                 `status` = {1},
+                 `ignore_warnings` = {2},
+                 `execute_finish_date_time` = NOW(),
+                 `real_execute_user_id` = {3} where id = {4};""" \
               .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
                       settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
                       obj.ignore_warnings,
+                      obj.current_user_id,
                       sql_info.id,)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         send_mail_for_execute_success(sql_info.id)

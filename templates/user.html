@@ -51,6 +51,10 @@
     </div>
 </div>
 
+<div id="user_update_div">
+
+</div>
+
 <div class="modal fade" id="group_add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -230,6 +234,20 @@
                 alert("启用失败！");
             });
         }
+    }
+
+    function show_update_user_dialog(user_id) {
+        $.post("/user/update/dialog/" + user_id, "", function (data) {
+            $("#user_update_div").html(data);
+            $(".selectpicker").selectpicker();
+            show_modal_dialog("#user_update_dialog")
+        }).error(function () {
+            alert("添加失败!");
+        });
+    }
+
+    function update_user() {
+        console.log(JSON.stringify(get_form_json($("#user_update_form"))))
     }
 
     query_user();
