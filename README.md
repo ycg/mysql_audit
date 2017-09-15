@@ -59,8 +59,8 @@ http://192.168.1.101:5200/login</br>
 4. 必须使用参数--enable-remote-backup才能备份
 
 # 联系方式
-1. QQ:779647966
-2. Email:ycg166911@163.com
+1. QQ：779647966
+2. Email：ycg166911@163.com
 
 # 界面展示
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/1.png)
