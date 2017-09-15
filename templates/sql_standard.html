@@ -1,3 +1,4 @@
+
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-info">
@@ -13,18 +14,25 @@
 2.为每个表使用innodb引擎
 3.默认使用utf8字符集，如果使用emoj等表情符号，需要使用utf8mb4
 4.选用最合适的整型，tinyint，smallint，mediumint，int，bigint
+    类型       占用字节      无符号范围           有符号范围
+    tinyint       1          0-255               -128-127
+    smallint      2          0-65535             -32768-32767
+    mediumint     3          0-16777215          -8388608-8388607
+    int           4          0-42亿              -21亿-21亿
+    bigint        8          0-2^63*2            -2^63-2^63-1
 5.为每个字段设置NOT NULL，并且设置默认值0或''，如果设置null会额外占用一个字节
 6.建议非负整型使用UNSINGNED
 7.谨慎使用text大文本字段，建议拆分到另一张表中，通过主键id关联
-8.使用varchar类型，请指定合适的字符长度
+8.使用varchar类型，请指定合适的字符长度，过长的varchar会浪费内存空间
 9.为业务设计字典表，通过整型数值来描述各种状态
 10.通过tinyint来代替enum和char(1)
 11.手机号码一般使用bigint存储就行
 12.涉及到浮点计算，建议使用整型来代替，可以把单位精确到分，从而避免浮点计算，因为浮点计算更占用CPU
 13.区分使用datetime和timestamp
-    建议使用timestamp，有自动更新时间特性，并且只占用4个字节
+    datetime：占用8个字节
+    timestamp：占用4个字节，有自动更新时间特性
+    建议使用timestamp，也可以转换成时间戳变成int类型
     如：timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    datetime 占用8个字节
 14.每个字段都要有comment注释
 15.有逻辑删除需求的表，可增加delete_flag字段（tinyint类型，默认值为0），用来标识字段是否被逻辑删除，避免物理删除造成表空间未释放
 16.库名，表名，字段名，索引名，视图名都要求小写
