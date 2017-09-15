@@ -52,6 +52,13 @@ def get_sql_audit_info_by_sql_id(id):
 def get_database_names(host_id):
     return sql_manager.get_database_names(host_id)
 
+
+@app.route("/standard", methods=["GET", "POST"])
+@login_required
+def get_sql_standard():
+    return render_template("sql_standard.html")
+
+
 #endregion
 
 #region sql execute
