@@ -1,5 +1,7 @@
 CREATE DATABASE mysql_audit;
 
+use mysql_audit;
+
 CREATE TABLE work_user
 (
   user_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
