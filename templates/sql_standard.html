@@ -1,13 +1,36 @@
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-info">
             <div class="panel-heading">
-                <h7>1-建表规范</h7>
+                <h4>一丶建表规范</h4>
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-
+                        <pre style="font-size: 14px;">
+1.为每一个表设计一个自增的主键，语句如下
+    id int unsigned not null auto_increment primary key
+2.为每个表使用innodb引擎
+3.默认使用utf8字符集，如果使用emoj等表情符号，需要使用utf8mb4
+4.选用最合适的整型，tinyint，smallint，mediumint，int，bigint
+5.为每个字段设置NOT NULL，并且设置默认值0或''，如果设置null会额外占用一个字节
+6.建议非负整型使用UNSINGNED
+7.谨慎使用text大文本字段，建议拆分到另一张表中，通过主键id关联
+8.使用varchar类型，请指定合适的字符长度
+9.为业务设计字典表，通过整型数值来描述各种状态
+10.通过tinyint来代替enum和char(1)
+11.手机号码一般使用bigint存储就行
+12.涉及到浮点计算，建议使用整型来代替
+13.区分使用datetime和timestamp
+    建议使用timestamp，有自动更新时间特性，并且只占用四个字节
+    如：timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    datetime 占用8个字节
+14.每个字段都要有comment注释
+15.有逻辑删除需求的表，可增加delete_flag字段（tinyint类型，默认值为0），用来标识字段是否被逻辑删除，避免物理删除造成表空间未释放
+16.库名，表名，字段名，索引名，视图名都要求小写
+17.禁用外键
+18.控制单表字段数量
+19.单纯存储日期，请使用date类型，不要使用varchar或者char类型</pre>
                     </div>
                 </div>
             </div>
@@ -17,14 +40,32 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-info">
             <div class="panel-heading">
-                <h7>2-索引规范</h7>
+                <h4>二丶索引规范</h4>
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-
+                        <pre style="font-size: 14px">
+1.单张表中索引数量尽量不超过5个
+2.单个索引中的字段数不超过5个
+3.索引名必须全部使用小写
+4.非唯一索引按照"idx_字段名称[_字段名称]"进用行命名例如idx_age_name
+5.唯一索引按照"uniq_字段名称[_字段名称]"进用行命名例如uniq_age_name
+6.组合索引建议包含所有字段名,过长的字段名可以采用缩写形式例如idx_age_name_add
+7.表必须有主键,推荐使用建立与业务无关的自增主键
+8.唯一键由3个以下字段组成,并且字段都是整形时,可使用唯一键作为主键其他情况下,建议使用自增列
+9.禁止冗余索引
+10.禁止重复索引
+11.禁止使用外键
+12.联表查询时,JOIN列的数据类型必须相同,并且要建立索引
+13.不在低基数列上建立索引,例如“性别”
+14.选择区分度大的列建立索引组合索引中,区分度大的字段放在最前
+15.对字符串使用前缀索引,前缀索引长度不超过8个字符
+16.不对过长的VARCHAR字段建立索引建议优先考虑前缀索引,或添加CRC32或MD5伪列并建立索引
+17.合理创建联合索引a,b,c. 相当于 a 、a,b 、a,b,c
+18.合理使用覆盖索引减少IO,避免排序</pre>
                     </div>
                 </div>
             </div>
@@ -35,14 +76,36 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-info">
             <div class="panel-heading">
-                <h7>3-SQL规范</h7>
+                <h4>三丶SQL规范</h4>
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-
+                        <pre style="font-size: 14px">
+1.慎用OR关键字，使用UNION ALL来代替
+2.尽量不要在列上使用函数，因为这样用不到索引
+3.如果想强制使用某个索引，使用force index来指定
+4.更新数据时，先查出主键，再通过主键来更新或删除，可以防止死锁或锁等待
+6.如果group by分组之后不需要排序，可以加上order by null，禁用排序
+7.使用表连接时候保证ON的连接列字符集要一致
+8.应尽量避免在 where 子句中对字段进行 null 值判断，否则将导致引擎放弃使用索引而进行全表扫描
+    如：select id from t where num is null;
+    可以在num上设置默认值0，确保表中num列没有null值，然后这样查询： select id from t where num = 0;
+9.很多时候用 exists 代替 in 是一个好的选择：
+    select num from a where num in(select num from b);
+    用下面的语句替换：
+    select num from a where exists(select 1 from b where num=a.num);
+10.禁用select * 进行查询，写出需要返回的列名
+11.避免一次(delete，update，insert)操作大批量数据，应拆分批量操作
+12.进行大批量insert操作的时候，使用批量插入，把多条insert合并成一条sql-insert into t1 values (1,2), (3,4), (5,6);
+13.把多个DML操作合并成一个事务来提升性能，避免一个一个的事务进行操作，避免事务频繁提交
+    start transaction;
+        insert
+        update
+        delete
+    commit;</pre>
                     </div>
                 </div>
             </div>
