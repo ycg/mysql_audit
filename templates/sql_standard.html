@@ -20,9 +20,9 @@
 9.为业务设计字典表，通过整型数值来描述各种状态
 10.通过tinyint来代替enum和char(1)
 11.手机号码一般使用bigint存储就行
-12.涉及到浮点计算，建议使用整型来代替
+12.涉及到浮点计算，建议使用整型来代替，可以把单位精确到分，从而避免浮点计算，因为浮点计算更占用CPU
 13.区分使用datetime和timestamp
-    建议使用timestamp，有自动更新时间特性，并且只占用四个字节
+    建议使用timestamp，有自动更新时间特性，并且只占用4个字节
     如：timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     datetime 占用8个字节
 14.每个字段都要有comment注释
