@@ -116,6 +116,7 @@
                     $("#sql_execute_result").html(data)
                     hide_modal_dialog("#sql_execute_status");
                 }).error(function () {
+                    alert("sql执行失败");
                     hide_modal_dialog("#sql_execute_status");
                 });
             }

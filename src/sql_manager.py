@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import json, time
+import json, time, traceback
 from flask import render_template, request
 import inception_util, cache, db_util, settings, common_util
 
@@ -166,37 +166,44 @@ def get_sql_info_by_id(id):
 # 执行sql并更新工单状态
 # 状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功
 def sql_execute(obj):
-    sql_info = get_sql_info_by_id(obj.sql_id)
-    if (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
-        # 如果已经执行成功，直接返回执行结果
-        return json.loads(sql_info.return_value)
-    else:
-        # 更新工单状态为执行中
-        sql = "update mysql_audit.sql_work set `status` = {0}, `execute_start_date_time` = NOW(), `execute_date_time` = NOW() where id = {1};"\
-              .format(settings.SQL_EXECUTE_ING, sql_info.id)
-        db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    try:
+        sql_info = get_sql_info_by_id(obj.sql_id)
+        if (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
+            # 如果已经执行成功，直接返回执行结果
+            return json.loads(sql_info.return_value)
+        else:
+            # 更新工单状态为执行中
+            sql = "update mysql_audit.sql_work set `status` = {0}, `execute_start_date_time` = NOW(), `execute_date_time` = NOW() where id = {1};"\
+                  .format(settings.SQL_EXECUTE_ING, sql_info.id)
+            db_util.DBUtil().execute(settings.MySQL_HOST, sql)
 
-        if (len(sql_info.execute_db_name.strip()) > 0):
-            sql_info.sql_value = "use {0};{1}".format(sql_info.execute_db_name, sql_info.sql_value)
-        result_obj = inception_util.sql_execute(sql_info.sql_value,
-                                                cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
-                                                is_backup=sql_info.is_backup,
-                                                ignore_warnings=True if (obj.ignore_warnings.upper() == "TRUE") else False)
-        sql = """update mysql_audit.sql_work
-                 set
-                 return_value = '{0}',
-                 `status` = {1},
-                 `ignore_warnings` = {2},
-                 `execute_finish_date_time` = NOW(),
-                 `real_execute_user_id` = {3} where id = {4};""" \
-              .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
-                      settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
-                      obj.ignore_warnings,
-                      obj.current_user_id,
-                      sql_info.id,)
+            if (len(sql_info.execute_db_name.strip()) > 0):
+                sql_info.sql_value = "use {0};{1}".format(sql_info.execute_db_name, sql_info.sql_value)
+            result_obj = inception_util.sql_execute(sql_info.sql_value,
+                                                    cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
+                                                    is_backup=sql_info.is_backup,
+                                                    ignore_warnings=True if (obj.ignore_warnings.upper() == "TRUE") else False)
+            sql = """update mysql_audit.sql_work
+                     set
+                     return_value = '{0}',
+                     `status` = {1},
+                     `ignore_warnings` = {2},
+                     `execute_finish_date_time` = NOW(),
+                     `real_execute_user_id` = {3} where id = {4};""" \
+                  .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
+                          settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
+                          obj.ignore_warnings,
+                          obj.current_user_id,
+                          sql_info.id,)
+            db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+            send_mail_for_execute_success(sql_info.id)
+            return result_obj
+    except:
+        # 出现异常要更新状态，直接把状态变为fail
+        sql = "update mysql_audit.sql_work set `status` = {0} where id = {1};".format(settings.SQL_EXECUTE_FAIL, sql_info.id)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-        send_mail_for_execute_success(sql_info.id)
-        return result_obj
+        traceback.print_exc()
+        return "sql execute fail"
 
 
 # 停止正在执行的sql
