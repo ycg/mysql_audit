@@ -99,8 +99,13 @@
     }
 
     function add_sql_work() {
-        post_request("/execute/add", JSON.stringify(get_form_json($("#sql_work_form"))));
-        hide_modal_dialog("#sql_create_dialog")
+        $.post("/execute/add", JSON.stringify(get_form_json($("#sql_work_form"))), function (data) {
+            alert("工单创建成功!");
+            hide_modal_dialog("#sql_create_dialog");
+        }).error(function () {
+            alert("添加失败!");
+            hide_modal_dialog("#sql_create_dialog");
+        });
     }
 
     function display_error_message(message) {
