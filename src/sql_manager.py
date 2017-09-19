@@ -31,31 +31,35 @@ def get_execute_mysql_host():
 # 添加工单时应该自动审核一下比较好
 # 状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销
 def add_sql_work(obj):
-    audit_result = inception_util.sql_audit(get_use_db_sql(obj.sql_value, obj.db_name), cache.MyCache().get_mysql_host_info(obj.host_id))
-    if (get_sql_execute_status(audit_result) == False):
-        return "提交的SQL有错误，请审核之后在提交！"
+    try:
+        audit_result = inception_util.sql_audit(get_use_db_sql(obj.sql_value, obj.db_name), cache.MyCache().get_mysql_host_info(obj.host_id))
+        if (get_sql_execute_status(audit_result) == False):
+            return "提交的SQL有错误，请审核之后在提交！"
 
-    user_info = cache.MyCache().get_user_info(obj.current_user_id)
-    sql = """INSERT INTO `mysql_audit`.`sql_work`
-             (`create_user_id`, `audit_user_id`, `execute_user_id`,
-              `audit_date_time`, `execute_date_time`,
-              `mysql_host_id`, `jira_url`, `is_backup`, `backup_table`, `sql_value`,
-              `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`, `create_user_group_id`)
-             VALUES
-             ({0}, {1}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}', {10});""" \
-        .format(obj.current_user_id,
-                obj.dba_user_id,
-                obj.host_id,
-                db_util.DBUtil().escape(obj.jira_url),
-                obj.is_backup,
-                db_util.DBUtil().escape(obj.sql_value),
-                settings.SQL_AUDIT_OK,
-                db_util.DBUtil().escape(obj.title),
-                db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
-                obj.db_name,
-                user_info.group_id)
-    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-    return "提交SQL工单成功"
+        user_info = cache.MyCache().get_user_info(obj.current_user_id)
+        sql = """INSERT INTO `mysql_audit`.`sql_work`
+                 (`create_user_id`, `audit_user_id`, `execute_user_id`,
+                  `audit_date_time`, `execute_date_time`,
+                  `mysql_host_id`, `jira_url`, `is_backup`, `backup_table`, `sql_value`,
+                  `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`, `create_user_group_id`)
+                 VALUES
+                 ({0}, {1}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}', {10});""" \
+            .format(obj.current_user_id,
+                    obj.dba_user_id,
+                    obj.host_id,
+                    db_util.DBUtil().escape(obj.jira_url),
+                    obj.is_backup,
+                    db_util.DBUtil().escape(obj.sql_value),
+                    settings.SQL_AUDIT_OK,
+                    db_util.DBUtil().escape(obj.title),
+                    db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
+                    obj.db_name,
+                    user_info.group_id)
+        db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+        return "提交SQL工单成功"
+    except Exception, e:
+        traceback.print_exc()
+        return e.message
 
 
 # 增加编辑未执行的工单功能
