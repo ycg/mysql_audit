@@ -100,10 +100,10 @@
 
     function add_sql_work() {
         $.post("/execute/add", JSON.stringify(get_form_json($("#sql_work_form"))), function (data) {
-            alert("工单创建成功!");
+            alert(data);
             hide_modal_dialog("#sql_create_dialog");
         }).error(function () {
-            alert("添加失败!");
+            alert("添加失败，请联系管理员！");
             hide_modal_dialog("#sql_create_dialog");
         });
     }
