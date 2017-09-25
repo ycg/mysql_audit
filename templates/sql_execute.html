@@ -132,6 +132,13 @@
         query_sql_list_by_page_number(page_number_global)
     }
 
+    function get_pt_osc_schedule() {
+        // var my_per = (my_id += 10) + "%"
+        // console.log(my_per);
+        // $("#my_pro").css("width", my_per);
+        // $("#my_pro").html(my_per);
+    }
+
     input_data_for_post("/execute/result/" + {{ sql_info.id }}, "", "#sql_execute_result")
 </script>
 

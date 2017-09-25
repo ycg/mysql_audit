@@ -63,6 +63,8 @@ def stop_osc_task(sha1_code):
 
 
 # 获取使用pt-osc的执行精度
+# 如果要使用pt-osc，那么在审核的时候就会获得到一个sqlsha1的值
+# 那么在真正执行的时候可以获取pt-osc的进度
 def get_osc_info(sha1_code):
     sql = "inception get osc_percent '{}';".format(sha1_code)
     return get_object(execute_sql(sql_mode_no_host.format(sql)), fields=osc_fields)

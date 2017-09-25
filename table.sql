@@ -67,6 +67,7 @@ CREATE TABLE sql_work
   jira_url VARCHAR(100) NOT NULL DEFAULT '' COMMENT '对应的jira地址',
   is_backup TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否要备份，默认是备份',
   backup_table VARCHAR(50) NOT NULL DEFAULT '' COMMENT '备份之后的表名称',
+  is_use_pt_osc TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否使用了pt-osc，默认没有使用',
   sql_value MEDIUMTEXT COMMENT '要执行的sql内容',
   rollback_sql MEDIUMTEXT COMMENT '要回滚的SQL',
   audit_result_value MEDIUMTEXT COMMENT '审核的内容',
