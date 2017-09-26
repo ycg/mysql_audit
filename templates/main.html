@@ -50,12 +50,39 @@ font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
 font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
 -->
 <div class="container-fluid">
-    <div class="row">
+	<!--最顶部导航栏 -->
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#"><strong>自动化运维平台</strong></a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#">你好，{{ user_info.chinese_name }}</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人设置<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#" onclick="logout()">退出</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!--<div class="row">
         <div class="col-md-12 text-right">
             <button class="btn btn-default" onclick="logout()">Logout</button>
         </div>
     </div>
-    </br>
+    </br>-->
+
     <div class="row">
         <div class="col-md-2">
             <div id="myTab" class="list-group">
