@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import os, json
-from gevent import pywsgi
 from flask import Flask, app, render_template, request
 from flask_login import login_user, login_required, logout_user, LoginManager, current_user
 
 import settings
 from src import common_util, cache, user_login, sql_manager, host_manager, user_manager
 
-app = Flask("mysql_audit")
+app = Flask("mysql_audit", instance_relative_config=True, instance_path=os.getcwd())
+app.config["SESSION_COOKIE_NAME"] = "mysql_audit"
 app.secret_key = os.urandom(24)
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
@@ -352,11 +352,10 @@ if __name__ == '__main__':
     ip = "0.0.0.0"
     if(settings.LINUX_OS):
         print("linux start ok.")
-        server = pywsgi.WSGIServer((ip, port), app)
-        server.serve_forever()
+        app.run(debug=False, host=ip, port=port, use_reloader=False, threaded=True)
     if(settings.WINDOWS_OS):
         print("windows start ok.")
-        app.run(debug=True, host=ip, port=port, use_reloader=False)
+        app.run(debug=True, host=ip, port=port, use_reloader=True, threaded=True)
 
 #endregion
 
