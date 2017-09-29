@@ -93,6 +93,12 @@ def get_sql_execute_home(id):
     return render_template("sql_execute.html", sql_info=sql_manager.get_sql_info_by_id(id))
 
 
+@app.route("/execute/sql/exeucte/new/<int:id>", methods=["GET", "POST"])
+@login_required
+def get_sql_execute_home_new(id):
+    return render_template("sql_execute_home.html", sql_info=sql_manager.get_sql_info_by_id(id), user_info=cache.MyCache().get_user_info(current_user.id))
+
+
 @app.route("/execute/now/<int:sql_id>", methods=["GET", "POST"])
 @login_required
 def sql_execute_by_sql_id(sql_id):
@@ -137,6 +143,8 @@ def sql_list_home():
     user_info = cache.MyCache().get_user_info(current_user.id)
     if (user_info.role_id == settings.ROLE_DEV):
         return render_template("list_for_dev.html")
+    if (user_info.role_id == settings.ROLE_LEADER):
+        return render_template("list_for_leader.html")
     if (user_info.role_id == settings.ROLE_ADMINISTRATOR):
         return render_template("list_for_admin.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)
     return render_template("list.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)
@@ -149,6 +157,9 @@ def query_sql_list():
     if (user_info.role_id == settings.ROLE_DEV):
         obj = get_object_from_json_tmp(request.get_data())
         result_sql_list = sql_manager.get_sql_work_for_dev(obj)
+    elif (user_info.role_id == settings.ROLE_LEADER):
+        obj = get_object_from_json_tmp(request.get_data())
+        result_sql_list = sql_manager.get_sql_work_for_leader(obj)
     else:
         obj = get_object_from_json(request.form)
         result_sql_list = sql_manager.get_sql_list(obj)
@@ -194,7 +205,6 @@ def get_min_id(sql_list, page_number):
 
 
 # endregion
-
 
 # region host api
 

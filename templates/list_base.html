@@ -135,6 +135,10 @@
     function show_work_audit_dialog(sql_id) {
         show_modal_dialog("#work_audit_dialog")
     }
+
+    function get_execute_html(sql_id) {
+        window.open("/execute/sql/exeucte/new/" + sql_id)
+    }
 </script>
 
 {% block list_body %}

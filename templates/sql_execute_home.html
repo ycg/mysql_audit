@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SQL执行界面</title>
+    <link href={{ url_for('static', filename='css/bootstrap.css') }} rel="stylesheet" type="text/css">
+    <script src={{ url_for("static", filename="jquery/jquery.min.js") }} type="text/javascript"></script>
+    <script src={{ url_for("static", filename="js/bootstrap.min.js") }} type="text/javascript"></script>
+    <script src={{ url_for("static", filename="jquery/jquery-form.js") }} type="text/javascript"></script>
+    <script src={{ url_for("static", filename="js/common.js") }} type="text/javascript"></script>
+
+    <style type="text/css">
+        pre {
+            border: 0px;
+            background: none;
+            font-size: 13px;
+            margin: 0 0 0px;
+            padding: 0px;
+            white-space: pre-wrap;
+        }
+
+        textarea {
+            font-size: 14px;
+            font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+        }
+
+        body, td, th, div {
+            font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace, sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+	<!--最顶部导航栏 -->
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#"><strong>SQL执行界面</strong></a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#">你好，{{ user_info.chinese_name }}</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人设置<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#" onclick="logout()">退出</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <textarea id="sql_value" name="sql_value" class="form-control" rows=20>{{ sql_info.sql_value }}</textarea>
+        </div>
+        <div class="col-md-4">
+            <form id="sql_info_form">
+                <div class="form-group" hidden>
+                    <input id="host_id" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <strong>工单名称：</strong><label style="font-weight: normal">{{ sql_info.title }}</label>
+                </div>
+                <div class="form-group">
+                    <strong>Jira地址：</strong><a style="font-weight: normal" role="button" href="{{ sql_info.jira_url }}" target="_blank">{{ sql_info.jira_url }}</a>
+                </div>
+                <div class="form-group">
+                    <strong>创建用户：</strong><label style="font-weight: normal">{{ sql_info.chinese_name }}</label>
+                </div>
+                <div class="form-group">
+                    <strong>上线集群：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.host_name }}</label>
+                </div>
+                <div class="form-group">
+                    <strong>数据库名称：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.execute_db_name }}</label>
+                </div>
+                <div class="form-group">
+                    <strong>创建时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.created_time }}</label>
+                </div>
+                <div class="form-group">
+                    <strong>执行时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.execute_date_time }}</label>
+                </div>
+                <div class="form-group">
+                    <strong>是否备份：</strong><label style="font-weight: normal">{% if(sql_info.is_backup == 1) %} Yes {% else %} No {% endif %}</label>
+                </div>
+                <div class="form-group">
+                    <strong>执行状态：</strong>
+                    <label style="font-weight: normal"
+                            {% if(sql_info.status == 1 or sql_info.status == 4) %}
+                           class="text-success"
+                            {% elif(sql_info.status == 0) %}
+                           class="text-warning"
+                            {% elif(sql_info.status == 2 or sql_info.status == 3) %}
+                           class="text-danger"
+                            {% endif %}>{{ sql_info.status_name }}</label>
+                </div>
+                {% if(user_info.role_id != 1000) %}
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input id="ignore_warning" type="checkbox" {% if(sql_info.ignore_warnings == True) %} checked {% endif %}> 执行时是否忽视警告
+                            </label>
+                        </div>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    </br>
+    {% if(user_info.role_id != 1000) %}
+        <!--执行成功或错误-->
+        <div class="row" {% if(sql_info.status == 3 or sql_info.status == 4) %} hidden {% endif %}>
+            <div class="col-md-8">
+                <button class="btn btn-default" onclick="sql_audit_again({{ sql_info.id }})">重新审核SQL</button>
+                <button class="btn btn-primary" onclick="sql_execute({{ sql_info.id }})">执行SQL</button>
+            </div>
+        </div>
+        </br>
+    {% endif %}
+    <div class="modal fade" id="sql_has_warnings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+        <div class="modal-dialog" role="document" style="width: 600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">SQL执行提示</h4>
+                </div>
+                <div class="modal-body">
+                    SQL有警告不能执行，如果执行请勾选忽视警告！！！
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="sql_execute_status" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+        <div class="modal-dialog" role="document" style="width: 600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">SQL执行进度</h4>
+                </div>
+                <div class="modal-body">
+                    SQL正在执行中，请稍候......
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="sql_execute_result"></div>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    function sql_execute(sql_id) {
+        // 先检查审核有没有warning，如果有要提示用户勾选忽视警告
+        // 勾选之后才进行真正的SQL执行操作
+        var checked = $("#ignore_warning").prop("checked");
+        $.get("/execute/check/warnings/" + sql_id, "", function (data) {
+            var json_obj = JSON.parse(data);
+            if (json_obj.has_warnings == true && checked == false) {
+                show_modal_dialog("#sql_has_warnings")
+            }
+            else {
+                var json = "ignore_warnings=" + checked;
+                show_modal_dialog("#sql_execute_status");
+                $.post("/execute/now/" + sql_id, json, function (data) {
+                    $("#sql_execute_result").html(data)
+                    hide_modal_dialog("#sql_execute_status");
+                }).error(function () {
+                    alert("sql执行失败");
+                    hide_modal_dialog("#sql_execute_status");
+                });
+            }
+        });
+    }
+
+    function sql_audit_again(sql_id) {
+        input_data_for_post("/audit/check/" + sql_id, "", "#sql_execute_result")
+    }
+
+    function show_list_web_page() {
+        $("#sql_list_form").show();
+        query_sql_list_by_page_number(page_number_global)
+    }
+
+    input_data_for_post("/execute/result/" + {{ sql_info.id }}, "", "#sql_execute_result")
+</script>
+

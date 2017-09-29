@@ -95,19 +95,20 @@
                 {{ info.execute_finish_date_time }}
             </td>
             <td class="text-center">
+                <button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>
                 <!--执行成功-->
                 {% if(info.status == 4) %}
-                    <button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>
+                    <!--<button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>-->
                     <button class="btn-danger btn btn-xs" onclick=get_rollback_sql({{ info.id }}) {% if(info.is_backup == 0) %} disabled {% endif %}>回滚</button>
                 <!--执行错误-->
                 {% elif(info.status == 3) %}
-                    <button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>
+                    <!--<button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>-->
                     <!--也只有自己创建的工单才能删除-->
                     {% if(info.create_user_id == user_info.user_id) %}
                         <button class="btn-danger btn btn-xs" onclick=show_delete_sql_work_dialog({{ info.id }})>删除</button>
                     {% endif %}
                 {% elif(info.status == 5) %}
-                    <button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>
+                    <!--<button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>-->
                     <button class="btn-danger btn btn-xs">停止</button>
                 <!--其它状态-->
                 {% else %}
@@ -117,7 +118,7 @@
                     {% endif %}
                     <!--开发人员对执行按钮不可见-->
                     {% if(user_info.role_id != 1000) %}
-                        <button class="btn-primary btn btn-xs" onclick="show_work_audit_dialog({{ info.id }})">审核</button>
+                        <button class="btn-info btn btn-xs" onclick="show_work_audit_dialog({{ info.id }})">审核</button>
                         <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>执行</button>
                     {% endif %}
                     {% if(info.create_user_id == user_info.user_id) %}

@@ -1,4 +1,43 @@
 <!--
 1.组长列表界面
-
+2.所有工单 - 我审核的工单 - 未审核的工单 - 我的工单
 -->
+
+
+{% extends "list_base.html" %}
+{% block list_body %}
+<ul id="myTab" class="nav nav-tabs">
+    <li class="active">
+        <a href="#all_work" data-toggle="tab" onclick=set_tab_type(ALL_SQL_WORK_TAB,"#all_work")>所有工单</a>
+    </li>
+    <li>
+        <a href="#my_no_audit_works" data-toggle="tab" onclick=set_tab_type(NOT_AUDIT_SQL_WORK_TAB,"#my_no_audit_works")>未审核工单</a>
+    </li>
+    <li>
+        <a href="#my_audit_works" data-toggle="tab" onclick=set_tab_type(AUDIT_FAIL_SQL_WORK_TAB,"#my_audit_works")>审核失败工单</a>
+    </li>
+    <li>
+        <a href="#my_works" data-toggle="tab" onclick=set_tab_type(NOT_EXECUTE_SQL_WORK_TAB,"#my_works")>未执行工单</a>
+    </li>
+</ul>
+
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="all_work">
+        所有工单
+    </div>
+    <div class="tab-pane fade" id="my_no_audit_works" hidden>
+        未审核的工单
+    </div>
+    <div class="tab-pane fade" id="my_audit_works" hidden>
+        审核成功工单
+    </div>
+    <div class="tab-pane fade" id="my_works" hidden>
+        我的工单
+    </div>
+</div>
+
+<script type="text/javascript">
+    div_name_global = "#all_work";
+    query_sql_list();
+</script>
+{% endblock %}

@@ -395,5 +395,39 @@ def get_sql_work_for_dev(obj):
     return result_list
 
 
+def get_sql_work_for_leader(obj):
+    sql_where = ""
+    if (obj.tab_type == settings.NOT_AUDIT_SQL_WORK_TAB):
+        sql_where = " and status = {0}".format(settings.SQL_NO_AUDIT)
+    elif (obj.tab_type == settings.NOT_EXECUTE_SQL_WORK_TAB):
+        sql_where = " and status = {0}".format(settings.SQL_AUDIT_OK)
+    elif (obj.tab_type == settings.AUDIT_FAIL_SQL_WORK_TAB):
+        sql_where = " and status = {0}".format(settings.SQL_AUDIT_FAIL)
+    elif (obj.tab_type == settings.EXECUTE_OK_SQL_WROK_TAB):
+        sql_where = " and status = {0}".format(settings.SQL_EXECUTE_SUCCESS)
+
+    sql = """select t1.*, t2.host_name, t3.chinese_name,
+                    ifnull(t4.chinese_name, '') as execute_user_name,
+                    ifnull(t5.chinese_name, '') as audit_user_name
+             from
+             (
+                 select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
+                        execute_date_time, mysql_host_id, is_backup, execute_db_name,
+                        backup_table, status, is_deleted, created_time, execute_finish_date_time
+                 from mysql_audit.sql_work
+                 where is_deleted = 0 and create_user_id = {0} {1} order by id desc limit {2}, {3}
+             ) t1
+             left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
+             left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
+             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
+             left join mysql_audit.work_user t5 on t1.audit_user_id = t5.user_id
+             ORDER BY t1.id DESC;"""
+    sql = sql.format(obj.current_user_id, sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
+    result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
+    for info in result_list:
+        get_sql_work_status_name(info)
+    return result_list
+
+
 #endregion
 
