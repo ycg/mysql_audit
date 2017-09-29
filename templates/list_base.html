@@ -1,0 +1,145 @@
+<div class="modal fade" id="sql_work_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">删除工单</h4>
+            </div>
+            <div class="modal-body">
+                是否确认删除工单？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="delete_sql_work()">删除</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rollback_sql_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">回滚SQL</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="rollback_sql" class="form-control" rows=21 cols="100000"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger">执行回滚SQL</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="work_audit_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">SQL审核</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="rollback_sql" class="form-control" rows=10 cols="100000"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">审核通过</button>
+                <button type="button" class="btn btn-danger">审核不通过</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12" id="sql_update_div">
+
+    </div>
+</div>
+
+<script src={{ url_for("static", filename="js/common.js") }} type="text/javascript"></script>
+
+<script type="text/javascript">
+    var tab_type_global = 1;
+    var page_number_global = 1;
+    var div_name_global = "#all_work";
+    var delete_sql_work_id = 0;
+
+    function query_sql_list() {
+        var json_obj = new Object();
+        json_obj.tab_type = tab_type_global;
+        json_obj.page_number = page_number_global;
+        $.post("/list/query", JSON.stringify(json_obj), function (data) {
+            $(div_name_global).html(data);
+        }).error(function () {
+            alert("获取工单列表失败！");
+        });
+    }
+
+    function query_sql_list_by_page_number(page_number) {
+        page_number_global = page_number;
+        query_sql_list();
+    }
+
+    function set_tab_type(tab_type, div_name) {
+        tab_type_global = tab_type;
+        div_name_global = div_name;
+        query_sql_list();
+    }
+
+    function delete_sql_work() {
+        $.post("/list/delete/" + delete_sql_work_id, "", function (data) {
+            alert("删除成功");
+            hide_modal_dialog("#sql_work_delete");
+            query_sql_list();
+        }).error(function () {
+            alert("删除失败");
+            hide_modal_dialog("#sql_work_delete");
+        });
+    }
+
+    function show_delete_sql_work_dialog(sql_id) {
+        delete_sql_work_id = sql_id
+        show_modal_dialog("#sql_work_delete")
+    }
+
+    function get_sql_update_work_html(sql_id) {
+        $.post("/work/update/" + sql_id, "", function (data) {
+            $("#sql_update_div").html(data);
+            show_modal_dialog("#sql_work_update_dialog");
+        }).error(function () {
+            alert("error");
+        });
+    }
+
+    function get_rollback_sql(sql_id) {
+        $.post("/execute/rollback/sql/" + sql_id, "", function (data) {
+            var json_obj = JSON.parse(data);
+            $("#rollback_sql").text(json_obj.rollback_sql_value);
+            show_modal_dialog("#rollback_sql_dialog");
+        });
+    }
+
+    function update_sql_work(sql_id) {
+        var json_obj = get_form_json($("#sql_work_update_form"));
+        json_obj.sql_id = sql_id;
+        $.post("/work/update/sql/save", JSON.stringify(json_obj), function (data) {
+            alert(data);
+            hide_modal_dialog("#sql_work_update_dialog")
+            query_sql_list();
+        }).error(function () {
+            alert("error");
+            hide_modal_dialog("#sql_work_update_dialog")
+        });
+    }
+
+    function show_work_audit_dialog(sql_id) {
+        show_modal_dialog("#work_audit_dialog")
+    }
+</script>
+
+{% block list_body %}
+
+{% endblock %}
+
+
+

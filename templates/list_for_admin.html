@@ -1,0 +1,67 @@
+{% extends "list_base.html" %}
+{% block list_body %}
+<div class="row">
+    <form id="sql_list_form" action="/list/query" method="post" target="nm_iframe" class="form-inline col-md-12">
+        <div class="form-group">
+            <select id="user_id" name="user_id" class="selectpicker show-tick form-control bs-select-hidden" style="width: 500px" required>
+                <option value="0" selected>查询所有用户</option>
+                {% for info in user_infos %}
+                    {% if(info.is_deleted == 0) %}
+                        <option value="{{ info.user_id }}">{{ info.chinese_name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <select id="status" name="status" class="selectpicker show-tick form-control bs-select-hidden" required>
+                <option value="-1" selected>查询所有状态</option>
+                {% for key, value in sql_work_status.items() %}
+                    <option value="{{ key }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <input id="start_datetime" name="start_datetime" type="text" value="" class="form_datetime form-control" placeholder="开始时间" readonly>
+        </div>
+        <div class="form-group">
+            <input id="stop_datetime" name="stop_datetime" type="text" value="" class="form_datetime form-control" placeholder="结束时间" readonly>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" onclick="return query_sql_list()">查询</button>
+            <button type="reset" class="btn btn-default">清空</button>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-md-12" id="sql_list">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: "yyyy-mm-dd hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        pickerPosition: "bottom-left"
+    });
+    $(".selectpicker").selectpicker({liveSearch: true});
+
+    function query_sql_list() {
+        var json_obj = get_form_json($("#sql_list_form"));
+        json_obj.page_number = page_number_global;
+        input_data_for_post("/list/query", json_obj, "#sql_list");
+        return false;
+    }
+
+    function query_sql_list_by_page_number(page_number) {
+        var json_obj = get_form_json($("#sql_list_form"))
+        page_number_global = page_number;
+        json_obj.page_number = page_number;
+        input_data_for_post("/list/query", json_obj, "#sql_list")
+    }
+
+    query_sql_list();
+</script>
+{% endblock %}

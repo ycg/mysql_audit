@@ -18,6 +18,15 @@ def audit_sql_by_sql_id(sql_id):
     return render_template("audit_view.html", audit_infos=inception_util.sql_audit(sql_info.sql_value, cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id)))
 
 
+# 审核sql是否能执行
+# 做的好一点话，如果审核不通过需要写明理由
+def audit_sql_work(obj):
+    status = settings.SQL_AUDIT_OK if (obj.status) else settings.SQL_AUDIT_FAIL
+    sql = """update `mysql_audit`.`sql_work` set `status` = {0}, remark = '{1}' where id = {2};""".format(status, obj.remark, obj.sql_id)
+    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    return "操作成功"
+
+
 # 获取审核的数据库主机信息
 def get_audit_mysql_host():
     return cache.MyCache().get_mysql_host_info()
@@ -124,33 +133,27 @@ def get_sql_list(obj):
     # DBA只能看到指定给自己执行的工单以及自己创建的工单
     # 只有admin才能看到所以的工单
 
-    sql = """select t1.*, t2.host_name, t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name
+    sql = """select t1.*, t2.host_name, t3.chinese_name,
+                    ifnull(t4.chinese_name, '') as execute_user_name,
+                    ifnull(t5.chinese_name, '') as audit_user_name
              from
              (
                  select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
-                        execute_date_time, mysql_host_id, jira_url, is_backup, execute_db_name,
-                        backup_table, left(sql_value, 10) as sql_value, status, is_deleted, created_time, execute_finish_date_time
+                        execute_date_time, mysql_host_id, is_backup, execute_db_name,
+                        backup_table, status, is_deleted, created_time, execute_finish_date_time
                  from mysql_audit.sql_work
                  where is_deleted = 0 {0} order by id desc limit {1}, {2}
              ) t1
              left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id ORDER BY t1.id DESC """
+             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
+             left join mysql_audit.work_user t5 on t1.audit_user_id = t5.user_id
+             ORDER BY t1.id DESC """
     sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
     result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
     for info in result_list:
         get_sql_work_status_name(info)
     return result_list
-
-
-# 组员账号获取工单列表的方法
-def get_sql_list_for_dev(type_id):
-    # 所有工单
-    # 审核中的工单
-    # 已执行的工单
-    if (type_id == 1):
-        sql = ""
-    pass
 
 
 # 根据工单id获取全部信息
@@ -353,4 +356,44 @@ def send_mail_for_execute_success(sql_id):
             sql_info.work_url = "{0}sql/work/{1}".format(request.host_url, sql_info.id)
             content = render_template("mail_template.html", sql_info=sql_info)
             common_util.send_html(subject, sql_info.email, content)
+
+
+#region 开发人员工单查询方法
+
+
+def get_sql_work_for_dev(obj):
+    sql_where = ""
+    if (obj.tab_type == settings.NOT_AUDIT_SQL_WORK_TAB):
+        sql_where = " and status = {0}".format(settings.SQL_NO_AUDIT)
+    elif (obj.tab_type == settings.NOT_EXECUTE_SQL_WORK_TAB):
+        sql_where = " and status = {0}".format(settings.SQL_AUDIT_OK)
+    elif (obj.tab_type == settings.AUDIT_FAIL_SQL_WORK_TAB):
+        sql_where = " and status = {0}".format(settings.SQL_AUDIT_FAIL)
+    elif (obj.tab_type == settings.EXECUTE_OK_SQL_WROK_TAB):
+        sql_where = " and status = {0}".format(settings.SQL_EXECUTE_SUCCESS)
+
+    sql = """select t1.*, t2.host_name, t3.chinese_name,
+                    ifnull(t4.chinese_name, '') as execute_user_name,
+                    ifnull(t5.chinese_name, '') as audit_user_name
+             from
+             (
+                 select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
+                        execute_date_time, mysql_host_id, is_backup, execute_db_name,
+                        backup_table, status, is_deleted, created_time, execute_finish_date_time
+                 from mysql_audit.sql_work
+                 where is_deleted = 0 and create_user_id = {0} {1} order by id desc limit {2}, {3}
+             ) t1
+             left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
+             left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
+             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
+             left join mysql_audit.work_user t5 on t1.audit_user_id = t5.user_id
+             ORDER BY t1.id DESC;"""
+    sql = sql.format(obj.current_user_id, sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
+    result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
+    for info in result_list:
+        get_sql_work_status_name(info)
+    return result_list
+
+
+#endregion
 

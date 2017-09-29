@@ -144,3 +144,10 @@ function logout() {
     }
 }
 
+
+var ALL_SQL_WORK_TAB = 1;
+var NOT_AUDIT_SQL_WORK_TAB = 2;
+var AUDIT_OK_SQL_WORK_TAB = 3;
+var NOT_EXECUTE_SQL_WORK_TAB = 4;
+var AUDIT_FAIL_SQL_WORK_TAB = 5;
+var EXECUTE_OK_SQL_WROK_TAB = 6;

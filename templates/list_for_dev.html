@@ -1,29 +1,50 @@
+<!--
+1.开发人员列表界面
+2.界面要符合开发人员操作界面
+    因为开发人员不能执行sql，也不能审核sql
+    所以有几个tab界面，所有工单，未审核工单，未执行工单
+3.提取一些公共的js方法放到common.js里面去
+-->
+{% extends "list_base.html" %}
+{% block list_body %}
 <ul id="myTab" class="nav nav-tabs">
     <li class="active">
-        <a href="#my_work" data-toggle="tab">我的工单</a>
+        <a href="#all_work" data-toggle="tab" onclick=set_tab_type(ALL_SQL_WORK_TAB,"#all_work")>所有工单</a>
     </li>
     <li>
-        <a href="#work_auditing" data-toggle="tab">审核中</a>
+        <a href="#work_auditing" data-toggle="tab" onclick=set_tab_type(NOT_AUDIT_SQL_WORK_TAB,"#work_auditing")>未审核工单</a>
     </li>
     <li>
-        <a href="#executed" data-toggle="tab">未执行</a>
+        <a href="#work_audit_fail" data-toggle="tab" onclick=set_tab_type(AUDIT_FAIL_SQL_WORK_TAB,"#work_audit_fail")>审核失败工单</a>
     </li>
     <li>
-        <a href="#executed_fail" data-toggle="tab">执行失败</a>
+        <a href="#no_executed" data-toggle="tab" onclick=set_tab_type(NOT_EXECUTE_SQL_WORK_TAB,"#no_executed")>未执行工单</a>
+    </li>
+    <li>
+        <a href="#executed_ok" data-toggle="tab" onclick=set_tab_type(EXECUTE_OK_SQL_WROK_TAB,"#executed_ok")>执行成功工单</a>
     </li>
 </ul>
 
 <div id="myTabContent" class="tab-content">
-    <div class="tab-pane fade in active" id="my_work">
-        我的工单
+    <div class="tab-pane fade in active" id="all_work">
+        所有工单
     </div>
     <div class="tab-pane fade" id="work_auditing" hidden>
-        审核中
+        未审核工单
     </div>
-    <div class="tab-pane fade" id="executed" hidden>
-        未执行
+    <div class="tab-pane fade" id="work_audit_fail" hidden>
+        审核失败工单
     </div>
-    <div class="tab-pane fade" id="executed_fail" hidden>
-        执行失败
+    <div class="tab-pane fade" id="no_executed" hidden>
+        未执行工单
+    </div>
+    <div class="tab-pane fade" id="executed_ok" hidden>
+        执行成功工单
     </div>
 </div>
+
+<script type="text/javascript">
+    div_name_global = "#all_work";
+    query_sql_list();
+</script>
+{% endblock %}
