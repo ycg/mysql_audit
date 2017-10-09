@@ -50,9 +50,9 @@ def add_sql_work(obj):
                  (`create_user_id`, `audit_user_id`, `execute_user_id`,
                   `audit_date_time`, `execute_date_time`,
                   `mysql_host_id`, `jira_url`, `is_backup`, `backup_table`, `sql_value`,
-                  `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`, `create_user_group_id`)
+                  `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`, `create_user_group_id`, sleep)
                  VALUES
-                 ({0}, {1}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}', {10});""" \
+                 ({0}, {1}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}', {10}, {11});""" \
             .format(obj.current_user_id,
                     obj.dba_user_id,
                     obj.host_id,
@@ -63,7 +63,8 @@ def add_sql_work(obj):
                     db_util.DBUtil().escape(str(obj.title)),
                     db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
                     obj.db_name,
-                    user_info.group_id)
+                    user_info.group_id,
+                    obj.sleep_time)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         return "提交SQL工单成功"
     except Exception, e:
@@ -158,7 +159,7 @@ def get_sql_list(obj):
 
 # 根据工单id获取全部信息
 def get_sql_info_by_id(id):
-    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup,
+    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup, t1.sleep,
                     t1.ignore_warnings, rollback_sql, ifnull(t4.chinese_name, '') as execute_user_name,
                     t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status, t3.email,
                     t1.return_value, t1.execute_db_name, t1.audit_result_value, t1.execute_user_id, t1.created_time, ifnull(t1.execute_date_time, '') as execute_date_time
@@ -189,7 +190,8 @@ def sql_execute(obj):
             result_obj = inception_util.sql_execute(sql_info.sql_value,
                                                     cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
                                                     is_backup=sql_info.is_backup,
-                                                    ignore_warnings=True if (obj.ignore_warnings.upper() == "TRUE") else False)
+                                                    ignore_warnings=True if (obj.ignore_warnings.upper() == "TRUE") else False,
+                                                    sleep_time=sql_info.sleep)
             sql = """update mysql_audit.sql_work
                      set
                      return_value = '{0}',

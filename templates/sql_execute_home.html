@@ -88,6 +88,9 @@
                     <strong>执行时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.execute_date_time }}</label>
                 </div>
                 <div class="form-group">
+                    <strong>SQL执行暂停时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.sleep }} 秒</label>
+                </div>
+                <div class="form-group">
                     <strong>是否备份：</strong><label style="font-weight: normal">{% if(sql_info.is_backup == 1) %} Yes {% else %} No {% endif %}</label>
                 </div>
                 <div class="form-group">
