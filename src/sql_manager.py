@@ -56,11 +56,11 @@ def add_sql_work(obj):
             .format(obj.current_user_id,
                     obj.dba_user_id,
                     obj.host_id,
-                    db_util.DBUtil().escape(obj.jira_url),
+                    db_util.DBUtil().escape(str(obj.jira_url)),
                     obj.is_backup,
                     db_util.DBUtil().escape(obj.sql_value),
                     settings.SQL_AUDIT_OK,
-                    db_util.DBUtil().escape(obj.title),
+                    db_util.DBUtil().escape(str(obj.title)),
                     db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
                     obj.db_name,
                     user_info.group_id)
@@ -76,8 +76,8 @@ def add_sql_work(obj):
 # sql和上线的库为什么不可以修改，主要是如果你写错了，那么审核的时候肯定就不通过的
 def update_sql_work(obj):
     sql = """update `mysql_audit`.`sql_work` set `title` = '{0}', `jira_url` = '{1}', `execute_user_id` = {2}, is_backup = {3} where id = {4};""" \
-        .format(db_util.DBUtil().escape(obj.title),
-                db_util.DBUtil().escape(obj.jira_url), obj.dba_user_id, obj.is_backup, obj.sql_id)
+          .format(db_util.DBUtil().escape(str(obj.title)),
+                  db_util.DBUtil().escape(str(obj.jira_url)), obj.dba_user_id, obj.is_backup, obj.sql_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     return "update ok."
 
@@ -358,9 +358,8 @@ def send_mail_for_execute_success(sql_id):
             common_util.send_html(subject, sql_info.email, content)
 
 
-#region 开发人员工单查询方法
-
-
+# 开发人员获取工单方法
+# 只能看到自己创建的工单
 def get_sql_work_for_dev(obj):
     sql_where = ""
     if (obj.tab_type == settings.NOT_AUDIT_SQL_WORK_TAB):
@@ -394,17 +393,25 @@ def get_sql_work_for_dev(obj):
         get_sql_work_status_name(info)
     return result_list
 
-
+# leader工单查询方法
+# 能够看到自己的以及组内所以组员工单
 def get_sql_work_for_leader(obj):
-    sql_where = ""
+    user_info = cache.MyCache().get_user_info(obj.current_user_id)
+    sql_where = "and (create_user_id = {0} or create_user_group_id = {1})".format(obj.current_user_id, user_info.group_id)
+
     if (obj.tab_type == settings.NOT_AUDIT_SQL_WORK_TAB):
-        sql_where = " and status = {0}".format(settings.SQL_NO_AUDIT)
-    elif (obj.tab_type == settings.NOT_EXECUTE_SQL_WORK_TAB):
-        sql_where = " and status = {0}".format(settings.SQL_AUDIT_OK)
+        sql_where += " and status = {0}".format(settings.SQL_NO_AUDIT)
+    elif (obj.tab_type == settings.AUDIT_OK_SQL_WORK_TAB):
+        sql_where += " and status = {0}".format(settings.SQL_AUDIT_OK)
     elif (obj.tab_type == settings.AUDIT_FAIL_SQL_WORK_TAB):
-        sql_where = " and status = {0}".format(settings.SQL_AUDIT_FAIL)
+        sql_where += " and status = {0}".format(settings.SQL_AUDIT_FAIL)
+    elif (obj.tab_type == settings.NOT_EXECUTE_SQL_WORK_TAB):
+        sql_where += " and status = {0}".format(settings.SQL_AUDIT_OK)
     elif (obj.tab_type == settings.EXECUTE_OK_SQL_WROK_TAB):
-        sql_where = " and status = {0}".format(settings.SQL_EXECUTE_SUCCESS)
+        sql_where += " and status = {0}".format(settings.SQL_EXECUTE_SUCCESS)
+
+    if (obj.tab_type == settings.ALL_SQL_WORK_TAB):
+        sql_where = "and create_user_id = {0}".format(obj.current_user_id)
 
     sql = """select t1.*, t2.host_name, t3.chinese_name,
                     ifnull(t4.chinese_name, '') as execute_user_name,
@@ -415,19 +422,16 @@ def get_sql_work_for_leader(obj):
                         execute_date_time, mysql_host_id, is_backup, execute_db_name,
                         backup_table, status, is_deleted, created_time, execute_finish_date_time
                  from mysql_audit.sql_work
-                 where is_deleted = 0 and create_user_id = {0} {1} order by id desc limit {2}, {3}
+                 where is_deleted = 0 {0} order by id desc limit {1}, {2}
              ) t1
              left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
              left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
              left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
              left join mysql_audit.work_user t5 on t1.audit_user_id = t5.user_id
              ORDER BY t1.id DESC;"""
-    sql = sql.format(obj.current_user_id, sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
+    sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
     result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
     for info in result_list:
         get_sql_work_status_name(info)
     return result_list
-
-
-#endregion
 

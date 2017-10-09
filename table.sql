@@ -68,6 +68,7 @@ CREATE TABLE sql_work
   is_backup TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否要备份，默认是备份',
   backup_table VARCHAR(50) NOT NULL DEFAULT '' COMMENT '备份之后的表名称',
   is_use_pt_osc TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否使用了pt-osc，默认没有使用',
+  sleep MEDIUMINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '每条语句执行之后暂停多少毫秒，最小值0，最大值100秒，单位是毫秒',
   sql_value MEDIUMTEXT COMMENT '要执行的sql内容',
   rollback_sql MEDIUMTEXT COMMENT '要回滚的SQL',
   audit_result_value MEDIUMTEXT COMMENT '审核的内容',
@@ -108,3 +109,13 @@ CREATE TABLE mysql_hosts
   UNIQUE KEY ip_port(`ip`, `port`) COMMENT '添加唯一键限制'
 ) COMMENT 'mysql主机地址信息表' CHARSET utf8 ENGINE innodb;
 
+
+create table user_host_priv
+(
+  id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id SMALLINT UNSIGNED NOT NULL COMMENT '用户id',
+  host_id SMALLINT UNSIGNED NOT NULL COMMENT '数据库主机id',
+  is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
+  updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
+) COMMENT '用户和数据库主机权限配置' CHARSET utf8 ENGINE innodb;

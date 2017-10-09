@@ -1,6 +1,5 @@
 <!--
 1.组长列表界面
-2.所有工单 - 我审核的工单 - 未审核的工单 - 我的工单
 -->
 
 
@@ -8,28 +7,46 @@
 {% block list_body %}
 <ul id="myTab" class="nav nav-tabs">
     <li class="active">
-        <a href="#all_work" data-toggle="tab" onclick=set_tab_type(ALL_SQL_WORK_TAB,"#all_work")>所有工单</a>
+        <a href="#all_group_works" data-toggle="tab" onclick=set_tab_type(ALL_GROUP_SQL_WORK_TAB,"#all_group_works")>组内所有工单</a>
     </li>
     <li>
-        <a href="#my_no_audit_works" data-toggle="tab" onclick=set_tab_type(NOT_AUDIT_SQL_WORK_TAB,"#my_no_audit_works")>未审核工单</a>
+        <a href="#no_audit_works" data-toggle="tab" onclick=set_tab_type(NOT_AUDIT_SQL_WORK_TAB,"#no_audit_works")>未审核工单</a>
     </li>
     <li>
-        <a href="#my_audit_works" data-toggle="tab" onclick=set_tab_type(AUDIT_FAIL_SQL_WORK_TAB,"#my_audit_works")>审核失败工单</a>
+        <a href="#audit_ok_works" data-toggle="tab" onclick=set_tab_type(AUDIT_OK_SQL_WORK_TAB,"#audit_ok_works")>审核成功工单</a>
     </li>
     <li>
-        <a href="#my_works" data-toggle="tab" onclick=set_tab_type(NOT_EXECUTE_SQL_WORK_TAB,"#my_works")>未执行工单</a>
+        <a href="#audit_fail_works" data-toggle="tab" onclick=set_tab_type(AUDIT_FAIL_SQL_WORK_TAB,"#audit_fail_works")>审核失败工单</a>
+    </li>
+    <li>
+        <a href="#no_execute_works" data-toggle="tab" onclick=set_tab_type(NOT_EXECUTE_SQL_WORK_TAB,"#no_execute_works")>未执行工单</a>
+    </li>
+    <li>
+        <a href="#execute_ok_works" data-toggle="tab" onclick=set_tab_type(EXECUTE_OK_SQL_WROK_TAB,"#execute_ok_works")>执行成功工单</a>
+    </li>
+    <li>
+        <a href="#my_works" data-toggle="tab" onclick=set_tab_type(ALL_SQL_WORK_TAB,"#my_works")>我的工单</a>
     </li>
 </ul>
 
 <div id="myTabContent" class="tab-content">
-    <div class="tab-pane fade in active" id="all_work">
-        所有工单
+    <div class="tab-pane fade in active" id="all_group_works">
+        组内所有工单
     </div>
-    <div class="tab-pane fade" id="my_no_audit_works" hidden>
+    <div class="tab-pane fade" id="no_audit_works" hidden>
         未审核的工单
     </div>
-    <div class="tab-pane fade" id="my_audit_works" hidden>
-        审核成功工单
+    <div class="tab-pane fade" id="audit_ok_works" hidden>
+        审核成功的工单
+    </div>
+    <div class="tab-pane fade" id="audit_fail_works" hidden>
+        审核失败工单
+    </div>
+    <div class="tab-pane fade" id="no_execute_works" hidden>
+        未执行工单
+    </div>
+    <div class="tab-pane fade" id="execute_ok_works" hidden>
+        执行成功工单
     </div>
     <div class="tab-pane fade" id="my_works" hidden>
         我的工单
@@ -37,7 +54,8 @@
 </div>
 
 <script type="text/javascript">
-    div_name_global = "#all_work";
+    div_name_global = "#all_group_works";
+    tab_type_global = ALL_GROUP_SQL_WORK_TAB;
     query_sql_list();
 </script>
 {% endblock %}

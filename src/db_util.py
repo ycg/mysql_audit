@@ -106,4 +106,3 @@ class DBUtil(object):
             if (connection != None):
                 connection.close()
 
-

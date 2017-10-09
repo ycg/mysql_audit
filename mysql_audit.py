@@ -129,17 +129,11 @@ def get_rollback_sql(sql_id):
 
 # region sql list
 
+# 工单列表主界面api
+# 根据用户角色返回不同的界面
 @app.route("/list")
 @login_required
 def sql_list_home():
-    """user_info = cache.MyCache().get_user_info(current_user.id)
-    if (user_info.role_id == settings.ROLE_DEV):
-        return render_template("list_for_dev.html")
-    elif (user_info.role_id == settings.ROLE_LEADER):
-        return render_template("list_for_leader.html")
-    elif (user_info.role_id == settings.ROLE_ADMINISTRATOR):
-        return render_template("list.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)"""
-
     user_info = cache.MyCache().get_user_info(current_user.id)
     if (user_info.role_id == settings.ROLE_DEV):
         return render_template("list_for_dev.html")
@@ -150,6 +144,8 @@ def sql_list_home():
     return render_template("list.html", user_infos=cache.MyCache().get_user_info(), sql_work_status=settings.SQL_WORK_STATUS_DICT)
 
 
+# 工单列表查询接口
+# 根据用户角色获取不同的数据
 @app.route("/list/query", methods=["POST"])
 @login_required
 def query_sql_list():
@@ -171,18 +167,21 @@ def query_sql_list():
                            min_id=get_min_id(result_sql_list, obj.page_number))
 
 
+# 删除工单接口，只能删除自己创建的工单
 @app.route("/list/delete/<int:sql_id>", methods=["GET", "POST"])
 @login_required
 def delete_sql_list(sql_id):
     return sql_manager.delete_sql_work(sql_id)
 
 
+# 获取工单详情信息
 @app.route("/sql/work/<int:sql_id>", methods=["GET", "POST"])
 @login_required
 def show_sql_work(sql_id):
     return render_template("work_show_template.html", sql_info=sql_manager.get_sql_info_by_id(sql_id))
 
 
+# 获取分页数据list
 def get_page_number_list(page_number):
     if (page_number <= 5):
         page_list = range(1, 10)
@@ -258,7 +257,10 @@ def get_host_info():
 @app.route("/user")
 @login_required
 def get_user():
-    return render_template("user.html", role_infos=cache.MyCache().get_role_info(), group_infos=cache.MyCache().get_group_info())
+    return render_template("user.html",
+                           role_infos=cache.MyCache().get_role_info(),
+                           group_infos=cache.MyCache().get_group_info(),
+                           host_infos=cache.MyCache().get_mysql_host_info())
 
 
 @app.route("/user/add", methods=["GET", "POST"])
