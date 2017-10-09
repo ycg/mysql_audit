@@ -76,9 +76,14 @@ def add_sql_work(obj):
 # 修改标题，jira地址，是否备份，执行sql的DBA
 # sql和上线的库为什么不可以修改，主要是如果你写错了，那么审核的时候肯定就不通过的
 def update_sql_work(obj):
-    sql = """update `mysql_audit`.`sql_work` set `title` = '{0}', `jira_url` = '{1}', `execute_user_id` = {2}, is_backup = {3} where id = {4};""" \
-          .format(db_util.DBUtil().escape(str(obj.title)),
-                  db_util.DBUtil().escape(str(obj.jira_url)), obj.dba_user_id, obj.is_backup, obj.sql_id)
+    sql = """update `mysql_audit`.`sql_work`
+             set `title` = '{0}', `jira_url` = '{1}', `execute_user_id` = {2}, is_backup = {3}, sleep = {4}
+             where id = {5};""".format(db_util.DBUtil().escape(str(obj.title)),
+                                       db_util.DBUtil().escape(str(obj.jira_url)),
+                                       obj.dba_user_id,
+                                       obj.is_backup,
+                                       obj.sleep_time,
+                                       obj.sql_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     return "update ok."
 

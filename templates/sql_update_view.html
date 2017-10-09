@@ -17,19 +17,6 @@
                         <label id="user_password_lable" name="user_password_lable" class="control-label" for="user_password">jira地址:</label>
                         <input id="jira_url" type="text" name="jira_url" class="form-control" value="{{ work_info.jira_url }}">
                     </div>
-                    <!--<div class="form-group">
-                        <label id="chinese_name_lable" name="chinese_name_lable" class="control-label" for="chinese_name">请选择要上线的集群:</label>
-                        <select id="host_id" name="host_id" class="selectpicker show-tick form-control bs-select-hidden" onchange="show_database_names()">
-                            {% for info in host_infos %}
-                                <option value="{{ info.host_id }}" {% if(work_info.mysql_host_id == info.host_id) %} selected {% endif %}>{{ info.host_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label id="email_lable" name="email_lable" class="control-label" for="email">请选择要执行的库:</label>
-                        <select id="db_name" name="db_name" class="selectpicker show-tick form-control bs-select-hidden">
-                        </select>
-                    </div>-->
                     <div class="form-group">
                         <label id="email_lable" name="email_lable" class="control-label" for="email">请选择是否要备份:</label>
                         <select id="is_backup" name="is_backup" class="selectpicker show-tick form-control bs-select-hidden" required>
@@ -123,7 +110,27 @@
 <script type="text/javascript">
     $(".selectpicker").selectpicker({liveSearch: true});
 
+    /*var count=$("#sleep_time option").length;
+     for (var i = 0; i < count; i++) {
+     console.log($("#sleep_time").get(0).options[i].text);
+     if ($("#sleep_time").get(0).options[i].text == sleep_time) {
+     $("#sleep_time").get(0).options[i].selected = true;
+     break;
+     }
+     }*/
+
+    /*$("#sleep_time option").each(function () {
+        var my_text = $(this).val();
+        if (my_text == sleep_time) {
+            console.log($(this))
+            $(this).find("option").attr("selected", "selected");
+            $(this).attr("selected", "selected");
+            console.log($(this))
+        }
+    });
+    console.log($("#sleep_time"))
+    $(".selectpicker").selectpicker({liveSearch: true});*/
+
     var sleep_time = {{ work_info.sleep }};
-    $("#sleep_time option:eq(10)").attr("selected","selected");
-    console.log("aaaaaaaaaaa")
+    $("#sleep_time").val([sleep_time]).trigger("change");
 </script>
