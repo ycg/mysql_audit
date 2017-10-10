@@ -11,6 +11,7 @@ CREATE TABLE work_user
   group_id SMALLINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '属于哪个业务组，用于权限管理',
   role_id SMALLINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '角色id，用户权限管理',
   email varchar(30) NOT NULL DEFAULT '' COMMENT '用户邮件，用户发送消息给用户',
+  host_priv VARCHAR(200) NOT NULL DEFAULT '0' COMMENT '用户工单选择主机权限内容，通过逗号分割，0默认可以查看所有主机',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间',
@@ -79,7 +80,8 @@ CREATE TABLE sql_work
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间',
-  KEY idx_create_user_id(`create_user_id`)
+  KEY idx_create_user_id(`create_user_id`, `id`),
+  KEY idx_create_datetime(`created_time`, `id`)
 ) COMMENT 'sql执行工单表' CHARSET utf8 ENGINE innodb;
 
 #准备把上面的表进行拆分
@@ -111,6 +113,7 @@ CREATE TABLE mysql_hosts
 ) COMMENT 'mysql主机地址信息表' CHARSET utf8 ENGINE innodb;
 
 
+#暂时用不到
 create table user_host_priv
 (
   id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

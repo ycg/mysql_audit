@@ -70,7 +70,7 @@ def add_sql_work(obj):
                     cache.MyCache().get_user_chinese_name(obj.dba_user_id),
                     obj.dba_user_id)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-        return "提交SQL工单成功"
+        return "创建SQL工单成功"
     except Exception, e:
         traceback.print_exc()
         return e.message

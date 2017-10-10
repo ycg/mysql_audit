@@ -43,7 +43,7 @@
                     </div>
                     <div class="form-group">
                         <select id="user_host" name="user_host" class="selectpicker show-tick form-control bs-select-hidden" multiple>
-                            <option value="0" selected disabled>请选择可见的数据库主机</option>
+                            <option value="0" selected>默认所有数据库主机可见</option>
                             {% for info in host_infos %}
                                 <option value="{{ info.host_id }}">{{ info.host_name }}</option>
                             {% endfor %}
