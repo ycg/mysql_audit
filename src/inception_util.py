@@ -14,7 +14,7 @@ sys.setdefaultencoding("utf8")
 sql_sleep = "--sleep={0};"
 sql_audit_flag = "--enable-check;"
 sql_execute_flag = "--enable-execute;"
-sqL_enable_split_flag = "--enable-split;"
+sql_enable_split_flag = "--enable-split;"
 sql_enable_remote_backup = "--enable-remote-backup;"
 sql_disable_remote_backup = "--disable-remote-backup;"
 sql_enable_ignore_warnings = "--enable-ignore-warnings;"
@@ -53,7 +53,7 @@ def sql_execute(sql, host_info, is_backup=True, ignore_warnings=False, sleep_tim
     parameters = sql_execute_flag
     parameters += sql_enable_ignore_warnings if (ignore_warnings) else ''
     parameters += sql_enable_remote_backup if (is_backup) else sql_disable_remote_backup
-    parameters += sql_sleep.format(sleep_time if (sleep_time <= 0) else (sleep_time * 1000))
+    parameters += sql_sleep.format(int(sleep_time) if (sleep_time <= 0) else (sleep_time * 1000))
     sql = sql_mode.format(host_info.host, host_info.port, host_info.user, host_info.password, parameters, sql)
     return get_object(execute_sql(sql), fields=execute_fields)
 

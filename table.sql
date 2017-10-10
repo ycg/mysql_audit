@@ -120,3 +120,17 @@ create table user_host_priv
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间'
 ) COMMENT '用户和数据库主机权限配置' CHARSET utf8 ENGINE innodb;
+
+
+#要执行的SQL
+set sql_safe_updates = 0;
+update mysql_audit.sql_work t1
+left join mysql_audit.work_user t2 on t1.create_user_id = t2.user_id
+left join mysql_audit.work_user t3 on t1.audit_user_id = t3.user_id
+left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
+left join mysql_audit.work_user t5 on t1.real_execute_user_id = t5.user_id
+set
+t1.create_user_name= t2.chinese_name,
+t1.audit_user_name=t3.chinese_name,
+t1.execute_user_name=t4.chinese_name,
+t1.real_execute_user_name=ifnull(t5.chinese_name, '');

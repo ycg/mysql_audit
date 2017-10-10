@@ -166,6 +166,9 @@
         else if ($("#db_name").val() == null) {
             display_error_message("请选择要执行的数据库");
         }
+        else if ($("#audit_user_id").val() == null) {
+            display_error_message("请选择审核的用户")
+        }
         else {
             show_modal_dialog("#sql_create_dialog");
         }

@@ -47,15 +47,14 @@ def add_sql_work(obj):
 
         user_info = cache.MyCache().get_user_info(obj.current_user_id)
         sql = """INSERT INTO `mysql_audit`.`sql_work`
-                 (`create_user_id`, `audit_user_id`, `execute_user_id`,
-                  `audit_date_time`, `execute_date_time`,
+                 (`create_user_id`, `audit_user_id`, `audit_date_time`, `execute_date_time`,
                   `mysql_host_id`, `jira_url`, `is_backup`, `backup_table`, `sql_value`,
                   `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`, `create_user_group_id`, sleep,
-                  `create_user_name`, `audit_user_name`, `execute_user_name`)
+                  `create_user_name`, `audit_user_name`, `execute_user_name`, `execute_user_id`)
                  VALUES
-                 ({0}, {1}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}', {10}, {11}, '{12}', '{13}', '{14}');""" \
+                 ({0}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}', {10}, {11}, '{12}', '{13}', '{14}', {15});""" \
             .format(obj.current_user_id,
-                    obj.dba_user_id,
+                    obj.audit_user_id,
                     obj.host_id,
                     db_util.DBUtil().escape(str(obj.jira_url)),
                     obj.is_backup,
@@ -67,8 +66,9 @@ def add_sql_work(obj):
                     user_info.group_id,
                     obj.sleep_time,
                     user_info.chinese_name,
+                    cache.MyCache().get_user_chinese_name(obj.audit_user_id),
                     cache.MyCache().get_user_chinese_name(obj.dba_user_id),
-                    cache.MyCache().get_user_chinese_name(obj.dba_user_id))
+                    obj.dba_user_id)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         return "提交SQL工单成功"
     except Exception, e:
@@ -100,8 +100,10 @@ def delete_sql_work(sql_id):
 
 
 # 根据查询条件获取工单列表-有分页功能
+# admin用户查询工单列表的接口，其它用户不掉用
 def get_sql_list(obj):
     sql_where = ""
+    obj.tab_type = 0
     if (int(obj.status) >= 0):
         sql_where += " and status = {0}".format(obj.status)
     if (int(obj.user_id) > 0):
@@ -110,63 +112,7 @@ def get_sql_list(obj):
         sql_where += " and created_time >= '{0}'".format(obj.start_datetime)
     if (len(obj.stop_datetime) > 0):
         sql_where += " and created_time <= '{0}'".format(obj.stop_datetime)
-
-    # 这边要根据用户权限进行查询
-    # 管理员可以看所有的用户
-    # 开发只能看到自己提交的工单
-    # 组长只能看到组员提交的所有工单
-    user_info = cache.MyCache().get_user_info(obj.current_user_id)
-    if (user_info.group_id == settings.ADMIN_GROUP_ID):
-        pass
-    elif (user_info.group_id == settings.DBA_GROUP_ID):
-        if (user_info.role_id == settings.ROLE_DEV):
-            sql_where += " and (create_user_id = {0} or execute_user_id = {0})".format(obj.current_user_id)
-        else:
-            pass
-    elif (user_info.role_id == settings.ROLE_DEV):
-        sql_where += " and create_user_id = {0}".format(obj.current_user_id)
-    elif (user_info.role_id == settings.ROLE_LEADER):
-        sql_where += " and create_user_group_id = {0}".format(user_info.group_id)
-
-    """sql = select t1.id, t1.title, t1.create_user_id, t1.audit_user_id, t1.execute_user_id, t1.audit_date_time,
-                    t1.execute_date_time, t1.mysql_host_id, t1.jira_url, t1.is_backup,
-                    t1.backup_table, left(sql_value, 10) as sql_value, t1.return_value, t1.status, t1.is_deleted, t1.created_time,
-                    t2.host_name, t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name, t1.execute_db_name
-             from mysql_audit.sql_work t1
-             left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
-             left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
-             where t1.is_deleted = 0 {0} order by t1.id desc limit {1}, {2};"""
-
-    # 下周来完成权限控制
-    # 除了DBA组和Admin可以执行SQL以外，任何组都没有执行权限
-    # 不过可以考虑一下组长可以执行
-    # DBA只能看到指定给自己执行的工单以及自己创建的工单
-    # 只有admin才能看到所以的工单
-
     return get_sql_work_list_by_where(obj, sql_where)
-
-    '''sql = """select t1.*, t2.host_name
-                    -- , t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name, ifnull(t5.chinese_name, '') as audit_user_name
-             from
-             (
-                 select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
-                        execute_date_time, mysql_host_id, is_backup, execute_db_name,
-                        backup_table, status, is_deleted, created_time, execute_finish_date_time,
-                        create_user_name, audit_user_name, execute_user_name, real_execute_user_name
-                 from mysql_audit.sql_work
-                 where is_deleted = 0 {0} order by id desc limit {1}, {2}
-             ) t1
-             left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
-             -- left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             -- left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
-             -- left join mysql_audit.work_user t5 on t1.audit_user_id = t5.user_id
-             -- ORDER BY t1.id DESC """
-    sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
-    result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
-    for info in result_list:
-        get_sql_work_status_name(info)
-    return result_list'''
 
 
 # 根据工单id获取全部信息
@@ -175,15 +121,8 @@ def get_sql_info_by_id(id):
                     t1.ignore_warnings, rollback_sql, execute_date_time, t2.host_name, t1.mysql_host_id, t1.id, t1.status,
                     t1.return_value, t1.execute_db_name, t1.audit_result_value, t1.execute_user_id, t1.created_time,
                     create_user_name, audit_user_name, execute_user_name, real_execute_user_name
-                    -- t3.email,
-                    -- ifnull(t4.chinese_name, '') as execute_user_name,
-                    -- t3.chinese_name,
-                    -- ifnull(t1.execute_date_time, '') as execute_date_time
              from `mysql_audit`.`sql_work` t1
-             left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
-             -- left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             -- left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
-             where t1.id = {0};""".format(id)
+             left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id where t1.id = {0};""".format(id)
     return get_sql_work_status_name(common_util.get_object(db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)))
 
 
@@ -380,50 +319,24 @@ def send_mail_for_execute_success(sql_id):
 # 开发人员获取工单方法
 # 只能看到自己创建的工单
 def get_sql_work_for_dev(obj):
-    sql_where = "and create_user_id = {0}".format(obj.current_user_id)
-
-    if (obj.tab_type == settings.NOT_AUDIT_SQL_WORK_TAB):
-        sql_where = " and status = {0}".format(settings.SQL_NO_AUDIT)
-    elif (obj.tab_type == settings.NOT_EXECUTE_SQL_WORK_TAB):
-        sql_where = " and status = {0}".format(settings.SQL_AUDIT_OK)
-    elif (obj.tab_type == settings.AUDIT_FAIL_SQL_WORK_TAB):
-        sql_where = " and status = {0}".format(settings.SQL_AUDIT_FAIL)
-    elif (obj.tab_type == settings.EXECUTE_OK_SQL_WROK_TAB):
-        sql_where = " and status = {0}".format(settings.SQL_EXECUTE_SUCCESS)
-
-    return get_sql_work_list_by_where(obj, sql_where)
-
-    '''sql = """select t1.*, t2.host_name
-                    -- t3.chinese_name,
-                    -- ifnull(t4.chinese_name, '') as execute_user_name,
-                    -- ifnull(t5.chinese_name, '') as audit_user_name
-             from
-             (
-                 select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
-                        execute_date_time, mysql_host_id, is_backup, execute_db_name,
-                        backup_table, status, is_deleted, created_time, execute_finish_date_time,
-                        create_user_name,audit_user_name,execute_user_name, real_execute_user_name
-                 from mysql_audit.sql_work
-                 where is_deleted = 0 and create_user_id = {0} {1} order by id desc limit {2}, {3}
-             ) t1
-             left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
-             -- left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             -- left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
-             -- left join mysql_audit.work_user t5 on t1.audit_user_id = t5.user_id
-             -- ORDER BY t1.id DESC;"""
-    sql = sql.format(obj.current_user_id, sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
-    result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
-    for info in result_list:
-        get_sql_work_status_name(info)
-    return result_list'''
+    return get_sql_work_list_by_where(obj, "and create_user_id = {0}".format(obj.current_user_id))
 
 
 # leader工单查询方法
 # 能够看到自己的以及组内所以组员工单
 def get_sql_work_for_leader(obj):
+    sql_where = ""
     user_info = cache.MyCache().get_user_info(obj.current_user_id)
-    sql_where = "and (create_user_id = {0} or create_user_group_id = {1})".format(obj.current_user_id, user_info.group_id)
+    if (obj.tab_type == settings.ALL_SQL_WORK_TAB):
+        sql_where = "and create_user_id = {0}".format(obj.current_user_id)
+    elif (obj.tab_type == settings.ALL_GROUP_SQL_WORK_TAB):
+        sql_where = "and (create_user_id = {0} or create_user_group_id = {1})".format(obj.current_user_id, user_info.group_id)
+    return get_sql_work_list_by_where(obj, sql_where)
 
+
+# 合并方法，提取公共sql，精简代码
+# 获取工单列表，根据where条件进行查询
+def get_sql_work_list_by_where(obj, sql_where):
     if (obj.tab_type == settings.NOT_AUDIT_SQL_WORK_TAB):
         sql_where += " and status = {0}".format(settings.SQL_NO_AUDIT)
     elif (obj.tab_type == settings.AUDIT_OK_SQL_WORK_TAB):
@@ -435,36 +348,6 @@ def get_sql_work_for_leader(obj):
     elif (obj.tab_type == settings.EXECUTE_OK_SQL_WROK_TAB):
         sql_where += " and status = {0}".format(settings.SQL_EXECUTE_SUCCESS)
 
-    if (obj.tab_type == settings.ALL_SQL_WORK_TAB):
-        sql_where = "and create_user_id = {0}".format(obj.current_user_id)
-
-    return get_sql_work_list_by_where(obj, sql_where)
-
-    '''sql = """select t1.*, t2.host_name
-                    -- , t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name, ifnull(t5.chinese_name, '') as audit_user_name
-             from
-             (
-                 select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
-                        execute_date_time, mysql_host_id, is_backup, execute_db_name,
-                        backup_table, status, is_deleted, created_time, execute_finish_date_time,
-                        create_user_name,audit_user_name,execute_user_name, real_execute_user_name
-                 from mysql_audit.sql_work
-                 where is_deleted = 0 {0} order by id desc limit {1}, {2}
-             ) t1
-             left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
-             -- left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             -- left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
-             -- left join mysql_audit.work_user t5 on t1.audit_user_id = t5.user_id
-             -- ORDER BY t1.id DESC;"""
-    sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
-    result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
-    for info in result_list:
-        get_sql_work_status_name(info)
-    return result_list'''
-
-
-# 合并方法，提取公共sql，精简代码
-def get_sql_work_list_by_where(obj, sql_where):
     sql = """select t1.*, t2.host_name
              from
              (
