@@ -1,5 +1,6 @@
-import db_util, settings, common_util, custom_algorithm, host_manager
+# -*- coding: utf-8 -*-
 
+import db_util, settings, common_util, custom_algorithm, host_manager
 
 class MyCache():
     __user_infos = {}
@@ -65,6 +66,17 @@ class MyCache():
                 user_list.append(info)
         return user_list
 
+    def get_user_chinese_name(self, user_id):
+        return self.get_user_info(user_id).chinese_name
+
+    def get_audit_user_infos(self):
+        # 获取审核用户信息，只显示组长，DBA用户
+        audit_infos = []
+        for user_info in self.__user_infos.values():
+            if (user_info.role_id == settings.ROLE_LEADER or user_info.group_id == settings.DBA_GROUP_ID):
+                audit_infos.append(user_info)
+        return audit_infos
+
     def get_user_info_by_group_id(self, group_id):
         user_list = []
         for info in self.__user_infos.values():
@@ -84,4 +96,3 @@ class MyCache():
     def delete_host_info_by_host_id(self, host_id):
         if (host_id in self.__mysql_host_infos.keys()):
             self.__mysql_host_infos.pop(host_id)
-

@@ -90,6 +90,14 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label id="audit_user_lable" name="audit_user_lable" class="control-label" for="audit_user_tmp">请选择审核用户:</label>
+                        <select id="audit_user_tmp" name="audit_user_tmp" class="selectpicker show-tick form-control bs-select-hidden" required>
+                            {% for info in audit_user_infos %}
+                                <option value="{{ info.user_id }}" {% if(work_info.audit_user_id == info.user_id) %} selected {% endif %}>{{ info.chinese_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label id="email_lable" name="email_lable" class="control-label" for="email">请选择执行SQL的DBA:</label>
                         <select id="dba_user_id" name="dba_user_id" class="selectpicker show-tick form-control bs-select-hidden" required>
                             {% for info in dba_users %}
@@ -120,17 +128,20 @@
      }*/
 
     /*$("#sleep_time option").each(function () {
-        var my_text = $(this).val();
-        if (my_text == sleep_time) {
-            console.log($(this))
-            $(this).find("option").attr("selected", "selected");
-            $(this).attr("selected", "selected");
-            console.log($(this))
-        }
-    });
-    console.log($("#sleep_time"))
-    $(".selectpicker").selectpicker({liveSearch: true});*/
+     var my_text = $(this).val();
+     if (my_text == sleep_time) {
+     console.log($(this))
+     $(this).find("option").attr("selected", "selected");
+     $(this).attr("selected", "selected");
+     console.log($(this))
+     }
+     });
+     console.log($("#sleep_time"))
+     $(".selectpicker").selectpicker({liveSearch: true});*/
 
     var sleep_time = {{ work_info.sleep }};
     $("#sleep_time").val([sleep_time]).trigger("change");
+
+    //var audit_user_id_temp = {{ work_info.audit_user_id }};
+    //$("#audit_user_id").val([audit_user_id_temp]).trigger("change");
 </script>

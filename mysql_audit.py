@@ -72,7 +72,10 @@ def get_sql_standard():
 @app.route("/execute")
 @login_required
 def sql_work():
-    return render_template("sql_work_add.html", host_infos=sql_manager.get_execute_mysql_host(), dba_users=cache.MyCache().get_user_info_by_group_id(settings.DBA_GROUP_ID))
+    return render_template("sql_work_add.html",
+                           host_infos=sql_manager.get_execute_mysql_host(),
+                           dba_users=cache.MyCache().get_user_info_by_group_id(settings.DBA_GROUP_ID),
+                           audit_user_infos=cache.MyCache().get_audit_user_infos())
 
 
 @app.route("/execute/add", methods=["POST"])
@@ -330,7 +333,8 @@ def get_update_sql_work_html(sql_id):
     return render_template("sql_update_view.html",
                            work_info=sql_manager.get_sql_info_by_id(sql_id),
                            host_infos=sql_manager.get_audit_mysql_host(),
-                           dba_users=cache.MyCache().get_user_info_by_group_id(settings.DBA_GROUP_ID))
+                           dba_users=cache.MyCache().get_user_info_by_group_id(settings.DBA_GROUP_ID),
+                           audit_user_infos=cache.MyCache().get_audit_user_infos())
 
 
 @app.route("/work/update/sql/save", methods=["GET", "POST"])

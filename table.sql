@@ -58,6 +58,7 @@ CREATE TABLE sql_work
   create_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '创建sql工单用户名冗余字段',
   audit_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '审核用户名冗余字段',
   execute_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '执行用户名冗余字段',
+  real_execute_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '真正执行sql的用户名称，冗余字段',
   audit_date_time DATETIME DEFAULT NULL COMMENT 'sql审核时间',
   execute_date_time DATETIME DEFAULT NULL COMMENT 'sql执行时间',
   execute_start_date_time DATETIME DEFAULT NULL COMMENT 'sql执行开始时间',

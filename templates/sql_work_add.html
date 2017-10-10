@@ -1,6 +1,6 @@
 <form id="sql_work_form" target="nm_iframe" class="form-horizontal row" role="form">
     <div class="col-md-8">
-        <textarea id="sql_value" name="sql_value" class="form-control" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=20 required></textarea>
+        <textarea id="sql_value" name="sql_value" class="form-control" placeholder="请在此提交SQL，请以分号结尾。例如：use test; create table t1(id int)engine=innodb;" rows=21 required></textarea>
     </div>
     <div class="col-md-4">
         <div class="form-group" style="margin-left: 0px;margin-right: 0px">
@@ -92,6 +92,14 @@
                 <option value="48">48</option>
                 <option value="49">49</option>
                 <option value="50">50</option>
+            </select>
+        </div>
+        <div class="form-group" style="margin-left: 0px;margin-right: 0px">
+            <select id="audit_user_id" name="audit_user_id" class="selectpicker show-tick form-control bs-select-hidden" required>
+                <option value="0" disabled selected style="color: black">请选择审核用户:</option>
+                {% for info in audit_user_infos %}
+                    <option value="{{ info.user_id }}">{{ info.chinese_name }}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="form-group" style="margin-left: 0px;margin-right: 0px">
