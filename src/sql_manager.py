@@ -347,6 +347,8 @@ def get_sql_work_list_by_where(obj, sql_where):
         sql_where += " and status = {0}".format(settings.SQL_AUDIT_OK)
     elif (obj.tab_type == settings.EXECUTE_OK_SQL_WROK_TAB):
         sql_where += " and status = {0}".format(settings.SQL_EXECUTE_SUCCESS)
+    elif (obj.tab_type == settings.EXECUTE_FAIL_SQL_WROK_TAB):
+        sql_where += " and status = {0}".format(settings.SQL_EXECUTE_FAIL)
 
     sql = """select t1.*, t2.host_name
              from
