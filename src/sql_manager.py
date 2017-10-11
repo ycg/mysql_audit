@@ -18,6 +18,15 @@ def audit_sql_by_sql_id(sql_id):
     return render_template("audit_view.html", audit_infos=inception_util.sql_audit(sql_info.sql_value, cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id)))
 
 
+# 审核sql是否能执行
+# 做的好一点话，如果审核不通过需要写明理由
+def audit_sql_work(obj):
+    status = settings.SQL_AUDIT_OK if (obj.status) else settings.SQL_AUDIT_FAIL
+    sql = """update `mysql_audit`.`sql_work` set `status` = {0}, remark = '{1}' where id = {2};""".format(status, obj.remark, obj.sql_id)
+    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    return "操作成功"
+
+
 # 获取审核的数据库主机信息
 def get_audit_mysql_host():
     return cache.MyCache().get_mysql_host_info()
@@ -38,25 +47,30 @@ def add_sql_work(obj):
 
         user_info = cache.MyCache().get_user_info(obj.current_user_id)
         sql = """INSERT INTO `mysql_audit`.`sql_work`
-                 (`create_user_id`, `audit_user_id`, `execute_user_id`,
-                  `audit_date_time`, `execute_date_time`,
+                 (`create_user_id`, `audit_user_id`, `audit_date_time`, `execute_date_time`,
                   `mysql_host_id`, `jira_url`, `is_backup`, `backup_table`, `sql_value`,
-                  `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`, `create_user_group_id`)
+                  `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`, `create_user_group_id`, sleep,
+                  `create_user_name`, `audit_user_name`, `execute_user_name`, `execute_user_id`)
                  VALUES
-                 ({0}, {1}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}', {10});""" \
+                 ({0}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}', {10}, {11}, '{12}', '{13}', '{14}', {15});""" \
             .format(obj.current_user_id,
                     obj.dba_user_id,
                     obj.host_id,
-                    db_util.DBUtil().escape(obj.jira_url),
+                    db_util.DBUtil().escape(str(obj.jira_url)),
                     obj.is_backup,
                     db_util.DBUtil().escape(obj.sql_value),
                     settings.SQL_AUDIT_OK,
-                    db_util.DBUtil().escape(obj.title),
+                    db_util.DBUtil().escape(str(obj.title)),
                     db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
                     obj.db_name,
-                    user_info.group_id)
+                    user_info.group_id,
+                    obj.sleep_time,
+                    user_info.chinese_name,
+                    cache.MyCache().get_user_chinese_name(obj.dba_user_id),
+                    cache.MyCache().get_user_chinese_name(obj.dba_user_id),
+                    obj.dba_user_id)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-        return "提交SQL工单成功"
+        return "创建SQL工单成功"
     except Exception, e:
         traceback.print_exc()
         return e.message
@@ -66,9 +80,15 @@ def add_sql_work(obj):
 # 修改标题，jira地址，是否备份，执行sql的DBA
 # sql和上线的库为什么不可以修改，主要是如果你写错了，那么审核的时候肯定就不通过的
 def update_sql_work(obj):
-    sql = """update `mysql_audit`.`sql_work` set `title` = '{0}', `jira_url` = '{1}', `execute_user_id` = {2}, is_backup = {3} where id = {4};""" \
-        .format(db_util.DBUtil().escape(obj.title),
-                db_util.DBUtil().escape(obj.jira_url), obj.dba_user_id, obj.is_backup, obj.sql_id)
+    sql = """update `mysql_audit`.`sql_work`
+             set `title` = '{0}', `jira_url` = '{1}', `execute_user_id` = {2}, is_backup = {3}, sleep = {4}, `execute_user_name` = '{5}'
+             where id = {6};""".format(db_util.DBUtil().escape(str(obj.title)),
+                                       db_util.DBUtil().escape(str(obj.jira_url)),
+                                       obj.dba_user_id,
+                                       obj.is_backup,
+                                       obj.sleep_time,
+                                       cache.MyCache().get_user_chinese_name(obj.dba_user_id),
+                                       obj.sql_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
     return "update ok."
 
@@ -80,8 +100,10 @@ def delete_sql_work(sql_id):
 
 
 # 根据查询条件获取工单列表-有分页功能
+# admin用户查询工单列表的接口，其它用户不掉用
 def get_sql_list(obj):
     sql_where = ""
+    obj.tab_type = 0
     if (int(obj.status) >= 0):
         sql_where += " and status = {0}".format(obj.status)
     if (int(obj.user_id) > 0):
@@ -90,80 +112,17 @@ def get_sql_list(obj):
         sql_where += " and created_time >= '{0}'".format(obj.start_datetime)
     if (len(obj.stop_datetime) > 0):
         sql_where += " and created_time <= '{0}'".format(obj.stop_datetime)
-
-    # 这边要根据用户权限进行查询
-    # 管理员可以看所有的用户
-    # 开发只能看到自己提交的工单
-    # 组长只能看到组员提交的所有工单
-    user_info = cache.MyCache().get_user_info(obj.current_user_id)
-    if (user_info.group_id == settings.ADMIN_GROUP_ID):
-        pass
-    elif (user_info.group_id == settings.DBA_GROUP_ID):
-        if (user_info.role_id == settings.ROLE_DEV):
-            sql_where += " and (create_user_id = {0} or execute_user_id = {0})".format(obj.current_user_id)
-        else:
-            pass
-    elif (user_info.role_id == settings.ROLE_DEV):
-        sql_where += " and create_user_id = {0}".format(obj.current_user_id)
-    elif (user_info.role_id == settings.ROLE_LEADER):
-        sql_where += " and create_user_group_id = {0}".format(user_info.group_id)
-
-    """sql = select t1.id, t1.title, t1.create_user_id, t1.audit_user_id, t1.execute_user_id, t1.audit_date_time,
-                    t1.execute_date_time, t1.mysql_host_id, t1.jira_url, t1.is_backup,
-                    t1.backup_table, left(sql_value, 10) as sql_value, t1.return_value, t1.status, t1.is_deleted, t1.created_time,
-                    t2.host_name, t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name, t1.execute_db_name
-             from mysql_audit.sql_work t1
-             left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
-             left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
-             where t1.is_deleted = 0 {0} order by t1.id desc limit {1}, {2};"""
-
-    # 下周来完成权限控制
-    # 除了DBA组和Admin可以执行SQL以外，任何组都没有执行权限
-    # 不过可以考虑一下组长可以执行
-    # DBA只能看到指定给自己执行的工单以及自己创建的工单
-    # 只有admin才能看到所以的工单
-
-    sql = """select t1.*, t2.host_name, t3.chinese_name, ifnull(t4.chinese_name, '') as execute_user_name
-             from
-             (
-                 select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
-                        execute_date_time, mysql_host_id, jira_url, is_backup, execute_db_name,
-                        backup_table, left(sql_value, 10) as sql_value, status, is_deleted, created_time, execute_finish_date_time
-                 from mysql_audit.sql_work
-                 where is_deleted = 0 {0} order by id desc limit {1}, {2}
-             ) t1
-             left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
-             left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id ORDER BY t1.id DESC """
-    sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
-    result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
-    for info in result_list:
-        get_sql_work_status_name(info)
-    return result_list
-
-
-# 组员账号获取工单列表的方法
-def get_sql_list_for_dev(type_id):
-    # 所有工单
-    # 审核中的工单
-    # 已执行的工单
-    if (type_id == 1):
-        sql = ""
-    pass
+    return get_sql_work_list_by_where(obj, sql_where)
 
 
 # 根据工单id获取全部信息
 def get_sql_info_by_id(id):
-    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup,
-                    t1.ignore_warnings, rollback_sql, ifnull(t4.chinese_name, '') as execute_user_name,
-                    t2.host_name, t3.chinese_name, t1.mysql_host_id, t1.id, t1.status, t3.email,
-                    t1.return_value, t1.execute_db_name, t1.audit_result_value, t1.execute_user_id, t1.created_time, ifnull(t1.execute_date_time, '') as execute_date_time
+    sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup, t1.sleep, t1.audit_user_id,
+                    t1.ignore_warnings, rollback_sql, execute_date_time, t2.host_name, t1.mysql_host_id, t1.id, t1.status,
+                    t1.return_value, t1.execute_db_name, t1.audit_result_value, t1.execute_user_id, t1.created_time,
+                    create_user_name, audit_user_name, execute_user_name, real_execute_user_name
              from `mysql_audit`.`sql_work` t1
-             left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id
-             left join mysql_audit.work_user t3 on t1.create_user_id = t3.user_id
-             left join mysql_audit.work_user t4 on t1.execute_user_id = t4.user_id
-             where t1.id = {0};""".format(id)
+             left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id where t1.id = {0};""".format(id)
     return get_sql_work_status_name(common_util.get_object(db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)))
 
 
@@ -172,13 +131,15 @@ def get_sql_info_by_id(id):
 def sql_execute(obj):
     try:
         sql_info = get_sql_info_by_id(obj.sql_id)
+        user_info = cache.MyCache().get_user_info(obj.current_user_id)
+
         if (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
             # 如果已经执行成功，直接返回执行结果
             return json.loads(sql_info.return_value)
         else:
             # 更新工单状态为执行中
-            sql = "update mysql_audit.sql_work set `status` = {0}, `execute_start_date_time` = NOW(), `execute_date_time` = NOW() where id = {1};"\
-                  .format(settings.SQL_EXECUTE_ING, sql_info.id)
+            sql = "update mysql_audit.sql_work set `status` = {0}, `execute_start_date_time` = NOW(), `execute_date_time` = NOW() where id = {1};" \
+                .format(settings.SQL_EXECUTE_ING, sql_info.id)
             db_util.DBUtil().execute(settings.MySQL_HOST, sql)
 
             if (len(sql_info.execute_db_name.strip()) > 0):
@@ -186,19 +147,21 @@ def sql_execute(obj):
             result_obj = inception_util.sql_execute(sql_info.sql_value,
                                                     cache.MyCache().get_mysql_host_info(sql_info.mysql_host_id),
                                                     is_backup=sql_info.is_backup,
-                                                    ignore_warnings=True if (obj.ignore_warnings.upper() == "TRUE") else False)
+                                                    ignore_warnings=True if (obj.ignore_warnings.upper() == "TRUE") else False,
+                                                    sleep_time=sql_info.sleep)
             sql = """update mysql_audit.sql_work
                      set
                      return_value = '{0}',
                      `status` = {1},
                      `ignore_warnings` = {2},
                      `execute_finish_date_time` = NOW(),
-                     `real_execute_user_id` = {3} where id = {4};""" \
-                  .format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
-                          settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
-                          obj.ignore_warnings,
-                          obj.current_user_id,
-                          sql_info.id,)
+                     `real_execute_user_id` = {3},
+                     `real_execute_user_name` = '{4}' where id = {5};""".format(db_util.DBUtil().escape(json.dumps(result_obj, default=lambda o: o.__dict__)),
+                                                                                settings.SQL_EXECUTE_SUCCESS if (get_sql_execute_status(result_obj)) else settings.SQL_EXECUTE_FAIL,
+                                                                                obj.ignore_warnings,
+                                                                                obj.current_user_id,
+                                                                                cache.MyCache().get_user_info(obj.current_user_id).chinese_name,
+                                                                                sql_info.id)
             db_util.DBUtil().execute(settings.MySQL_HOST, sql)
             send_mail_for_execute_success(sql_info.id)
             return result_obj
@@ -233,7 +196,7 @@ def check_sql_audit_result_has_warnings(sql_id):
 def get_sql_result(sql_id):
     sql_info = get_sql_info_by_id(sql_id)
     # 根据状态返回相应的结果，审核状态返回审核结果，执行状态返回执行结果
-    if (sql_info.status == settings.SQL_AUDIT_OK or sql_info.status == settings.SQL_AUDIT_FAIL):
+    if (sql_info.status == settings.SQL_NO_AUDIT or sql_info.status == settings.SQL_AUDIT_OK or sql_info.status == settings.SQL_AUDIT_FAIL):
         return render_template("audit_view.html", audit_infos=json.loads(sql_info.audit_result_value))
     elif (sql_info.status == settings.SQL_EXECUTE_ING or sql_info.status == settings.SQL_EXECUTE_FAIL or sql_info.status == settings.SQL_EXECUTE_SUCCESS):
         return render_template("sql_execute_view.html", audit_infos=json.loads(sql_info.return_value))
@@ -355,3 +318,22 @@ def send_mail_for_execute_success(sql_id):
             common_util.send_html(subject, sql_info.email, content)
 
 
+# 合并方法，提取公共sql，精简代码
+# 获取工单列表，根据where条件进行查询
+def get_sql_work_list_by_where(obj, sql_where):
+    sql = """select t1.*, t2.host_name
+             from
+             (
+                 select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
+                        execute_date_time, mysql_host_id, is_backup, execute_db_name,
+                        backup_table, status, is_deleted, created_time, execute_finish_date_time,
+                        create_user_name, audit_user_name, execute_user_name, real_execute_user_name
+                 from mysql_audit.sql_work
+                 where is_deleted = 0 {0} order by id desc limit {1}, {2}
+             ) t1
+             left join mysql_audit.mysql_hosts t2 on t1.mysql_host_id = t2.host_id"""
+    sql = sql.format(sql_where, (obj.page_number - 1) * settings.SQL_LIST_PAGE_SIZE, settings.SQL_LIST_PAGE_SIZE)
+    result_list = db_util.DBUtil().get_list_infos(settings.MySQL_HOST, sql)
+    for info in result_list:
+        get_sql_work_status_name(info)
+    return result_list

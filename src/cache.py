@@ -72,6 +72,9 @@ class MyCache():
                 user_list.append(info)
         return user_list
 
+    def get_user_chinese_name(self, user_id):
+        return self.get_user_info(user_id).chinese_name
+
     def get_role_info(self, role_id=None):
         return self.get_value_by_key(self.__role_infos, role_id)
 
@@ -84,4 +87,3 @@ class MyCache():
     def delete_host_info_by_host_id(self, host_id):
         if (host_id in self.__mysql_host_infos.keys()):
             self.__mysql_host_infos.pop(host_id)
-

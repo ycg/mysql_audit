@@ -77,9 +77,9 @@ def query_user(obj):
     where_sql = " 1=1 "
     if (obj.role_id > 0):
         where_sql += " and t1.role_id = {0}".format(obj.role_id)
-    elif (obj.group_id > 0):
+    if (obj.group_id > 0):
         where_sql += " and t1.group_id = {0}".format(obj.group_id)
-    elif (len(str(obj.user_name)) > 0):
+    if (len(str(obj.user_name)) > 0):
         where_sql += " and t1.user_name like '%{0}%'".format(obj.user_name)
 
     sql = """select t1.user_id, t1.user_name, t1.chinese_name, t1.created_time,

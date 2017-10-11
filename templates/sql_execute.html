@@ -18,7 +18,7 @@
                 <strong>Jira地址：</strong><a style="font-weight: normal" role="button" href="{{ sql_info.jira_url }}" target="_blank">{{ sql_info.jira_url }}</a>
             </div>
             <div class="form-group">
-                <strong>创建用户：</strong><label style="font-weight: normal">{{ sql_info.chinese_name }}</label>
+                <strong>创建用户：</strong><label style="font-weight: normal">{{ sql_info.create_user_name }}</label>
             </div>
             <div class="form-group">
                 <strong>上线集群：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.host_name }}</label>
@@ -34,6 +34,9 @@
             </div>
             <div class="form-group">
                 <strong>是否备份：</strong><label style="font-weight: normal">{% if(sql_info.is_backup == 1) %} Yes {% else %} No {% endif %}</label>
+            </div>
+            <div class="form-group my_margin_left">
+                <strong>SQL执行暂停时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.sleep }} 秒</label>
             </div>
             <div class="form-group">
                 <strong>执行状态：</strong>
@@ -110,15 +113,17 @@
                 show_modal_dialog("#sql_has_warnings")
             }
             else {
-                var json = "ignore_warnings=" + checked;
-                show_modal_dialog("#sql_execute_status");
-                $.post("/execute/now/" + sql_id, json, function (data) {
-                    $("#sql_execute_result").html(data)
-                    hide_modal_dialog("#sql_execute_status");
-                }).error(function () {
-                    alert("sql执行失败");
-                    hide_modal_dialog("#sql_execute_status");
-                });
+                if (window.confirm("是否确认执行？")) {
+                    var json = "ignore_warnings=" + checked;
+                    show_modal_dialog("#sql_execute_status");
+                    $.post("/execute/now/" + sql_id, json, function (data) {
+                        $("#sql_execute_result").html(data)
+                        hide_modal_dialog("#sql_execute_status");
+                    }).error(function () {
+                        alert("sql执行失败");
+                        hide_modal_dialog("#sql_execute_status");
+                    });
+                }
             }
         });
     }
