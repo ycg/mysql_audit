@@ -66,6 +66,4 @@ http://192.168.1.101:5200/login</br>
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/3.png)
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/4.png)
 ![image](https://github.com/ycg/mysql_audit/blob/master/static/img/5.png)
-![image](https://github.com/ycg/mysql_audit/blob/master/static/img/6.png)
-![image](https://github.com/ycg/mysql_audit/blob/master/static/img/7.png)
 
