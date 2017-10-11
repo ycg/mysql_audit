@@ -8,9 +8,6 @@
         <th>
             标题
         </th>
-        <!--<th>
-            SQL
-        </th>-->
         <th>
             上线集群
         </th>
@@ -49,13 +46,10 @@
             <td>
                 <a role="button" onclick=get_execute_html({{ info.id }})>{{ info.title }}</a>
             </td>
-            <!--<td>
-                {{ info.sql_value }}
-            </td>-->
-            <td class="text-info">
+            <td>
                 {{ info.host_name }}
             </td>
-            <td class="text-info">
+            <td>
                 {{ info.execute_db_name }}
             </td>
             <td>
