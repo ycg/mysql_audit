@@ -354,3 +354,4 @@ def send_mail_for_execute_success(sql_id):
             content = render_template("mail_template.html", sql_info=sql_info)
             common_util.send_html(subject, sql_info.email, content)
 
+
