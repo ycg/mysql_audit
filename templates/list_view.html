@@ -125,7 +125,10 @@
                     {% if(user_info.role_id != 1000) %}
                         <!--未审核和审核失败才需要审核按钮-->
                         {% if(info.status == 0 or info.status == 2) %}
-                            <button class="btn-success btn btn-xs" onclick="show_work_audit_dialog({{ info.id }})">审核</button>
+                            <!--只有工单指定的审核用户才能审核，除了admin-->
+                            {% if(info.audit_user_id == user_info.user_id) %}
+                                <button class="btn-success btn btn-xs" onclick="show_work_audit_dialog({{ info.id }})">审核</button>
+                            {% endif %}
                         {% endif %}
                         <!--审核成功才能点击-->
                         {% if(info.status == 1) %}
