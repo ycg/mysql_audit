@@ -111,14 +111,16 @@
             }
             else {
                 var json = "ignore_warnings=" + checked;
-                show_modal_dialog("#sql_execute_status");
-                $.post("/execute/now/" + sql_id, json, function (data) {
-                    $("#sql_execute_result").html(data)
-                    hide_modal_dialog("#sql_execute_status");
-                }).error(function () {
-                    alert("sql执行失败");
-                    hide_modal_dialog("#sql_execute_status");
-                });
+                if (window.confirm("是否确认执行？") == true) {
+                    show_modal_dialog("#sql_execute_status");
+                    $.post("/execute/now/" + sql_id, json, function (data) {
+                        $("#sql_execute_result").html(data)
+                        hide_modal_dialog("#sql_execute_status");
+                    }).error(function () {
+                        alert("sql执行失败");
+                        hide_modal_dialog("#sql_execute_status");
+                    });
+                }
             }
         });
     }

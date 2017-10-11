@@ -59,7 +59,7 @@ def add_sql_work(obj):
                     db_util.DBUtil().escape(str(obj.jira_url)),
                     obj.is_backup,
                     db_util.DBUtil().escape(obj.sql_value),
-                    settings.SQL_AUDIT_OK,
+                    settings.SQL_NO_AUDIT,
                     db_util.DBUtil().escape(str(obj.title)),
                     db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
                     obj.db_name,
@@ -131,6 +131,17 @@ def get_sql_info_by_id(id):
 def sql_execute(obj):
     try:
         sql_info = get_sql_info_by_id(obj.sql_id)
+        user_info = cache.MyCache().get_user_info(obj.current_user_id)
+
+        if (user_info.group_id != settings.ADMIN_GROUP_ID):
+            # 如果审核没通过，或者审核失败，也不允许执行
+            if (sql_info.status == settings.SQL_NO_AUDIT or sql_info.status == settings.SQL_AUDIT_FAIL):
+                pass
+
+            # 如果工单指定执行的用户跟实际执行的用户不一样，那不允许通过
+            if (sql_info.execute_user_id != user_info.user_id):
+                pass
+
         if (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
             # 如果已经执行成功，直接返回执行结果
             return json.loads(sql_info.return_value)
@@ -194,7 +205,7 @@ def check_sql_audit_result_has_warnings(sql_id):
 def get_sql_result(sql_id):
     sql_info = get_sql_info_by_id(sql_id)
     # 根据状态返回相应的结果，审核状态返回审核结果，执行状态返回执行结果
-    if (sql_info.status == settings.SQL_AUDIT_OK or sql_info.status == settings.SQL_AUDIT_FAIL):
+    if (sql_info.status == settings.SQL_NO_AUDIT or sql_info.status == settings.SQL_AUDIT_OK or sql_info.status == settings.SQL_AUDIT_FAIL):
         return render_template("audit_view.html", audit_infos=json.loads(sql_info.audit_result_value))
     elif (sql_info.status == settings.SQL_EXECUTE_ING or sql_info.status == settings.SQL_EXECUTE_FAIL or sql_info.status == settings.SQL_EXECUTE_SUCCESS):
         return render_template("sql_execute_view.html", audit_infos=json.loads(sql_info.return_value))

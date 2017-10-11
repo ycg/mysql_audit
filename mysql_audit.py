@@ -9,6 +9,9 @@ from src import common_util, cache, user_login, sql_manager, host_manager, user_
 
 app = Flask("mysql_audit", instance_relative_config=True, instance_path=os.getcwd())
 app.config["SESSION_COOKIE_NAME"] = "mysql_audit"
+app.logger.debug('A value for debugging')
+app.logger.warning('A warning occurred (%d apples)', 42)
+app.logger.error('An error occurred')
 app.secret_key = os.urandom(24)
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
@@ -63,6 +66,12 @@ def get_database_names(host_id):
 @login_required
 def get_sql_standard():
     return render_template("sql_standard.html")
+
+
+@app.route("/review/sql/work", methods=["POST"])
+@login_required
+def review_sql_work():
+    return sql_manager.audit_sql_work(get_object_from_json_tmp(request.get_data()))
 
 
 # endregion

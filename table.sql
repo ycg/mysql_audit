@@ -77,6 +77,7 @@ CREATE TABLE sql_work
   return_value MEDIUMTEXT COMMENT '执行SQL返回的结果值',
   `status` TINYINT UNSIGNED NOT NULL COMMENT '状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销 7：工单已回滚',
   ignore_warnings TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '0：不忽略警告 | 1：忽略警告',
+  `remark` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '工单审核备注信息，如果审核不通过需要写明理由',
   is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
   created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间',

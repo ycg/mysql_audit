@@ -106,6 +106,8 @@
                     <!--也只有自己创建的工单才能删除-->
                     {% if(info.create_user_id == user_info.user_id) %}
                         <button class="btn-danger btn btn-xs" onclick=show_delete_sql_work_dialog({{ info.id }})>删除</button>
+                    {% else %}
+                        <button class="btn-danger btn btn-xs" disabled onclick=show_delete_sql_work_dialog({{ info.id }})>删除</button>
                     {% endif %}
                 {% elif(info.status == 5) %}
                     <!--<button class="btn-default btn btn-xs" onclick=get_execute_html({{ info.id }})>详情</button>-->
@@ -114,12 +116,21 @@
                 {% else %}
                     <!--只能编辑自己创建的工单-->
                     {% if(info.create_user_id == user_info.user_id) %}
-                        <button class="btn-info btn btn-xs" onclick=get_sql_update_work_html({{ info.id }})>编辑</button>
+                        <!--只有未审核或者审核失败才可以编辑-->
+                        {% if(info.status == 0 or info.status == 2) %}
+                            <button class="btn-info btn btn-xs" onclick=get_sql_update_work_html({{ info.id }})>编辑</button>
+                        {% endif %}
                     {% endif %}
                     <!--开发人员对执行按钮不可见-->
                     {% if(user_info.role_id != 1000) %}
-                        <button class="btn-success btn btn-xs" onclick="show_work_audit_dialog({{ info.id }})">审核</button>
-                        <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>执行</button>
+                        <!--未审核和审核失败才需要审核按钮-->
+                        {% if(info.status == 0 or info.status == 2) %}
+                            <button class="btn-success btn btn-xs" onclick="show_work_audit_dialog({{ info.id }})">审核</button>
+                        {% endif %}
+                        <!--审核成功才能点击-->
+                        {% if(info.status == 1) %}
+                            <button class="btn-primary btn btn-xs" onclick=get_execute_html({{ info.id }})>执行</button>
+                        {% endif %}
                     {% endif %}
                     {% if(info.create_user_id == user_info.user_id) %}
                         <button class="btn-danger btn btn-xs" onclick=show_delete_sql_work_dialog({{ info.id }})>删除</button>

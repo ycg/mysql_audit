@@ -43,7 +43,9 @@ function input_data_for_dialog(url, json_data, dialog_name) {
 
 function post_request(url, json_data) {
     $.post(url, json_data, function (data) {
-        alert(data)
+        alert(data);
+    }).error(function () {
+        alert("error");
     });
 }
 

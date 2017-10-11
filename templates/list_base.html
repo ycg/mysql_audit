@@ -39,11 +39,11 @@
                 <h4 class="modal-title" id="exampleModalLabel">SQL审核</h4>
             </div>
             <div class="modal-body">
-                <textarea id="rollback_sql" class="form-control" rows=10 cols="100000" placeholder="审核不通过，请填写备注！"></textarea>
+                <textarea id="audit_work_remark" class="form-control" rows=10 cols="100000" placeholder="审核不通过，请填写备注！"></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">审核通过</button>
-                <button type="button" class="btn btn-danger">审核不通过</button>
+                <button type="button" class="btn btn-primary" onclick="audit_sql_work_ok()">审核通过</button>
+                <button type="button" class="btn btn-danger" onclick="audit_sql_work_fail()">审核不通过</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -59,6 +59,7 @@
 <script src={{ url_for("static", filename="js/common.js") }} type="text/javascript"></script>
 
 <script type="text/javascript">
+    var audit_sql_work_id = 0;
     var tab_type_global = 1;
     var page_number_global = 1;
     var div_name_global = "#all_work";
@@ -133,11 +134,29 @@
     }
 
     function show_work_audit_dialog(sql_id) {
+        audit_sql_work_id = sql_id;
+        $("#audit_work_remark").val("");
         show_modal_dialog("#work_audit_dialog")
     }
 
     function get_execute_html(sql_id) {
         window.open("/execute/sql/exeucte/new/" + sql_id)
+    }
+
+    function audit_sql_work_ok() {
+        post_request("/review/sql/work", get_audit_sql_work_obj_json(true))
+    }
+
+    function audit_sql_work_fail() {
+        post_request("/review/sql/work", get_audit_sql_work_obj_json(false));
+    }
+
+    function get_audit_sql_work_obj_json(audit_status) {
+        var obj = new Object();
+        obj.status = audit_status;
+        obj.sql_id = audit_sql_work_id;
+        obj.remark =  $("#audit_work_remark").val();
+        return JSON.stringify(obj);
     }
 </script>
 
