@@ -2,7 +2,7 @@
 
 import json, time, traceback
 from flask import render_template, request
-import inception_util, cache, db_util, settings, common_util
+import inception_util, cache, db_util, settings, common_util, custom_entity
 
 
 # 根据sql和主机id审核sql
@@ -130,25 +130,28 @@ def get_sql_info_by_id(id):
 # 状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功
 def sql_execute(obj):
     try:
+        return_info = custom_entity.Entity()
+        return_info.message = ""
+        return_info.execute_result = None
         sql_info = get_sql_info_by_id(obj.sql_id)
         user_info = cache.MyCache().get_user_info(obj.current_user_id)
 
         if (user_info.group_id != settings.ADMIN_GROUP_ID):
             # 如果审核没通过，或者审核失败，也不允许执行
             if (sql_info.status == settings.SQL_NO_AUDIT or sql_info.status == settings.SQL_AUDIT_FAIL):
-                pass
-
+                return_info.message = "审核不通过，不允许执行！"
             # 如果工单指定执行的用户跟实际执行的用户不一样，那不允许通过
-            if (sql_info.execute_user_id != user_info.user_id):
-                pass
-
-        if (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
+            elif (sql_info.execute_user_id != user_info.user_id):
+                return_info.message = "你不能执行此工单，该工单指定执行用户不是你！"
+        elif (sql_info.status == settings.SQL_EXECUTE_ING):
+            # 如果工单正在执行中，不允许重复执行SQL
+            return_info.message = "SQL工单正在执行中，请耐心等待..."
+        elif (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
             # 如果已经执行成功，直接返回执行结果
-            return json.loads(sql_info.return_value)
+            return_info.execute_result = json.loads(sql_info.return_value)
         else:
             # 更新工单状态为执行中
-            sql = "update mysql_audit.sql_work set `status` = {0}, `execute_start_date_time` = NOW(), `execute_date_time` = NOW() where id = {1};" \
-                .format(settings.SQL_EXECUTE_ING, sql_info.id)
+            sql = "update mysql_audit.sql_work set `status` = {0}, `execute_start_date_time` = NOW(), `execute_date_time` = NOW() where id = {1};".format(settings.SQL_EXECUTE_ING, sql_info.id)
             db_util.DBUtil().execute(settings.MySQL_HOST, sql)
 
             if (len(sql_info.execute_db_name.strip()) > 0):
@@ -173,13 +176,14 @@ def sql_execute(obj):
                                                                                 sql_info.id)
             db_util.DBUtil().execute(settings.MySQL_HOST, sql)
             send_mail_for_execute_success(sql_info.id)
-            return result_obj
-    except:
+            return_info.execute_result = result_obj
+    except Exception, e:
         # 出现异常要更新状态，直接把状态变为fail
         sql = "update mysql_audit.sql_work set `status` = {0} where id = {1};".format(settings.SQL_EXECUTE_FAIL, sql_info.id)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
         traceback.print_exc()
-        return "sql execute fail"
+        return_info.message = "执行时出现异常，请联系管理员！"
+    return return_info
 
 
 # 停止正在执行的sql
@@ -208,7 +212,9 @@ def get_sql_result(sql_id):
     if (sql_info.status == settings.SQL_NO_AUDIT or sql_info.status == settings.SQL_AUDIT_OK or sql_info.status == settings.SQL_AUDIT_FAIL):
         return render_template("audit_view.html", audit_infos=json.loads(sql_info.audit_result_value))
     elif (sql_info.status == settings.SQL_EXECUTE_ING or sql_info.status == settings.SQL_EXECUTE_FAIL or sql_info.status == settings.SQL_EXECUTE_SUCCESS):
-        return render_template("sql_execute_view.html", audit_infos=json.loads(sql_info.return_value))
+        return_info = custom_entity.Entity()
+        return_info.execute_result = json.loads(sql_info.return_value)
+        return render_template("sql_execute_view.html", audit_infos=return_info)
 
 
 # 获取sql执行状态的中文
