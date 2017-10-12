@@ -8,18 +8,12 @@
         <th>
             标题
         </th>
-        <!--<th>
-            SQL
-        </th>-->
         <th>
             上线集群
         </th>
         <th>
             数据库
         </th>
-        <!--<th>
-            备份
-        </th>-->
         <th>
             创建用户
         </th>
@@ -52,22 +46,12 @@
             <td>
                 <a role="button" onclick=get_execute_html({{ info.id }})>{{ info.title }}</a>
             </td>
-            <!--<td>
-                {{ info.sql_value }}
-            </td>-->
             <td class="text-info">
                 {{ info.host_name }}
             </td>
             <td class="text-info">
                 {{ info.execute_db_name }}
             </td>
-            <!--<td>
-                 {% if(info.is_backup == 1) %}
-                    Yes
-                {% else %}
-                    No
-                {% endif %}
-            </td>-->
             <td>
                 {{ info.create_user_name }}
             </td>
@@ -86,7 +70,7 @@
                     {% elif(info.status == 2 or info.status == 3) %}
                         class="text-danger"
                     {% endif %}>
-                {{ info.status_name }}
+                <strong>{{ info.status_name }}</strong>
             </td>
             <td>
                 {{ info.created_time }}
