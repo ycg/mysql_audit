@@ -43,32 +43,18 @@
 <body>
 <div class="container-fluid col-md-10 col-center-block">
 	<!--最顶部导航栏 -->
-    <div class="row clearfix">
+    <div class="row">
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#"><strong>SQL执行界面</strong></a>
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#">你好，{{ user_info.chinese_name }}</a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人设置<strong class="caret"></strong></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#" onclick="logout()">退出</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
             </nav>
         </div>
     </div>
 
-    <div class="row clearfix">
+    <!--工单详情-->
+    <!--<div class="row">
         <div class="col-md-8">
             <textarea id="sql_value" name="sql_value" class="form-control" rows=21 style="height: 443px">{{ sql_info.sql_value }}</textarea>
         </div>
@@ -123,7 +109,88 @@
                 {% endif %}
             </form>
         </div>
+    </div>-->
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    SQL语句
+                </div>
+                <div class="panel-body" style="padding: 0">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <textarea id="sql_value" name="sql_value" class="form-control" style="height: 463px;border: 0px;resize: none">{{ sql_info.sql_value }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    工单详情
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form id="sql_info_form">
+                                <div class="form-group">
+                                    <strong>工单名称：</strong><label style="font-weight: normal">{{ sql_info.title }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <strong>Jira地址：</strong><a style="font-weight: normal" role="button" href="{{ sql_info.jira_url }}" target="_blank">{{ sql_info.jira_url }}</a>
+                                </div>
+                                <div class="form-group">
+                                    <strong>创建用户：</strong><label style="font-weight: normal">{{ sql_info.create_user_name }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <strong>上线集群：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.host_name }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <strong>数据库名称：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.execute_db_name }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <strong>创建时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.created_time }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <strong>执行时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.execute_date_time }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <strong>SQL执行暂停时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.sleep }} 秒</label>
+                                </div>
+                                <div class="form-group">
+                                    <strong>是否备份：</strong><label style="font-weight: normal">{% if(sql_info.is_backup == 1) %} Yes {% else %} No {% endif %}</label>
+                                </div>
+                                <div class="form-group">
+                                    <strong>执行状态：</strong>
+                                    <label style="font-weight: normal"
+                                            {% if(sql_info.status == 1 or sql_info.status == 4) %}
+                                           class="text-success"
+                                            {% elif(sql_info.status == 0) %}
+                                           class="text-warning"
+                                            {% elif(sql_info.status == 2 or sql_info.status == 3) %}
+                                           class="text-danger"
+                                            {% endif %}>{{ sql_info.status_name }}</label>
+                                </div>
+                                {% if(user_info.role_id != 1000) %}
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="ignore_warning" type="checkbox" {% if(sql_info.ignore_warnings == True) %} checked {% endif %}> 执行时是否忽视警告
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!--执行结果-->
     </br>
     {% if(user_info.role_id != 1000) %}
         <!--执行成功或错误-->
@@ -209,4 +276,5 @@
 
     input_data_for_post("/execute/result/" + {{ sql_info.id }}, "", "#sql_execute_result")
 </script>
+
 
