@@ -147,6 +147,8 @@ def get_rollback_sql(sql_id):
 @login_required
 def sql_list_home():
     user_info = cache.MyCache().get_user_info(current_user.id)
+    if (user_info.group_id == settings.DBA_GROUP_ID and user_info.role_id == settings.ROLE_DEV):
+        return render_template("list_for_dba.html")
     if (user_info.role_id == settings.ROLE_DEV):
         return render_template("list_for_dev.html")
     if (user_info.role_id == settings.ROLE_LEADER):
@@ -162,7 +164,10 @@ def sql_list_home():
 @login_required
 def query_sql_list():
     user_info = cache.MyCache().get_user_info(current_user.id)
-    if (user_info.role_id == settings.ROLE_DEV):
+    if (user_info.group_id == settings.DBA_GROUP_ID and user_info.role_id == settings.ROLE_DEV):
+        obj = get_object_from_json_tmp(request.get_data())
+        result_sql_list = sql_manager.get_sql_work_for_dba(obj)
+    elif (user_info.role_id == settings.ROLE_DEV):
         obj = get_object_from_json_tmp(request.get_data())
         result_sql_list = sql_manager.get_sql_work_for_dev(obj)
     elif (user_info.role_id == settings.ROLE_LEADER):

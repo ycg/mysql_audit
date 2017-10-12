@@ -144,19 +144,26 @@
     }
 
     function audit_sql_work_ok() {
-        post_request("/review/sql/work", get_audit_sql_work_obj_json(true))
+        review_sql_work(true);
     }
 
     function audit_sql_work_fail() {
-        post_request("/review/sql/work", get_audit_sql_work_obj_json(false));
+        review_sql_work(false);
     }
 
-    function get_audit_sql_work_obj_json(audit_status) {
+    function review_sql_work(audit_status) {
         var obj = new Object();
         obj.status = audit_status;
         obj.sql_id = audit_sql_work_id;
         obj.remark =  $("#audit_work_remark").val();
-        return JSON.stringify(obj);
+
+        $.post("/review/sql/work", JSON.stringify(obj), function (data) {
+            alert(data);
+            hide_modal_dialog(("#work_audit_dialog"))
+        }).error(function () {
+            alert("error");
+            hide_modal_dialog(("#work_audit_dialog"))
+        });
     }
 </script>
 

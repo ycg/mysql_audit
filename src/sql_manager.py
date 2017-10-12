@@ -345,9 +345,23 @@ def get_sql_work_for_leader(obj):
     sql_where = ""
     user_info = cache.MyCache().get_user_info(obj.current_user_id)
     if (obj.tab_type == settings.ALL_SQL_WORK_TAB):
+        sql_where = " and create_user_id = {0}".format(obj.current_user_id)
+    else:
+        sql_where = " and (create_user_id = {0} or create_user_group_id = {1})".format(obj.current_user_id, user_info.group_id)
+    return get_sql_work_list_by_where(obj, sql_where)
+
+
+# dba工单查询方法
+# 未执行工单可以看到自己的工单
+# 以及别人指定执行的工单并且审核通过
+def get_sql_work_for_dba(obj):
+    sql_where = ""
+    if (obj.tab_type == settings.ALL_SQL_WORK_TAB):
         sql_where = "and create_user_id = {0}".format(obj.current_user_id)
-    elif (obj.tab_type == settings.ALL_GROUP_SQL_WORK_TAB):
-        sql_where = "and (create_user_id = {0} or create_user_group_id = {1})".format(obj.current_user_id, user_info.group_id)
+    elif (obj.tab_type == settings.NOT_EXECUTE_SQL_WORK_TAB):
+        sql_where = " and (execute_user_id = {0} or create_user_id = {0})".format(obj.current_user_id)
+    elif (obj.tab_type == settings.AUDIT_OK_SQL_WORK_TAB):
+        sql_where = " and audit_user_id = {0}".format(obj.current_user_id)
     return get_sql_work_list_by_where(obj, sql_where)
 
 
