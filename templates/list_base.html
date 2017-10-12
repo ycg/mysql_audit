@@ -159,10 +159,11 @@
 
         $.post("/review/sql/work", JSON.stringify(obj), function (data) {
             alert(data);
-            hide_modal_dialog(("#work_audit_dialog"))
+            hide_modal_dialog(("#work_audit_dialog"));
+            query_sql_list();
         }).error(function () {
             alert("error");
-            hide_modal_dialog(("#work_audit_dialog"))
+            hide_modal_dialog(("#work_audit_dialog"));
         });
     }
 </script>
