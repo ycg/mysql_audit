@@ -21,10 +21,15 @@ def audit_sql_by_sql_id(sql_id):
 # 审核sql是否能执行
 # 做的好一点话，如果审核不通过需要写明理由
 def audit_sql_work(obj):
+    user_info = cache.MyCache().get_user_info(obj.current_user_id)
+    if (user_info.group_id != settings.ADMIN_GROUP_ID):
+        sql_work = get_sql_info_by_id(obj.sql_id)
+        if (sql_work.audit_user_id != obj.current_user_id):
+            return "此工单审核人不是你，你无法审核！"
     status = settings.SQL_AUDIT_OK if (obj.status) else settings.SQL_AUDIT_FAIL
     sql = """update `mysql_audit`.`sql_work` set `status` = {0}, remark = '{1}' where id = {2};""".format(status, obj.remark, obj.sql_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-    return "操作成功"
+    return "操作成功！"
 
 
 # 获取审核的数据库主机信息
@@ -143,13 +148,17 @@ def sql_execute(obj):
             # 如果审核没通过，或者审核失败，也不允许执行
             if (sql_info.status == settings.SQL_NO_AUDIT or sql_info.status == settings.SQL_AUDIT_FAIL):
                 return_info.message = "审核不通过，不允许执行！"
+                return return_info
             # 如果工单指定执行的用户跟实际执行的用户不一样，那不允许通过
             elif (sql_info.execute_user_id != user_info.user_id):
                 return_info.message = "你不能执行此工单，该工单指定执行用户不是你！"
-        elif (sql_info.status == settings.SQL_EXECUTE_ING):
+                return return_info
+        if (sql_info.status == settings.SQL_EXECUTE_ING):
             # 如果工单正在执行中，不允许重复执行SQL
             return_info.message = "SQL工单正在执行中，请耐心等待..."
-        elif (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
+            return return_info
+
+        if (sql_info.status == settings.SQL_EXECUTE_SUCCESS):
             # 如果已经执行成功，直接返回执行结果
             return_info.execute_result = json.loads(sql_info.return_value)
         else:

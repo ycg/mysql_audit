@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6789b1a2-cd82-448d-b14c-7100c24d34db" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/list_base.html" afterPath="$PROJECT_DIR$/templates/list_base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/list_view.html" afterPath="$PROJECT_DIR$/templates/list_view.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/sql_execute_home.html" afterPath="$PROJECT_DIR$/templates/sql_execute_home.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sql_manager.py" afterPath="$PROJECT_DIR$/src/sql_manager.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -29,61 +31,76 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="sql_manager.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="sql_manager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sql_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.3909532">
-              <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="27" column="37" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
               <folding>
                 <element signature="e#217#406#0" expanded="false" />
                 <element signature="e#466#754#0" expanded="false" />
-                <element signature="e#822#1108#0" expanded="false" />
-                <element signature="e#1158#1202#0" expanded="false" />
-                <element signature="e#1254#1298#0" expanded="false" />
-                <element signature="e#1400#3338#0" expanded="false" />
-                <element signature="e#3456#4406#0" expanded="false" />
-                <element signature="e#4453#4606#0" expanded="false" />
-                <element signature="e#4684#5192#0" expanded="false" />
-                <element signature="e#5242#5970#0" expanded="false" />
-                <element signature="e#6053#9583#0" expanded="false" />
-                <element signature="e#9630#9634#0" expanded="false" />
-                <element signature="e#9726#10128#0" expanded="false" />
-                <element signature="e#10180#10856#0" expanded="false" />
-                <element signature="e#10968#11057#0" expanded="false" />
-                <element signature="e#11153#11272#0" expanded="false" />
-                <element signature="e#11345#11466#0" expanded="false" />
-                <element signature="e#11522#12277#0" expanded="false" />
-                <element signature="e#12343#12441#0" expanded="false" />
-                <element signature="e#12490#14462#0" expanded="false" />
-                <element signature="e#14512#15001#0" expanded="false" />
-                <element signature="e#15054#15102#0" expanded="false" />
-                <element signature="e#15160#15700#0" expanded="false" />
-                <element signature="e#15762#15856#0" expanded="false" />
-                <element signature="e#15932#16333#0" expanded="false" />
-                <element signature="e#16420#16914#0" expanded="false" />
-                <element signature="e#17012#18770#0" expanded="false" />
-                <marker date="1507800933663" expanded="true" signature="1737:2342" placeholder="INSERT INTO ..." />
-                <marker date="1507800933663" expanded="true" signature="5251:5842" placeholder="select t1.sq..." />
-                <marker date="1507800933663" expanded="true" signature="7107:7232" placeholder="update mysql..." />
-                <marker date="1507800933663" expanded="true" signature="8004:8359" placeholder="update mysql..." />
-                <marker date="1507800933663" expanded="true" signature="9313:9374" placeholder="update mysql..." />
-                <marker date="1507800933663" expanded="true" signature="13094:13171" placeholder="select schem..SCHEMATA..." />
-                <marker date="1507800933663" expanded="true" signature="13369:13451" placeholder="select table..." />
-                <marker date="1507800933663" expanded="true" signature="13679:13739" placeholder="select rollb..." />
-                <marker date="1507800933663" expanded="true" signature="14305:14374" placeholder="update mysql..." />
-                <marker date="1507800933663" expanded="true" signature="14854:14915" placeholder="update mysql..." />
-                <marker date="1507800933663" expanded="true" signature="17825:18486" placeholder="select t1.*,..id..." />
-                <marker date="1507800933663" expanded="true" signature="17901:18385" placeholder="select id, t..sql_work..." />
+                <element signature="e#1430#1474#0" expanded="false" />
+                <element signature="e#1526#1570#0" expanded="false" />
+                <element signature="e#1672#3610#0" expanded="false" />
+                <element signature="e#3728#4678#0" expanded="false" />
+                <element signature="e#4725#4878#0" expanded="false" />
+                <element signature="e#4956#5464#0" expanded="false" />
+                <element signature="e#5514#6242#0" expanded="false" />
+                <element signature="e#10000#10004#0" expanded="false" />
+                <element signature="e#10096#10498#0" expanded="false" />
+                <element signature="e#11338#11427#0" expanded="false" />
+                <element signature="e#11523#11642#0" expanded="false" />
+                <element signature="e#11715#11836#0" expanded="false" />
+                <element signature="e#11892#12647#0" expanded="false" />
+                <element signature="e#12713#12811#0" expanded="false" />
+                <element signature="e#12860#14832#0" expanded="false" />
+                <element signature="e#14882#15371#0" expanded="false" />
+                <element signature="e#15424#15472#0" expanded="false" />
+                <element signature="e#15530#16070#0" expanded="false" />
+                <element signature="e#16132#16226#0" expanded="false" />
+                <element signature="e#17382#19140#0" expanded="false" />
+                <marker date="1507862128262" expanded="true" signature="2009:2614" placeholder="INSERT INTO ..." />
+                <marker date="1507862128262" expanded="true" signature="5523:6114" placeholder="select t1.sq..." />
+                <marker date="1507862128262" expanded="true" signature="7477:7602" placeholder="update mysql..." />
+                <marker date="1507862128262" expanded="true" signature="8374:8729" placeholder="update mysql..." />
+                <marker date="1507862128262" expanded="true" signature="9683:9744" placeholder="update mysql..." />
+                <marker date="1507862128262" expanded="true" signature="13464:13541" placeholder="select schem..SCHEMATA..." />
+                <marker date="1507862128262" expanded="true" signature="13739:13821" placeholder="select table..." />
+                <marker date="1507862128262" expanded="true" signature="14049:14109" placeholder="select rollb..." />
+                <marker date="1507862128262" expanded="true" signature="14675:14744" placeholder="update mysql..." />
+                <marker date="1507862128262" expanded="true" signature="15224:15285" placeholder="update mysql..." />
+                <marker date="1507862128262" expanded="true" signature="18195:18856" placeholder="select t1.*,..id..." />
+                <marker date="1507862128262" expanded="true" signature="18271:18755" placeholder="select id, t..sql_work..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="list_view.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="sql_execute_home.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/sql_execute_home.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.5172415">
+              <caret line="188" column="48" selection-start-line="188" selection-start-column="39" selection-end-line="188" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list_view.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/list_view.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="22.172413">
-              <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.21719956">
+              <caret line="41" column="76" selection-start-line="41" selection-start-column="76" selection-end-line="41" selection-end-column="76" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="26" column="20" selection-start-line="26" selection-start-column="15" selection-end-line="26" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -92,9 +109,56 @@
       <file leaf-file-name="list_base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/list_base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.275862">
-              <caret line="161" column="54" selection-start-line="161" selection-start-column="54" selection-end-line="161" selection-end-column="54" />
-              <folding />
+            <state vertical-scroll-proportion="0.44827586">
+              <caret line="60" column="30" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
+              <folding>
+                <element signature="n#div#0;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#0;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+                <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#1;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+                <element signature="n#div#2;n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+                <element signature="n#div#2;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#2;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+                <element signature="n#div#2;n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+                <element signature="n#div#3;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#3;n#!!top" expanded="false" />
+                <element signature="e#2819#3151#0#HTML" expanded="false" />
+                <element signature="e#3026#3080#0#HTML" expanded="false" />
+                <element signature="e#3100#3143#0#HTML" expanded="false" />
+                <element signature="e#3209#3284#0#HTML" expanded="false" />
+                <element signature="e#3332#3437#0#HTML" expanded="false" />
+                <element signature="e#3470#3781#0#HTML" expanded="false" />
+                <element signature="e#3545#3664#0#HTML" expanded="false" />
+                <element signature="e#3684#3773#0#HTML" expanded="false" />
+                <element signature="e#3832#3921#0#HTML" expanded="false" />
+                <element signature="e#3969#4213#0#HTML" expanded="false" />
+                <element signature="e#4032#4146#0#HTML" expanded="false" />
+                <element signature="e#4166#4205#0#HTML" expanded="false" />
+                <element signature="e#4253#4510#0#HTML" expanded="false" />
+                <element signature="e#4325#4502#0#HTML" expanded="false" />
+                <element signature="e#4549#4980#0#HTML" expanded="false" />
+                <element signature="e#4733#4856#0#HTML" expanded="false" />
+                <element signature="e#4876#4972#0#HTML" expanded="false" />
+                <element signature="e#5026#5158#0#HTML" expanded="false" />
+                <element signature="e#5198#5263#0#HTML" expanded="false" />
+                <element signature="e#5298#5336#0#HTML" expanded="false" />
+                <element signature="e#5373#5412#0#HTML" expanded="false" />
+                <element signature="e#5457#6100#0#HTML" expanded="false" />
+                <element signature="e#5655#5783#0#HTML" expanded="false" />
+                <element signature="e#5697#5773#0#HTML" expanded="false" />
+                <element signature="e#5857#5978#0#HTML" expanded="false" />
+                <element signature="e#5998#6092#0#HTML" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -102,8 +166,8 @@
       <file leaf-file-name="table.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/table.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.666667">
-              <caret line="59" column="17" selection-start-line="59" selection-start-column="2" selection-end-line="59" selection-end-column="17" />
+            <state vertical-scroll-proportion="-11.0">
+              <caret line="55" column="15" selection-start-line="55" selection-start-column="2" selection-end-line="55" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -137,14 +201,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/sql_execute_home.html" />
         <option value="$PROJECT_DIR$/templates/sql_execute_view.html" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/0ffa6a72-65c4-4d60-ac1d-070d8f720fcc/console.sql" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/templates/list_view.html" />
         <option value="$PROJECT_DIR$/templates/list_for_dba.html" />
         <option value="$PROJECT_DIR$/mysql_audit.py" />
         <option value="$PROJECT_DIR$/src/sql_manager.py" />
+        <option value="$PROJECT_DIR$/templates/list_view.html" />
+        <option value="$PROJECT_DIR$/templates/sql_execute_home.html" />
         <option value="$PROJECT_DIR$/templates/list_base.html" />
       </list>
     </option>
@@ -528,7 +592,13 @@
       <option name="project" value="LOCAL" />
       <updated>1507798487154</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="修改编辑的时候报错">
+      <created>1507801374350</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1507801374350</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -550,7 +620,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953367" sideWeight="0.49779493" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.49558985" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3284974" sideWeight="0.49779493" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284974" sideWeight="0.49779493" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44559586" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1631753" sideWeight="0.49459043" order="0" side_tool="false" content_ui="combo" />
@@ -586,7 +656,8 @@
     <MESSAGE value="更新readme" />
     <MESSAGE value="更新" />
     <MESSAGE value="新增dba工单界面，以及优化逻辑" />
-    <option name="LAST_COMMIT_MESSAGE" value="新增dba工单界面，以及优化逻辑" />
+    <MESSAGE value="修改编辑的时候报错" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改编辑的时候报错" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -612,43 +683,38 @@
           <folding>
             <element signature="e#217#406#0" expanded="false" />
             <element signature="e#466#754#0" expanded="false" />
-            <element signature="e#822#1108#0" expanded="false" />
-            <element signature="e#1158#1202#0" expanded="false" />
-            <element signature="e#1254#1298#0" expanded="false" />
-            <element signature="e#1400#3338#0" expanded="false" />
-            <element signature="e#3456#4406#0" expanded="false" />
-            <element signature="e#4453#4606#0" expanded="false" />
-            <element signature="e#4684#5192#0" expanded="false" />
-            <element signature="e#5242#5970#0" expanded="false" />
-            <element signature="e#6053#9583#0" expanded="false" />
-            <element signature="e#9630#9634#0" expanded="false" />
-            <element signature="e#9726#10128#0" expanded="false" />
-            <element signature="e#10180#10856#0" expanded="false" />
-            <element signature="e#10968#11057#0" expanded="false" />
-            <element signature="e#11153#11272#0" expanded="false" />
-            <element signature="e#11345#11466#0" expanded="false" />
-            <element signature="e#11522#12277#0" expanded="false" />
-            <element signature="e#12343#12441#0" expanded="false" />
-            <element signature="e#12490#14462#0" expanded="false" />
-            <element signature="e#14512#15001#0" expanded="false" />
-            <element signature="e#15054#15102#0" expanded="false" />
-            <element signature="e#15160#15700#0" expanded="false" />
-            <element signature="e#15762#15856#0" expanded="false" />
-            <element signature="e#15932#16333#0" expanded="false" />
-            <element signature="e#16420#16914#0" expanded="false" />
-            <element signature="e#17012#18770#0" expanded="false" />
-            <marker date="1507800933663" expanded="true" signature="1737:2342" placeholder="INSERT INTO ..." />
-            <marker date="1507800933663" expanded="true" signature="5251:5842" placeholder="select t1.sq..." />
-            <marker date="1507800933663" expanded="true" signature="7107:7232" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="8004:8359" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="9313:9374" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="13094:13171" placeholder="select schem..SCHEMATA..." />
-            <marker date="1507800933663" expanded="true" signature="13369:13451" placeholder="select table..." />
-            <marker date="1507800933663" expanded="true" signature="13679:13739" placeholder="select rollb..." />
-            <marker date="1507800933663" expanded="true" signature="14305:14374" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="14854:14915" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="17825:18486" placeholder="select t1.*,..id..." />
-            <marker date="1507800933663" expanded="true" signature="17901:18385" placeholder="select id, t..sql_work..." />
+            <element signature="e#1430#1474#0" expanded="false" />
+            <element signature="e#1526#1570#0" expanded="false" />
+            <element signature="e#1672#3610#0" expanded="false" />
+            <element signature="e#3728#4678#0" expanded="false" />
+            <element signature="e#4725#4878#0" expanded="false" />
+            <element signature="e#4956#5464#0" expanded="false" />
+            <element signature="e#5514#6242#0" expanded="false" />
+            <element signature="e#10000#10004#0" expanded="false" />
+            <element signature="e#10096#10498#0" expanded="false" />
+            <element signature="e#11338#11427#0" expanded="false" />
+            <element signature="e#11523#11642#0" expanded="false" />
+            <element signature="e#11715#11836#0" expanded="false" />
+            <element signature="e#11892#12647#0" expanded="false" />
+            <element signature="e#12713#12811#0" expanded="false" />
+            <element signature="e#12860#14832#0" expanded="false" />
+            <element signature="e#14882#15371#0" expanded="false" />
+            <element signature="e#15424#15472#0" expanded="false" />
+            <element signature="e#15530#16070#0" expanded="false" />
+            <element signature="e#16132#16226#0" expanded="false" />
+            <element signature="e#17382#19140#0" expanded="false" />
+            <marker date="1507862128262" expanded="true" signature="2009:2614" placeholder="INSERT INTO ..." />
+            <marker date="1507862128262" expanded="true" signature="5523:6114" placeholder="select t1.sq..." />
+            <marker date="1507862128262" expanded="true" signature="7477:7602" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="8374:8729" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="9683:9744" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="13464:13541" placeholder="select schem..SCHEMATA..." />
+            <marker date="1507862128262" expanded="true" signature="13739:13821" placeholder="select table..." />
+            <marker date="1507862128262" expanded="true" signature="14049:14109" placeholder="select rollb..." />
+            <marker date="1507862128262" expanded="true" signature="14675:14744" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="15224:15285" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="18195:18856" placeholder="select t1.*,..id..." />
+            <marker date="1507862128262" expanded="true" signature="18271:18755" placeholder="select id, t..sql_work..." />
           </folding>
         </state>
       </provider>
@@ -694,43 +760,38 @@
           <folding>
             <element signature="e#217#406#0" expanded="false" />
             <element signature="e#466#754#0" expanded="false" />
-            <element signature="e#822#1108#0" expanded="false" />
-            <element signature="e#1158#1202#0" expanded="false" />
-            <element signature="e#1254#1298#0" expanded="false" />
-            <element signature="e#1400#3338#0" expanded="false" />
-            <element signature="e#3456#4406#0" expanded="false" />
-            <element signature="e#4453#4606#0" expanded="false" />
-            <element signature="e#4684#5192#0" expanded="false" />
-            <element signature="e#5242#5970#0" expanded="false" />
-            <element signature="e#6053#9583#0" expanded="false" />
-            <element signature="e#9630#9634#0" expanded="false" />
-            <element signature="e#9726#10128#0" expanded="false" />
-            <element signature="e#10180#10856#0" expanded="false" />
-            <element signature="e#10968#11057#0" expanded="false" />
-            <element signature="e#11153#11272#0" expanded="false" />
-            <element signature="e#11345#11466#0" expanded="false" />
-            <element signature="e#11522#12277#0" expanded="false" />
-            <element signature="e#12343#12441#0" expanded="false" />
-            <element signature="e#12490#14462#0" expanded="false" />
-            <element signature="e#14512#15001#0" expanded="false" />
-            <element signature="e#15054#15102#0" expanded="false" />
-            <element signature="e#15160#15700#0" expanded="false" />
-            <element signature="e#15762#15856#0" expanded="false" />
-            <element signature="e#15932#16333#0" expanded="false" />
-            <element signature="e#16420#16914#0" expanded="false" />
-            <element signature="e#17012#18770#0" expanded="false" />
-            <marker date="1507800933663" expanded="true" signature="1737:2342" placeholder="INSERT INTO ..." />
-            <marker date="1507800933663" expanded="true" signature="5251:5842" placeholder="select t1.sq..." />
-            <marker date="1507800933663" expanded="true" signature="7107:7232" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="8004:8359" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="9313:9374" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="13094:13171" placeholder="select schem..SCHEMATA..." />
-            <marker date="1507800933663" expanded="true" signature="13369:13451" placeholder="select table..." />
-            <marker date="1507800933663" expanded="true" signature="13679:13739" placeholder="select rollb..." />
-            <marker date="1507800933663" expanded="true" signature="14305:14374" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="14854:14915" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="17825:18486" placeholder="select t1.*,..id..." />
-            <marker date="1507800933663" expanded="true" signature="17901:18385" placeholder="select id, t..sql_work..." />
+            <element signature="e#1430#1474#0" expanded="false" />
+            <element signature="e#1526#1570#0" expanded="false" />
+            <element signature="e#1672#3610#0" expanded="false" />
+            <element signature="e#3728#4678#0" expanded="false" />
+            <element signature="e#4725#4878#0" expanded="false" />
+            <element signature="e#4956#5464#0" expanded="false" />
+            <element signature="e#5514#6242#0" expanded="false" />
+            <element signature="e#10000#10004#0" expanded="false" />
+            <element signature="e#10096#10498#0" expanded="false" />
+            <element signature="e#11338#11427#0" expanded="false" />
+            <element signature="e#11523#11642#0" expanded="false" />
+            <element signature="e#11715#11836#0" expanded="false" />
+            <element signature="e#11892#12647#0" expanded="false" />
+            <element signature="e#12713#12811#0" expanded="false" />
+            <element signature="e#12860#14832#0" expanded="false" />
+            <element signature="e#14882#15371#0" expanded="false" />
+            <element signature="e#15424#15472#0" expanded="false" />
+            <element signature="e#15530#16070#0" expanded="false" />
+            <element signature="e#16132#16226#0" expanded="false" />
+            <element signature="e#17382#19140#0" expanded="false" />
+            <marker date="1507862128262" expanded="true" signature="2009:2614" placeholder="INSERT INTO ..." />
+            <marker date="1507862128262" expanded="true" signature="5523:6114" placeholder="select t1.sq..." />
+            <marker date="1507862128262" expanded="true" signature="7477:7602" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="8374:8729" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="9683:9744" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="13464:13541" placeholder="select schem..SCHEMATA..." />
+            <marker date="1507862128262" expanded="true" signature="13739:13821" placeholder="select table..." />
+            <marker date="1507862128262" expanded="true" signature="14049:14109" placeholder="select rollb..." />
+            <marker date="1507862128262" expanded="true" signature="14675:14744" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="15224:15285" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="18195:18856" placeholder="select t1.*,..id..." />
+            <marker date="1507862128262" expanded="true" signature="18271:18755" placeholder="select id, t..sql_work..." />
           </folding>
         </state>
       </provider>
@@ -742,43 +803,38 @@
           <folding>
             <element signature="e#217#406#0" expanded="false" />
             <element signature="e#466#754#0" expanded="false" />
-            <element signature="e#822#1108#0" expanded="false" />
-            <element signature="e#1158#1202#0" expanded="false" />
-            <element signature="e#1254#1298#0" expanded="false" />
-            <element signature="e#1400#3338#0" expanded="false" />
-            <element signature="e#3456#4406#0" expanded="false" />
-            <element signature="e#4453#4606#0" expanded="false" />
-            <element signature="e#4684#5192#0" expanded="false" />
-            <element signature="e#5242#5970#0" expanded="false" />
-            <element signature="e#6053#9583#0" expanded="false" />
-            <element signature="e#9630#9634#0" expanded="false" />
-            <element signature="e#9726#10128#0" expanded="false" />
-            <element signature="e#10180#10856#0" expanded="false" />
-            <element signature="e#10968#11057#0" expanded="false" />
-            <element signature="e#11153#11272#0" expanded="false" />
-            <element signature="e#11345#11466#0" expanded="false" />
-            <element signature="e#11522#12277#0" expanded="false" />
-            <element signature="e#12343#12441#0" expanded="false" />
-            <element signature="e#12490#14462#0" expanded="false" />
-            <element signature="e#14512#15001#0" expanded="false" />
-            <element signature="e#15054#15102#0" expanded="false" />
-            <element signature="e#15160#15700#0" expanded="false" />
-            <element signature="e#15762#15856#0" expanded="false" />
-            <element signature="e#15932#16333#0" expanded="false" />
-            <element signature="e#16420#16914#0" expanded="false" />
-            <element signature="e#17012#18770#0" expanded="false" />
-            <marker date="1507800933663" expanded="true" signature="1737:2342" placeholder="INSERT INTO ..." />
-            <marker date="1507800933663" expanded="true" signature="5251:5842" placeholder="select t1.sq..." />
-            <marker date="1507800933663" expanded="true" signature="7107:7232" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="8004:8359" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="9313:9374" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="13094:13171" placeholder="select schem..SCHEMATA..." />
-            <marker date="1507800933663" expanded="true" signature="13369:13451" placeholder="select table..." />
-            <marker date="1507800933663" expanded="true" signature="13679:13739" placeholder="select rollb..." />
-            <marker date="1507800933663" expanded="true" signature="14305:14374" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="14854:14915" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="17825:18486" placeholder="select t1.*,..id..." />
-            <marker date="1507800933663" expanded="true" signature="17901:18385" placeholder="select id, t..sql_work..." />
+            <element signature="e#1430#1474#0" expanded="false" />
+            <element signature="e#1526#1570#0" expanded="false" />
+            <element signature="e#1672#3610#0" expanded="false" />
+            <element signature="e#3728#4678#0" expanded="false" />
+            <element signature="e#4725#4878#0" expanded="false" />
+            <element signature="e#4956#5464#0" expanded="false" />
+            <element signature="e#5514#6242#0" expanded="false" />
+            <element signature="e#10000#10004#0" expanded="false" />
+            <element signature="e#10096#10498#0" expanded="false" />
+            <element signature="e#11338#11427#0" expanded="false" />
+            <element signature="e#11523#11642#0" expanded="false" />
+            <element signature="e#11715#11836#0" expanded="false" />
+            <element signature="e#11892#12647#0" expanded="false" />
+            <element signature="e#12713#12811#0" expanded="false" />
+            <element signature="e#12860#14832#0" expanded="false" />
+            <element signature="e#14882#15371#0" expanded="false" />
+            <element signature="e#15424#15472#0" expanded="false" />
+            <element signature="e#15530#16070#0" expanded="false" />
+            <element signature="e#16132#16226#0" expanded="false" />
+            <element signature="e#17382#19140#0" expanded="false" />
+            <marker date="1507862128262" expanded="true" signature="2009:2614" placeholder="INSERT INTO ..." />
+            <marker date="1507862128262" expanded="true" signature="5523:6114" placeholder="select t1.sq..." />
+            <marker date="1507862128262" expanded="true" signature="7477:7602" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="8374:8729" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="9683:9744" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="13464:13541" placeholder="select schem..SCHEMATA..." />
+            <marker date="1507862128262" expanded="true" signature="13739:13821" placeholder="select table..." />
+            <marker date="1507862128262" expanded="true" signature="14049:14109" placeholder="select rollb..." />
+            <marker date="1507862128262" expanded="true" signature="14675:14744" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="15224:15285" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="18195:18856" placeholder="select t1.*,..id..." />
+            <marker date="1507862128262" expanded="true" signature="18271:18755" placeholder="select id, t..sql_work..." />
           </folding>
         </state>
       </provider>
@@ -806,29 +862,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/sql_execute_home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.9305084">
-          <caret line="250" column="59" selection-start-line="250" selection-start-column="24" selection-end-line="250" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/sql_execute_view.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.022050716">
           <caret line="34" column="39" selection-start-line="34" selection-start-column="39" selection-end-line="34" selection-end-column="39" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.042735044">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="e#25#40#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1056,17 +1094,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/table.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.666667">
-          <caret line="59" column="17" selection-start-line="59" selection-start-column="2" selection-end-line="59" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/sql_update_view.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.206897">
@@ -1075,67 +1102,136 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_view.html">
+    <entry file="file://$PROJECT_DIR$/table.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="22.172413">
-          <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
+        <state vertical-scroll-proportion="-11.0">
+          <caret line="55" column="15" selection-start-line="55" selection-start-column="2" selection-end-line="55" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="20" selection-start-line="26" selection-start-column="15" selection-end-line="26" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/list_base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.275862">
-          <caret line="161" column="54" selection-start-line="161" selection-start-column="54" selection-end-line="161" selection-end-column="54" />
-          <folding />
+        <state vertical-scroll-proportion="0.44827586">
+          <caret line="60" column="30" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
+          <folding>
+            <element signature="n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#3;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#3;n#!!top" expanded="false" />
+            <element signature="e#2819#3151#0#HTML" expanded="false" />
+            <element signature="e#3026#3080#0#HTML" expanded="false" />
+            <element signature="e#3100#3143#0#HTML" expanded="false" />
+            <element signature="e#3209#3284#0#HTML" expanded="false" />
+            <element signature="e#3332#3437#0#HTML" expanded="false" />
+            <element signature="e#3470#3781#0#HTML" expanded="false" />
+            <element signature="e#3545#3664#0#HTML" expanded="false" />
+            <element signature="e#3684#3773#0#HTML" expanded="false" />
+            <element signature="e#3832#3921#0#HTML" expanded="false" />
+            <element signature="e#3969#4213#0#HTML" expanded="false" />
+            <element signature="e#4032#4146#0#HTML" expanded="false" />
+            <element signature="e#4166#4205#0#HTML" expanded="false" />
+            <element signature="e#4253#4510#0#HTML" expanded="false" />
+            <element signature="e#4325#4502#0#HTML" expanded="false" />
+            <element signature="e#4549#4980#0#HTML" expanded="false" />
+            <element signature="e#4733#4856#0#HTML" expanded="false" />
+            <element signature="e#4876#4972#0#HTML" expanded="false" />
+            <element signature="e#5026#5158#0#HTML" expanded="false" />
+            <element signature="e#5198#5263#0#HTML" expanded="false" />
+            <element signature="e#5298#5336#0#HTML" expanded="false" />
+            <element signature="e#5373#5412#0#HTML" expanded="false" />
+            <element signature="e#5457#6100#0#HTML" expanded="false" />
+            <element signature="e#5655#5783#0#HTML" expanded="false" />
+            <element signature="e#5697#5773#0#HTML" expanded="false" />
+            <element signature="e#5857#5978#0#HTML" expanded="false" />
+            <element signature="e#5998#6092#0#HTML" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sql_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3909532">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="37" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
           <folding>
             <element signature="e#217#406#0" expanded="false" />
             <element signature="e#466#754#0" expanded="false" />
-            <element signature="e#822#1108#0" expanded="false" />
-            <element signature="e#1158#1202#0" expanded="false" />
-            <element signature="e#1254#1298#0" expanded="false" />
-            <element signature="e#1400#3338#0" expanded="false" />
-            <element signature="e#3456#4406#0" expanded="false" />
-            <element signature="e#4453#4606#0" expanded="false" />
-            <element signature="e#4684#5192#0" expanded="false" />
-            <element signature="e#5242#5970#0" expanded="false" />
-            <element signature="e#6053#9583#0" expanded="false" />
-            <element signature="e#9630#9634#0" expanded="false" />
-            <element signature="e#9726#10128#0" expanded="false" />
-            <element signature="e#10180#10856#0" expanded="false" />
-            <element signature="e#10968#11057#0" expanded="false" />
-            <element signature="e#11153#11272#0" expanded="false" />
-            <element signature="e#11345#11466#0" expanded="false" />
-            <element signature="e#11522#12277#0" expanded="false" />
-            <element signature="e#12343#12441#0" expanded="false" />
-            <element signature="e#12490#14462#0" expanded="false" />
-            <element signature="e#14512#15001#0" expanded="false" />
-            <element signature="e#15054#15102#0" expanded="false" />
-            <element signature="e#15160#15700#0" expanded="false" />
-            <element signature="e#15762#15856#0" expanded="false" />
-            <element signature="e#15932#16333#0" expanded="false" />
-            <element signature="e#16420#16914#0" expanded="false" />
-            <element signature="e#17012#18770#0" expanded="false" />
-            <marker date="1507800933663" expanded="true" signature="1737:2342" placeholder="INSERT INTO ..." />
-            <marker date="1507800933663" expanded="true" signature="5251:5842" placeholder="select t1.sq..." />
-            <marker date="1507800933663" expanded="true" signature="7107:7232" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="8004:8359" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="9313:9374" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="13094:13171" placeholder="select schem..SCHEMATA..." />
-            <marker date="1507800933663" expanded="true" signature="13369:13451" placeholder="select table..." />
-            <marker date="1507800933663" expanded="true" signature="13679:13739" placeholder="select rollb..." />
-            <marker date="1507800933663" expanded="true" signature="14305:14374" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="14854:14915" placeholder="update mysql..." />
-            <marker date="1507800933663" expanded="true" signature="17825:18486" placeholder="select t1.*,..id..." />
-            <marker date="1507800933663" expanded="true" signature="17901:18385" placeholder="select id, t..sql_work..." />
+            <element signature="e#1430#1474#0" expanded="false" />
+            <element signature="e#1526#1570#0" expanded="false" />
+            <element signature="e#1672#3610#0" expanded="false" />
+            <element signature="e#3728#4678#0" expanded="false" />
+            <element signature="e#4725#4878#0" expanded="false" />
+            <element signature="e#4956#5464#0" expanded="false" />
+            <element signature="e#5514#6242#0" expanded="false" />
+            <element signature="e#10000#10004#0" expanded="false" />
+            <element signature="e#10096#10498#0" expanded="false" />
+            <element signature="e#11338#11427#0" expanded="false" />
+            <element signature="e#11523#11642#0" expanded="false" />
+            <element signature="e#11715#11836#0" expanded="false" />
+            <element signature="e#11892#12647#0" expanded="false" />
+            <element signature="e#12713#12811#0" expanded="false" />
+            <element signature="e#12860#14832#0" expanded="false" />
+            <element signature="e#14882#15371#0" expanded="false" />
+            <element signature="e#15424#15472#0" expanded="false" />
+            <element signature="e#15530#16070#0" expanded="false" />
+            <element signature="e#16132#16226#0" expanded="false" />
+            <element signature="e#17382#19140#0" expanded="false" />
+            <marker date="1507862128262" expanded="true" signature="2009:2614" placeholder="INSERT INTO ..." />
+            <marker date="1507862128262" expanded="true" signature="5523:6114" placeholder="select t1.sq..." />
+            <marker date="1507862128262" expanded="true" signature="7477:7602" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="8374:8729" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="9683:9744" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="13464:13541" placeholder="select schem..SCHEMATA..." />
+            <marker date="1507862128262" expanded="true" signature="13739:13821" placeholder="select table..." />
+            <marker date="1507862128262" expanded="true" signature="14049:14109" placeholder="select rollb..." />
+            <marker date="1507862128262" expanded="true" signature="14675:14744" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="15224:15285" placeholder="update mysql..." />
+            <marker date="1507862128262" expanded="true" signature="18195:18856" placeholder="select t1.*,..id..." />
+            <marker date="1507862128262" expanded="true" signature="18271:18755" placeholder="select id, t..sql_work..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/sql_execute_home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.5172415">
+          <caret line="188" column="48" selection-start-line="188" selection-start-column="39" selection-end-line="188" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21719956">
+          <caret line="41" column="76" selection-start-line="41" selection-start-column="76" selection-end-line="41" selection-end-column="76" />
+          <folding />
         </state>
       </provider>
     </entry>

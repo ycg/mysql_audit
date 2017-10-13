@@ -157,6 +157,13 @@
         obj.sql_id = audit_sql_work_id;
         obj.remark =  $("#audit_work_remark").val();
 
+        if (audit_status == false) {
+            if (obj.remark.length <= 0) {
+                alert("审核不通过请填写备注！");
+                return
+            }
+        }
+
         $.post("/review/sql/work", JSON.stringify(obj), function (data) {
             alert(data);
             hide_modal_dialog(("#work_audit_dialog"));

@@ -39,7 +39,7 @@
     </thead>
     <tbody>
     {% for info in sql_list %}
-        <tr {% if(info.status == 3) %} class="bg-danger" {% endif %}>
+        <tr {% if(info.status == 2 or info.status == 3) %} class="bg-danger" {% endif %}>
             <td>
                 {{ info.id }}
             </td>

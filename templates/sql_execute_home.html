@@ -186,7 +186,7 @@
     </div>
 
     <!--执行结果-->
-    {% if(user_info.role_id != 1000) %}
+    {% if(user_info.role_id != 1000 or user_info.group_id == 10000) %}
         <!--执行成功或错误-->
         <div class="row" {% if(sql_info.status == 3 or sql_info.status == 4) %} hidden {% endif %}>
             <div class="col-md-8">
