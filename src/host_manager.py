@@ -9,10 +9,9 @@ def query_host_infos():
 
 
 def add(obj):
-    # 这边要判断下ip和port是否已经存在
     sql = "select host_id from mysql_audit.mysql_hosts where ip = '{0}' and port = {1};".format(obj.host_ip, obj.host_port)
     result = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
-    if (result != None):
+    if (result is not None):
         return "1"
 
     is_alive = test_connection_new(obj)

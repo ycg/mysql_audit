@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import MySQLdb, sys
-import settings, common_util
+import MySQLdb
+import sys
+import settings
+import common_util
 
 # sql执行备份有两个要求
 # 1.必须要有主键
@@ -42,6 +44,7 @@ info:显示当前正在执行的语句。
 '''
 processlist_fields = ["id", "dest_user", "dest_host", "dest_port", "from_host", "command", "state", "time", "info"]
 
+
 # sql审核
 def sql_audit(sql, host_info):
     sql = sql_mode.format(host_info.host, host_info.port, host_info.user, host_info.password, sql_audit_flag, sql)
@@ -80,7 +83,7 @@ def get_processlist():
 # 把返回数据转化为对象
 def get_object(rows, fields=None):
     result = []
-    if (rows == None or len(rows) <= 0 or fields == None or len(fields) <= 0):
+    if (rows is None or len(rows) <= 0 or fields is None or len(fields) <= 0):
         return result
     for row in rows:
         info = common_util.Entity()
@@ -103,8 +106,9 @@ def execute_sql(sql):
         cursor.execute(sql)
         return cursor.fetchall()
     finally:
-        if (cursor != None):
+        if (cursor is not None):
             cursor.close()
-        if (connection != None):
+        if (connection is not None):
             connection.close()
     return []
+
