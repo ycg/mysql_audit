@@ -11,6 +11,12 @@ def audit_sql(obj):
     return render_template("audit_view.html", audit_infos=inception_util.sql_audit(obj.sql, cache.MyCache().get_mysql_host_info(obj.host_id)))
 
 
+# 审核失败查看审核备注
+def get_audit_remark(sql_id):
+    sql = "select remark from mysql_audit.sql_work where id = {0};".format(sql_id)
+    return db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)["remark"]
+
+
 # 根据sql_id获取sql进行审核
 def audit_sql_by_sql_id(sql_id):
     sql_info = get_sql_info_by_id(sql_id)
@@ -326,13 +332,21 @@ def execute_rollback_sql(sql_id):
     return "回滚失败"
 
 
+# 创建工单成功，发送邮件通知用户审核
+def send_mail_for_create(sql_id):
+    if (settings.EMAIL_SEND_ENABLE):
+        pass
+
+
 # 审核成功发送邮件
-def send_mail_for_audit_success():
+# 发送给工单创建用户，以及执行用户
+def send_mail_for_audit_success(sql_id):
     if (settings.EMAIL_SEND_ENABLE):
         pass
 
 
 # 执行成功发送邮件
+# 发送给工单创建用户，以及审核用户
 def send_mail_for_execute_success(sql_id):
     if (settings.EMAIL_SEND_ENABLE):
         sql_info = get_sql_info_by_id(sql_id)
@@ -340,7 +354,7 @@ def send_mail_for_execute_success(sql_id):
         sql_info.host_url = request.host_url
         if (len(sql_info.email) > 0):
             subject = "SQL工单-[{0}]-执行完成".format(sql_info.title)
-            sql_info.work_url = "{0}sql/work/{1}".format(request.host_url, sql_info.id)
+            sql_info.work_url = "{0}execute/sql/execute/new/{1}".format(request.host_url, sql_info.id)
             content = render_template("mail_template.html", sql_info=sql_info)
             common_util.send_html(subject, sql_info.email, content)
 

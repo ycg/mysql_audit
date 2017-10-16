@@ -74,6 +74,11 @@ def review_sql_work():
     return sql_manager.audit_sql_work(get_object_from_json_tmp(request.get_data()))
 
 
+@app.route("/review/sql/work/remark/<int:sql_id>", methods=["POST", "GET"])
+@login_required
+def get_review_remark(sql_id):
+    return sql_manager.get_audit_remark(sql_id)
+
 # endregion
 
 # region sql execute
@@ -99,13 +104,13 @@ def delete_sql_work(id):
     return sql_manager.delete_sql_work(id)
 
 
-@app.route("/execute/sql/exeucte/<int:id>", methods=["GET", "POST"])
+@app.route("/execute/sql/execute/<int:id>", methods=["GET", "POST"])
 @login_required
 def get_sql_execute_home(id):
     return render_template("sql_execute.html", sql_info=sql_manager.get_sql_info_by_id(id))
 
 
-@app.route("/execute/sql/exeucte/new/<int:id>", methods=["GET", "POST"])
+@app.route("/execute/sql/execute/new/<int:id>", methods=["GET", "POST"])
 @login_required
 def get_sql_execute_home_new(id):
     return render_template("sql_execute_home.html", sql_info=sql_manager.get_sql_info_by_id(id), user_info=cache.MyCache().get_user_info(current_user.id))

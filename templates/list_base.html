@@ -50,6 +50,22 @@
     </div>
 </div>
 
+<div class="modal fade" id="work_audit_remark_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">审核备注</h4>
+            </div>
+            <div class="modal-body" id="remark_div">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12" id="sql_update_div">
 
@@ -140,7 +156,7 @@
     }
 
     function get_execute_html(sql_id) {
-        window.open("/execute/sql/exeucte/new/" + sql_id)
+        window.open("/execute/sql/execute/new/" + sql_id)
     }
 
     function audit_sql_work_ok() {
@@ -160,7 +176,7 @@
         if (audit_status == false) {
             if (obj.remark.length <= 0) {
                 alert("审核不通过请填写备注！");
-                return
+                return;
             }
         }
 
@@ -171,6 +187,15 @@
         }).error(function () {
             alert("error");
             hide_modal_dialog(("#work_audit_dialog"));
+        });
+    }
+
+    function get_review_remark(sql_id) {
+        $.post("/review/sql/work/remark/" + sql_id, "", function (data) {
+            $("#remark_div").html(data);
+            show_modal_dialog("#work_audit_remark_dialog");
+        }).error(function () {
+            alert("error");
         });
     }
 </script>
