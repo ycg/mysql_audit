@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6789b1a2-cd82-448d-b14c-7100c24d34db" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/sql_edit_home.html" afterPath="$PROJECT_DIR$/templates/sql_edit_home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sql_manager.py" afterPath="$PROJECT_DIR$/src/sql_manager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/sql_execute_home.html" afterPath="$PROJECT_DIR$/templates/sql_execute_home.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="mysql_audit.iws" />
@@ -28,106 +27,7 @@
     <favorites_list name="mysql_audit" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="sql_manager.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/sql_manager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.51857835">
-              <caret line="92" column="25" selection-start-line="92" selection-start-column="25" selection-end-line="92" selection-end-column="25" />
-              <folding>
-                <element signature="e#217#406#0" expanded="false" />
-                <element signature="e#456#607#0" expanded="false" />
-                <element signature="e#667#955#0" expanded="false" />
-                <element signature="e#1023#1581#0" expanded="false" />
-                <element signature="e#1631#1675#0" expanded="false" />
-                <element signature="e#1727#1771#0" expanded="false" />
-                <element signature="e#1873#3811#0" expanded="false" />
-                <element signature="e#3929#5521#0" expanded="false" />
-                <element signature="e#5568#5721#0" expanded="false" />
-                <element signature="e#5799#6307#0" expanded="false" />
-                <element signature="e#6357#7101#0" expanded="false" />
-                <element signature="e#7184#10812#0" expanded="false" />
-                <element signature="e#10859#10863#0" expanded="false" />
-                <element signature="e#10955#11357#0" expanded="false" />
-                <element signature="e#11409#12085#0" expanded="false" />
-                <element signature="e#12197#12286#0" expanded="false" />
-                <element signature="e#12382#12501#0" expanded="false" />
-                <element signature="e#12574#12695#0" expanded="false" />
-                <element signature="e#12751#13506#0" expanded="false" />
-                <element signature="e#13572#13670#0" expanded="false" />
-                <element signature="e#13719#15695#0" expanded="false" />
-                <element signature="e#15745#16234#0" expanded="false" />
-                <element signature="e#16295#16343#0" expanded="false" />
-                <element signature="e#16418#16466#0" expanded="false" />
-                <element signature="e#16543#17098#0" expanded="false" />
-                <element signature="e#17160#17254#0" expanded="false" />
-                <element signature="e#17330#17731#0" expanded="false" />
-                <element signature="e#17818#18312#0" expanded="false" />
-                <element signature="e#18410#20168#0" expanded="false" />
-                <marker date="1508139534517" expanded="false" signature="463:517" placeholder="select remar..sql_work..." />
-                <marker date="1508139534517" expanded="false" signature="2210:2815" placeholder="INSERT INTO ..." />
-                <marker date="1508139534517" expanded="false" signature="6366:6973" placeholder="select t1.sq..." />
-                <marker date="1508139534517" expanded="false" signature="8336:8461" placeholder="update mysql..." />
-                <marker date="1508139534517" expanded="false" signature="9233:9588" placeholder="update mysql..." />
-                <marker date="1508139534517" expanded="false" signature="10542:10603" placeholder="update mysql..." />
-                <marker date="1508139534517" expanded="false" signature="14327:14404" placeholder="select schem..SCHEMATA..." />
-                <marker date="1508139534517" expanded="false" signature="14602:14684" placeholder="select table..." />
-                <marker date="1508139534517" expanded="false" signature="14912:14972" placeholder="select rollb..." />
-                <marker date="1508139534517" expanded="false" signature="15538:15607" placeholder="update mysql..." />
-                <marker date="1508139534517" expanded="false" signature="16087:16148" placeholder="update mysql..." />
-                <marker date="1508139534517" expanded="false" signature="19223:19884" placeholder="select t1.*,..id..." />
-                <marker date="1508139534517" expanded="false" signature="19299:19783" placeholder="select id, t..sql_work..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="table.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/table.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.0">
-              <caret line="75" column="20" selection-start-line="75" selection-start-column="2" selection-end-line="75" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sql_edit_home.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/sql_edit_home.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.206897">
-              <caret line="228" column="32" selection-start-line="228" selection-start-column="32" selection-end-line="228" selection-end-column="32" />
-              <folding>
-                <element signature="n#div#4;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="common.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/common.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="43" column="36" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="list_base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/list_base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-20.0">
-              <caret line="149" column="11" selection-start-line="142" selection-start-column="8" selection-end-line="149" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -152,11 +52,11 @@
         <option value="$PROJECT_DIR$/templates/list_view.html" />
         <option value="$PROJECT_DIR$/templates/user_update_view.html" />
         <option value="$PROJECT_DIR$/templates/sql_update_view.html" />
-        <option value="$PROJECT_DIR$/templates/sql_execute_home.html" />
         <option value="$PROJECT_DIR$/mysql_audit.py" />
         <option value="$PROJECT_DIR$/templates/list_base.html" />
         <option value="$PROJECT_DIR$/src/sql_manager.py" />
         <option value="$PROJECT_DIR$/templates/sql_edit_home.html" />
+        <option value="$PROJECT_DIR$/templates/sql_execute_home.html" />
       </list>
     </option>
   </component>
@@ -541,7 +441,13 @@
       <option name="project" value="LOCAL" />
       <updated>1508137534744</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="增加更新工单接口，调试没有问题">
+      <created>1508139703590</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1508139703590</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TodoView">
@@ -563,9 +469,9 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953367" sideWeight="0.49779493" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284974" sideWeight="0.49558985" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3284974" sideWeight="0.49779493" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284974" sideWeight="0.49779493" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16538037" sideWeight="0.49459043" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16538037" sideWeight="0.49459043" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1631753" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1427784" sideWeight="0.5054096" order="2" side_tool="true" content_ui="tabs" />
@@ -603,7 +509,8 @@
     <MESSAGE value="更新" />
     <MESSAGE value="增加审核不通过，查看备注方法，优化系统" />
     <MESSAGE value="添加编辑界面，可以修改sql内容" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加编辑界面，可以修改sql内容" />
+    <MESSAGE value="增加更新工单接口，调试没有问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加更新工单接口，调试没有问题" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -656,19 +563,19 @@
             <element signature="e#17330#17731#0" expanded="false" />
             <element signature="e#17818#18312#0" expanded="false" />
             <element signature="e#18410#20168#0" expanded="false" />
-            <marker date="1508139534517" expanded="false" signature="463:517" placeholder="select remar..sql_work..." />
-            <marker date="1508139534517" expanded="false" signature="2210:2815" placeholder="INSERT INTO ..." />
-            <marker date="1508139534517" expanded="false" signature="6366:6973" placeholder="select t1.sq..." />
-            <marker date="1508139534517" expanded="false" signature="8336:8461" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="9233:9588" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="10542:10603" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="14327:14404" placeholder="select schem..SCHEMATA..." />
-            <marker date="1508139534517" expanded="false" signature="14602:14684" placeholder="select table..." />
-            <marker date="1508139534517" expanded="false" signature="14912:14972" placeholder="select rollb..." />
-            <marker date="1508139534517" expanded="false" signature="15538:15607" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="16087:16148" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="19223:19884" placeholder="select t1.*,..id..." />
-            <marker date="1508139534517" expanded="false" signature="19299:19783" placeholder="select id, t..sql_work..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select remar..sql_work..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="INSERT INTO ..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select t1.sq..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select schem..SCHEMATA..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select table..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select rollb..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select t1.*,..id..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select id, t..sql_work..." />
           </folding>
         </state>
       </provider>
@@ -793,19 +700,19 @@
             <element signature="e#17330#17731#0" expanded="false" />
             <element signature="e#17818#18312#0" expanded="false" />
             <element signature="e#18410#20168#0" expanded="false" />
-            <marker date="1508139534517" expanded="false" signature="463:517" placeholder="select remar..sql_work..." />
-            <marker date="1508139534517" expanded="false" signature="2210:2815" placeholder="INSERT INTO ..." />
-            <marker date="1508139534517" expanded="false" signature="6366:6973" placeholder="select t1.sq..." />
-            <marker date="1508139534517" expanded="false" signature="8336:8461" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="9233:9588" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="10542:10603" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="14327:14404" placeholder="select schem..SCHEMATA..." />
-            <marker date="1508139534517" expanded="false" signature="14602:14684" placeholder="select table..." />
-            <marker date="1508139534517" expanded="false" signature="14912:14972" placeholder="select rollb..." />
-            <marker date="1508139534517" expanded="false" signature="15538:15607" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="16087:16148" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="19223:19884" placeholder="select t1.*,..id..." />
-            <marker date="1508139534517" expanded="false" signature="19299:19783" placeholder="select id, t..sql_work..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select remar..sql_work..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="INSERT INTO ..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select t1.sq..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select schem..SCHEMATA..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select table..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select rollb..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select t1.*,..id..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select id, t..sql_work..." />
           </folding>
         </state>
       </provider>
@@ -844,19 +751,19 @@
             <element signature="e#17330#17731#0" expanded="false" />
             <element signature="e#17818#18312#0" expanded="false" />
             <element signature="e#18410#20168#0" expanded="false" />
-            <marker date="1508139534517" expanded="false" signature="463:517" placeholder="select remar..sql_work..." />
-            <marker date="1508139534517" expanded="false" signature="2210:2815" placeholder="INSERT INTO ..." />
-            <marker date="1508139534517" expanded="false" signature="6366:6973" placeholder="select t1.sq..." />
-            <marker date="1508139534517" expanded="false" signature="8336:8461" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="9233:9588" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="10542:10603" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="14327:14404" placeholder="select schem..SCHEMATA..." />
-            <marker date="1508139534517" expanded="false" signature="14602:14684" placeholder="select table..." />
-            <marker date="1508139534517" expanded="false" signature="14912:14972" placeholder="select rollb..." />
-            <marker date="1508139534517" expanded="false" signature="15538:15607" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="16087:16148" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="19223:19884" placeholder="select t1.*,..id..." />
-            <marker date="1508139534517" expanded="false" signature="19299:19783" placeholder="select id, t..sql_work..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select remar..sql_work..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="INSERT INTO ..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select t1.sq..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select schem..SCHEMATA..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select table..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select rollb..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select t1.*,..id..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select id, t..sql_work..." />
           </folding>
         </state>
       </provider>
@@ -961,19 +868,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-        <state split_layout="FIRST">
-          <first_editor vertical-scroll-proportion="0.9318182">
-            <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="60" selection-end-column="35" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/list_for_dev.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1075,26 +969,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7118644">
-          <caret line="114" column="96" selection-start-line="114" selection-start-column="72" selection-end-line="114" selection-end-column="96" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/sql_execute_view.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.023153253">
           <caret line="34" column="39" selection-start-line="34" selection-start-column="39" selection-end-line="34" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/sql_execute_home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.97023153">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="35" selection-end-column="12" />
           <folding />
         </state>
       </provider>
@@ -1187,7 +1065,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/list_base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.0">
+        <state vertical-scroll-proportion="0.9830508">
           <caret line="149" column="11" selection-start-line="142" selection-start-column="8" selection-end-line="149" selection-end-column="11" />
           <folding />
         </state>
@@ -1195,7 +1073,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/common.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="1.0016155">
           <caret line="43" column="36" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="36" />
           <folding />
         </state>
@@ -1203,7 +1081,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/table.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.0">
+        <state vertical-scroll-proportion="1.1205432">
           <caret line="75" column="20" selection-start-line="75" selection-start-column="2" selection-end-line="75" selection-end-column="20" />
           <folding />
         </state>
@@ -1214,7 +1092,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/sql_edit_home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.206897">
+        <state vertical-scroll-proportion="0.45254236">
           <caret line="228" column="32" selection-start-line="228" selection-start-column="32" selection-end-line="228" selection-end-column="32" />
           <folding>
             <element signature="n#div#4;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
@@ -1222,10 +1100,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="FIRST">
+          <first_editor vertical-scroll-proportion="0.1474245">
+            <caret line="51" column="19" selection-start-line="51" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6692392">
+          <caret line="126" column="37" selection-start-line="126" selection-start-column="37" selection-end-line="126" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sql_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.51857835">
-          <caret line="92" column="25" selection-start-line="92" selection-start-column="25" selection-end-line="92" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.07905983">
+          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
           <folding>
             <element signature="e#217#406#0" expanded="false" />
             <element signature="e#456#607#0" expanded="false" />
@@ -1256,20 +1156,28 @@
             <element signature="e#17330#17731#0" expanded="false" />
             <element signature="e#17818#18312#0" expanded="false" />
             <element signature="e#18410#20168#0" expanded="false" />
-            <marker date="1508139534517" expanded="false" signature="463:517" placeholder="select remar..sql_work..." />
-            <marker date="1508139534517" expanded="false" signature="2210:2815" placeholder="INSERT INTO ..." />
-            <marker date="1508139534517" expanded="false" signature="6366:6973" placeholder="select t1.sq..." />
-            <marker date="1508139534517" expanded="false" signature="8336:8461" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="9233:9588" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="10542:10603" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="14327:14404" placeholder="select schem..SCHEMATA..." />
-            <marker date="1508139534517" expanded="false" signature="14602:14684" placeholder="select table..." />
-            <marker date="1508139534517" expanded="false" signature="14912:14972" placeholder="select rollb..." />
-            <marker date="1508139534517" expanded="false" signature="15538:15607" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="16087:16148" placeholder="update mysql..." />
-            <marker date="1508139534517" expanded="false" signature="19223:19884" placeholder="select t1.*,..id..." />
-            <marker date="1508139534517" expanded="false" signature="19299:19783" placeholder="select id, t..sql_work..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select remar..sql_work..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="INSERT INTO ..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select t1.sq..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select schem..SCHEMATA..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select table..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select rollb..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="update mysql..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select t1.*,..id..." />
+            <marker date="1508139534517" expanded="true" signature="-1:-1" placeholder="select id, t..sql_work..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/sql_execute_home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44101432">
+          <caret line="59" column="109" selection-start-line="59" selection-start-column="109" selection-end-line="59" selection-end-column="109" />
+          <folding />
         </state>
       </provider>
     </entry>
