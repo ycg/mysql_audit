@@ -349,6 +349,12 @@ def get_show_update_user_dialog(user_id):
 @app.route("/work/update/<int:sql_id>", methods=["GET", "POST"])
 @login_required
 def get_update_sql_work_html(sql_id):
+    return render_template("sql_edit_home.html",
+                           work_info=sql_manager.get_sql_info_by_id(sql_id),
+                           host_infos=sql_manager.get_audit_mysql_host(),
+                           dba_users=cache.MyCache().get_user_info_by_group_id(settings.DBA_GROUP_ID),
+                           audit_user_infos=cache.MyCache().get_audit_user_infos())
+
     return render_template("sql_update_view.html",
                            work_info=sql_manager.get_sql_info_by_id(sql_id),
                            host_infos=sql_manager.get_audit_mysql_host(),

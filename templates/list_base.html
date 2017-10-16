@@ -120,12 +120,13 @@
     }
 
     function get_sql_update_work_html(sql_id) {
-        $.post("/work/update/" + sql_id, "", function (data) {
+        window.open("/work/update/" + sql_id)
+        /*$.post("/work/update/" + sql_id, "", function (data) {
             $("#sql_update_div").html(data);
             show_modal_dialog("#sql_work_update_dialog");
         }).error(function () {
             alert("error");
-        });
+        });*/
     }
 
     function get_rollback_sql(sql_id) {

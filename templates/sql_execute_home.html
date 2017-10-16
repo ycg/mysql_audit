@@ -48,64 +48,6 @@
         </div>
     </div>
 
-    <!--工单详情-->
-    <!--<div class="row">
-        <div class="col-md-8">
-            <textarea id="sql_value" name="sql_value" class="form-control" rows=21 style="height: 443px">{{ sql_info.sql_value }}</textarea>
-        </div>
-        <div class="col-md-4" style="margin-left: 0px">
-            <form id="sql_info_form" style="border:1px solid #e5e5e5;">
-                <div class="form-group my_margin_left" style="margin-top: 10px;">
-                    <strong>工单名称：</strong><label style="font-weight: normal">{{ sql_info.title }}</label>
-                </div>
-                <div class="form-group my_margin_left">
-                    <strong>Jira地址：</strong><a style="font-weight: normal" role="button" href="{{ sql_info.jira_url }}" target="_blank">{{ sql_info.jira_url }}</a>
-                </div>
-                <div class="form-group my_margin_left">
-                    <strong>创建用户：</strong><label style="font-weight: normal">{{ sql_info.create_user_name }}</label>
-                </div>
-                <div class="form-group my_margin_left">
-                    <strong>上线集群：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.host_name }}</label>
-                </div>
-                <div class="form-group my_margin_left">
-                    <strong>数据库名称：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.execute_db_name }}</label>
-                </div>
-                <div class="form-group my_margin_left">
-                    <strong>创建时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.created_time }}</label>
-                </div>
-                <div class="form-group my_margin_left">
-                    <strong>执行时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.execute_date_time }}</label>
-                </div>
-                <div class="form-group my_margin_left">
-                    <strong>SQL执行暂停时间：</strong><label style="font-weight: normal" class="text-info">{{ sql_info.sleep }} 秒</label>
-                </div>
-                <div class="form-group my_margin_left">
-                    <strong>是否备份：</strong><label style="font-weight: normal">{% if(sql_info.is_backup == 1) %} Yes {% else %} No {% endif %}</label>
-                </div>
-                <div class="form-group my_margin_left">
-                    <strong>执行状态：</strong>
-                    <label style="font-weight: normal"
-                            {% if(sql_info.status == 1 or sql_info.status == 4) %}
-                           class="text-success"
-                            {% elif(sql_info.status == 0) %}
-                           class="text-warning"
-                            {% elif(sql_info.status == 2 or sql_info.status == 3) %}
-                           class="text-danger"
-                            {% endif %}>{{ sql_info.status_name }}</label>
-                </div>
-                {% if(user_info.role_id != 1000) %}
-                    <div class="form-group my_margin_left">
-                        <div class="checkbox">
-                            <label>
-                                <input id="ignore_warning" type="checkbox" {% if(sql_info.ignore_warnings == True) %} checked {% endif %}> 执行时是否忽视警告
-                            </label>
-                        </div>
-                    </div>
-                {% endif %}
-            </form>
-        </div>
-    </div>-->
-
     <div class="row">
         <div class="col-lg-8">
             <div class="panel panel-success">
@@ -115,7 +57,7 @@
                 <div class="panel-body" style="padding: 0">
                     <div class="row">
                         <div class="col-lg-12">
-                            <textarea id="sql_value" name="sql_value" class="form-control" style="height: 505px;border: 0px;resize: none">{{ sql_info.sql_value }}</textarea>
+                            <textarea id="sql_value" name="sql_value" class="form-control" style="height: 505px;border: 0px;resize: none" readonly>{{ sql_info.sql_value }}</textarea>
                         </div>
                     </div>
                 </div>
