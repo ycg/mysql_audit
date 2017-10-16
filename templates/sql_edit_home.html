@@ -185,7 +185,7 @@
     <div class="row">
         <div class="col-md-8">
             <button class="btn btn-default" onclick="get_audit_info_for_edit()">重新审核SQL</button>
-            <button class="btn btn-primary">保存工单</button>
+            <button class="btn btn-primary" onclick="update_sql_work({{ work_info.id }})">保存工单</button>
         </div>
     </div>
 
@@ -220,6 +220,16 @@
     json_obj.sql = $("#sql_value").val();
     json_obj.host_id = "{{ work_info.mysql_host_id }}";
     json_obj.db_name = "{{ work_info.execute_db_name }}";
+
+    function update_sql_work(sql_id) {
+        var json_parameter = get_form_json($("#sql_work_update_form"));
+        json_parameter.sql_id = sql_id;
+        json_parameter.host_id = json_obj.host_id;
+        json_parameter.db_name = json_obj.db_name;
+        json_parameter.sql_value = $("#sql_value").val();
+        console.log(json_parameter);
+        post_request("/work/update/sql/save", JSON.stringify(json_parameter));
+    }
 
     function get_audit_info_for_edit() {
         json_obj.sql = $("#sql_value").val();

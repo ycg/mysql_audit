@@ -91,20 +91,31 @@ def add_sql_work(obj):
 # 修改标题，jira地址，是否备份，执行sql的DBA
 # sql和上线的库为什么不可以修改，主要是如果你写错了，那么审核的时候肯定就不通过的
 def update_sql_work(obj):
+    sql_info = get_sql_info_by_id(obj.sql_id)
+    if (obj.current_user_id != sql_info.create_user_id):
+        return "你不能编辑此工单，你不是工单创建者！"
+
+    audit_result = inception_util.sql_audit(get_use_db_sql(obj.sql_value, obj.db_name), cache.MyCache().get_mysql_host_info(obj.host_id))
+    if (get_sql_execute_status(audit_result) == False):
+        return "提交的SQL有错误，请仔细检查！"
+
     sql = """update `mysql_audit`.`sql_work`
              set `title` = '{0}', `jira_url` = '{1}', `execute_user_id` = {2},
-                 is_backup = {3}, sleep = {4}, `execute_user_name` = '{5}', audit_user_id = {6}, audit_user_name = '{7}'
-             where id = {8};""".format(db_util.DBUtil().escape(str(obj.title)),
-                                       db_util.DBUtil().escape(str(obj.jira_url)),
-                                       obj.dba_user_id,
-                                       obj.is_backup,
-                                       obj.sleep_time,
-                                       cache.MyCache().get_user_chinese_name(obj.dba_user_id),
-                                       obj.audit_user_tmp,
-                                       cache.MyCache().get_user_chinese_name(obj.audit_user_tmp),
-                                       obj.sql_id)
+                 `is_backup` = {3}, sleep = {4}, `execute_user_name` = '{5}', audit_user_id = {6}, audit_user_name = '{7}',
+                 `sql_value` = '{8}', audit_result_value = '{9}'
+             where id = {10};""".format(db_util.DBUtil().escape(str(obj.title)),
+                                        db_util.DBUtil().escape(str(obj.jira_url)),
+                                        obj.dba_user_id,
+                                        obj.is_backup,
+                                        obj.sleep_time,
+                                        cache.MyCache().get_user_chinese_name(obj.dba_user_id),
+                                        obj.audit_user_tmp,
+                                        cache.MyCache().get_user_chinese_name(obj.audit_user_tmp),
+                                        db_util.DBUtil().escape(obj.sql_value),
+                                        db_util.DBUtil().escape(json.dumps(audit_result, default=lambda o: o.__dict__)),
+                                        obj.sql_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-    return "update ok."
+    return "更新成功！"
 
 
 # 根据id删除工单
@@ -134,7 +145,7 @@ def get_sql_info_by_id(id):
     sql = """select t1.sql_value, t1.title, t1.jira_url, t1.execute_user_id, t1.is_backup, t1.sleep, t1.audit_user_id,
                     t1.ignore_warnings, rollback_sql, execute_date_time, t2.host_name, t1.mysql_host_id, t1.id, t1.status,
                     t1.return_value, t1.execute_db_name, t1.audit_result_value, t1.execute_user_id, t1.created_time,
-                    create_user_name, audit_user_name, execute_user_name, real_execute_user_name
+                    create_user_name, audit_user_name, execute_user_name, real_execute_user_name, create_user_id
              from `mysql_audit`.`sql_work` t1
              left join `mysql_audit`.mysql_hosts t2 on t1.mysql_host_id = t2.host_id where t1.id = {0};""".format(id)
     return get_sql_work_status_name(common_util.get_object(db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)))
@@ -293,20 +304,20 @@ def get_rollback_sql(sql_id):
     result.is_backup = sql_info.is_backup
     result.host_id = sql_info.mysql_host_id
     if (sql_info.is_backup):
-        if (sql_info.rollback_sql != None):
+        if (sql_info.rollback_sql is not None):
             result.rollback_sql_value = sql_info.rollback_sql
         else:
             for info in json.loads(sql_info.return_value):
                 info = common_util.get_object(info)
-                if (info.backup_dbname == None):
+                if (info.backup_dbname is None):
                     continue
                 sql = "select schema_name from information_schema.SCHEMATA where schema_name = '{0}';".format(info.backup_dbname)
                 db_name = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
-                if (db_name == None):
+                if (db_name is None):
                     continue
                 sql = "select tablename from {0}.$_$Inception_backup_information$_$ where opid_time = {1}".format(info.backup_dbname, info.sequence)
                 table_name_dict = db_util.DBUtil().fetchone(settings.MySQL_HOST, sql)
-                if (table_name_dict == None):
+                if (table_name_dict is None):
                     continue
                 sql = "select rollback_statement from {0}.{1} where opid_time = {2}".format(info.backup_dbname, table_name_dict["tablename"], info.sequence)
                 for list_dict in db_util.DBUtil().fetchall(settings.MySQL_HOST, sql):
