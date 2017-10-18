@@ -116,15 +116,13 @@
                                            class="text-danger"
                                             {% endif %}>{{ sql_info.status_name }}</label>
                                 </div>
-                                {% if(user_info.role_id != 1000) %}
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input id="ignore_warning" type="checkbox" {% if(sql_info.ignore_warnings == True) %} checked {% endif %}> 执行时是否忽视警告
-                                            </label>
-                                        </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="ignore_warning" type="checkbox" {% if(sql_info.ignore_warnings == True) %} checked {% endif %}> 执行时是否忽视警告
+                                        </label>
                                     </div>
-                                {% endif %}
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -133,17 +131,20 @@
         </div>
     </div>
 
-    <!--执行结果-->
-    {% if(user_info.role_id != 1000 or user_info.group_id == 10000) %}
-        <!--执行成功或错误-->
-        <div class="row" {% if(sql_info.status == 3 or sql_info.status == 4) %} hidden {% endif %}>
-            <div class="col-md-8">
-                <button class="btn btn-default" onclick="sql_audit_again({{ sql_info.id }})">重新审核SQL</button>
-                <button class="btn btn-primary" onclick="sql_execute({{ sql_info.id }})">执行SQL</button>
+    {% if(sql_info.execute_user_id == user_info.user_id) %}
+        <!--执行结果-->
+        {% if(user_info.role_id != 1000 or user_info.group_id == 10000) %}
+            <!--执行成功或错误-->
+            <div class="row" {% if(sql_info.status == 3 or sql_info.status == 4) %} hidden {% endif %}>
+                <div class="col-md-8">
+                    <button class="btn btn-default" onclick="sql_audit_again({{ sql_info.id }})">重新审核SQL</button>
+                    <button class="btn btn-primary" onclick="sql_execute({{ sql_info.id }})">执行SQL</button>
+                </div>
             </div>
-        </div>
-        </br>
+            </br>
+        {% endif %}
     {% endif %}
+
     <div class="modal fade" id="sql_has_warnings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
         <div class="modal-dialog" role="document" style="width: 600px">
             <div class="modal-content">

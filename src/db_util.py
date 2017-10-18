@@ -53,15 +53,15 @@ class DBUtil(object):
         return cursor.fetchall()
 
     def cursor_execute(self, connection, cursor, sql):
-        if (cursor == None):
+        if (cursor is None):
             cursor = connection.cursor()
         cursor.execute(sql)
         return cursor
 
     def close(self, connection, cursor):
-        if (cursor != None):
+        if (cursor is not None):
             cursor.close()
-        if (connection != None):
+        if (connection is not None):
             connection.close()
 
     def execute_for_db(self, host_info, sql):
@@ -75,7 +75,7 @@ class DBUtil(object):
         return connection, cursor
 
     def get_mysql_connection(self, host_info):
-        if (self.__connection_pools.get(host_info.key) == None):
+        if (self.__connection_pools.get(host_info.key) is None):
             pool = PooledDB(creator=pymysql, mincached=2, maxcached=4, maxconnections=10,
                             host=host_info.host, port=host_info.port, user=host_info.user, passwd=host_info.password,
                             use_unicode=False, charset="utf8", cursorclass=pymysql.cursors.DictCursor, reset=False, autocommit=True, connect_timeout=1)

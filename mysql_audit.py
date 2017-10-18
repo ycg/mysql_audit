@@ -300,7 +300,9 @@ def query_user():
 @app.route("/user/delete/<int:user_id>", methods=["GET", "POST"])
 @login_required
 def delete_user(user_id):
-    return user_manager.delete_user(user_id)
+    message = user_manager.delete_user(user_id)
+    logout()
+    return message
 
 
 @app.route("/user/start/<int:user_id>", methods=["GET", "POST"])

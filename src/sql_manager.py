@@ -203,6 +203,7 @@ def sql_execute(obj):
                                                                                 obj.current_user_id,
                                                                                 cache.MyCache().get_user_info(obj.current_user_id).chinese_name,
                                                                                 sql_info.id)
+            print(sql)
             db_util.DBUtil().execute(settings.MySQL_HOST, sql)
             send_mail_for_execute_success(sql_info.id)
             return_info.execute_result = result_obj
