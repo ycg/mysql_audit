@@ -66,6 +66,9 @@ class MyCache():
                 user_list.append(info)
         return user_list
 
+    def get_user_email(self, user_id):
+        return self.get_user_info(user_id).email
+
     def get_user_chinese_name(self, user_id):
         return self.get_user_info(user_id).chinese_name
 

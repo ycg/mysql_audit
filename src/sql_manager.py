@@ -35,6 +35,7 @@ def audit_sql_work(obj):
     status = settings.SQL_AUDIT_OK if (obj.status) else settings.SQL_AUDIT_FAIL
     sql = """update `mysql_audit`.`sql_work` set `status` = {0}, remark = '{1}' where id = {2};""".format(status, obj.remark, obj.sql_id)
     db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+    send_mail_for_audit_success(obj.sql_id)
     return "操作成功！"
 
 
@@ -59,11 +60,11 @@ def add_sql_work(obj):
         user_info = cache.MyCache().get_user_info(obj.current_user_id)
         sql = """INSERT INTO `mysql_audit`.`sql_work`
                  (`create_user_id`, `audit_user_id`, `audit_date_time`, `execute_date_time`,
-                  `mysql_host_id`, `jira_url`, `is_backup`, `backup_table`, `sql_value`,
+                  `mysql_host_id`, `jira_url`, `is_backup`, `sql_value`,
                   `return_value`, `status`, `title`, `audit_result_value`, `execute_db_name`, `create_user_group_id`, sleep,
                   `create_user_name`, `audit_user_name`, `execute_user_name`, `execute_user_id`)
                  VALUES
-                 ({0}, {1}, NOW(), NULL, {2}, '{3}', {4}, '', '{5}', '', {6}, '{7}', '{8}', '{9}', {10}, {11}, '{12}', '{13}', '{14}', {15});""" \
+                 ({0}, {1}, NOW(), NULL, {2}, '{3}', {4}, '{5}', '', {6}, '{7}', '{8}', '{9}', {10}, {11}, '{12}', '{13}', '{14}', {15});""" \
             .format(obj.current_user_id,
                     obj.audit_user_id,
                     obj.host_id,
@@ -81,6 +82,7 @@ def add_sql_work(obj):
                     cache.MyCache().get_user_chinese_name(obj.dba_user_id),
                     obj.dba_user_id)
         db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+        send_mail_for_create(0)
         return "创建SQL工单成功"
     except Exception, e:
         traceback.print_exc()
@@ -364,6 +366,7 @@ def send_mail_for_execute_success(sql_id):
         sql_info = get_sql_info_by_id(sql_id)
         sql_info.status_str = settings.SQL_WORK_STATUS_DICT[sql_info.status]
         sql_info.host_url = request.host_url
+        sql_info.email = "{0},{1}".format(cache.MyCache().get_user_email(sql_info.create_user_id), cache.MyCache().get_user_email(sql_info.audit_user_id))
         if (len(sql_info.email) > 0):
             subject = "SQL工单-[{0}]-执行完成".format(sql_info.title)
             sql_info.work_url = "{0}execute/sql/execute/new/{1}".format(request.host_url, sql_info.id)
@@ -424,7 +427,7 @@ def get_sql_work_list_by_where(obj, sql_where):
              (
                  select id, title, create_user_id, audit_user_id, execute_user_id, audit_date_time,
                         execute_date_time, mysql_host_id, is_backup, execute_db_name,
-                        backup_table, status, is_deleted, created_time, execute_finish_date_time,
+                        status, is_deleted, created_time, execute_finish_date_time,
                         create_user_name, audit_user_name, execute_user_name, real_execute_user_name
                  from mysql_audit.sql_work
                  where is_deleted = 0 {0} order by id desc limit {1}, {2}

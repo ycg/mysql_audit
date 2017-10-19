@@ -68,7 +68,6 @@ CREATE TABLE sql_work
   execute_db_name VARCHAR(50) NOT NULL DEFAULT 0 COMMENT '要执行的库名，如果不选，就需要在sql上使用use db',
   jira_url VARCHAR(100) NOT NULL DEFAULT '' COMMENT '对应的jira地址',
   is_backup TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否要备份，默认是备份',
-  backup_table VARCHAR(50) NOT NULL DEFAULT '' COMMENT '备份之后的表名称',
   is_use_pt_osc TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否使用了pt-osc，默认没有使用',
   sleep FLOAT UNSIGNED NOT NULL DEFAULT 0 COMMENT '每条语句执行之后暂停多少毫秒，最小值0，最大值100秒，inception单位是毫秒，这边存储的是秒',
   sql_value MEDIUMTEXT COMMENT '要执行的sql内容',
@@ -85,14 +84,50 @@ CREATE TABLE sql_work
   KEY idx_create_datetime(`created_time`, `id`)
 ) COMMENT 'sql执行工单表' CHARSET utf8 ENGINE innodb;
 
+
+CREATE TABLE sql_work
+(
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  create_user_id SMALLINT UNSIGNED NOT NULL COMMENT '创建sql工单用户id',
+  create_user_group_id SMALLINT UNSIGNED NOT NULL COMMENT '创建sql工单用户组id',
+  audit_user_id SMALLINT UNSIGNED NOT NULL COMMENT '审核用户id',
+  execute_user_id SMALLINT UNSIGNED NOT NULL COMMENT '创建工单的时候指定执行用户id',
+  real_execute_user_id SMALLINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '真实执行SQL的用户id，一般和execute_user_id的值是一样的',
+  audit_date_time DATETIME DEFAULT NULL COMMENT 'sql审核时间',
+  execute_date_time DATETIME DEFAULT NULL COMMENT 'sql执行时间',
+  execute_start_date_time DATETIME DEFAULT NULL COMMENT 'sql执行开始时间',
+  execute_finish_date_time DATETIME DEFAULT NULL COMMENT 'sql执行完成时间',
+  mysql_host_id SMALLINT UNSIGNED NOT NULL COMMENT '要执行的数据主机id',
+  is_backup TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否要备份，默认是备份',
+  is_use_pt_osc TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否使用了pt-osc，默认没有使用',
+  sleep FLOAT UNSIGNED NOT NULL DEFAULT 0 COMMENT '每条语句执行之后暂停多少毫秒，最小值0，最大值100秒，inception单位是毫秒，这边存储的是秒',
+  `status` TINYINT UNSIGNED NOT NULL COMMENT '状态 0：未审核 1：已审核 2：审核不通过 3：执行错误 4：执行成功 5：执行中 6：工单已撤销 7：工单已回滚',
+  ignore_warnings TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '0：不忽略警告 | 1：忽略警告',
+  is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被删除',
+  created_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
+  updated_time DATETIME NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT '数据更改时间',
+  KEY idx_create_user_id(`create_user_id`, `id`),
+  KEY idx_create_datetime(`created_time`, `id`)
+) COMMENT 'sql执行工单表' CHARSET utf8 ENGINE innodb;
+
+
 #准备把上面的表进行拆分
 #不过目前先不动，把功能先做好
 CREATE TABLE sql_work_sub
 (
   id INT UNSIGNED NOT NULL PRIMARY KEY,
-  sql_value TEXT COMMENT '要执行的sql内容',
-  audit_result_value TEXT COMMENT '审核的结果',
-  execute_result_value TEXT COMMENT '执行的结果'
+  title VARCHAR(100) NOT NULL COMMENT '标题，此sql对应的是什么业务',
+  jira_url VARCHAR(100) NOT NULL DEFAULT '' COMMENT '对应的jira地址',
+  execute_db_name VARCHAR(50) NOT NULL DEFAULT 0 COMMENT '要执行的库名，如果不选，就需要在sql上使用use db',
+  create_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '创建sql工单用户名冗余字段',
+  audit_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '审核用户名冗余字段',
+  execute_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '执行用户名冗余字段',
+  real_execute_user_name VARCHAR(20) NOT NULL DEFAULT '' COMMENT '真正执行sql的用户名称，冗余字段',
+  sql_value MEDIUMTEXT COMMENT '要执行的sql内容',
+  rollback_sql MEDIUMTEXT COMMENT '要回滚的SQL',
+  audit_result_value MEDIUMTEXT COMMENT '审核的结果',
+  return_value MEDIUMTEXT COMMENT '执行SQL返回的结果值',
+  `remark` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '工单审核备注信息，如果审核不通过需要写明理由'
 ) COMMENT 'sql执行工单子表' CHARSET utf8 ENGINE innodb;
 
 CREATE TABLE mysql_hosts
