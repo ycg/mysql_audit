@@ -9,7 +9,7 @@
 {% block list_body %}
 <ul id="myTab" class="nav nav-tabs">
     <li class="active">
-        <a href="#all_work" data-toggle="tab" onclick=set_tab_type(ALL_SQL_WORK_TAB,"#all_work")>所有工单</a>
+        <a href="#all_work" data-toggle="tab" onclick=set_tab_type(ALL_SQL_WORK_TAB,"#all_work")>我的工单</a>
     </li>
     <li>
         <a href="#work_auditing" data-toggle="tab" onclick=set_tab_type(NOT_AUDIT_SQL_WORK_TAB,"#work_auditing")>未审核工单</a>
@@ -27,19 +27,14 @@
 
 <div id="myTabContent" class="tab-content">
     <div class="tab-pane fade in active" id="all_work">
-        所有工单
     </div>
     <div class="tab-pane fade" id="work_auditing" hidden>
-        未审核工单
     </div>
     <div class="tab-pane fade" id="work_audit_fail" hidden>
-        审核失败工单
     </div>
     <div class="tab-pane fade" id="no_executed" hidden>
-        未执行工单
     </div>
     <div class="tab-pane fade" id="executed_ok" hidden>
-        执行成功工单
     </div>
 </div>
 

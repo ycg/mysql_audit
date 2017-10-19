@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6789b1a2-cd82-448d-b14c-7100c24d34db" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/db_util.py" afterPath="$PROJECT_DIR$/src/db_util.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/list_for_dba.html" afterPath="$PROJECT_DIR$/templates/list_for_dba.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/list_for_dev.html" afterPath="$PROJECT_DIR$/templates/list_for_dev.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/list_for_leader.html" afterPath="$PROJECT_DIR$/templates/list_for_leader.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/list_view.html" afterPath="$PROJECT_DIR$/templates/list_view.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mysql_audit.py" afterPath="$PROJECT_DIR$/mysql_audit.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/sql_execute_home.html" afterPath="$PROJECT_DIR$/templates/sql_execute_home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sql_manager.py" afterPath="$PROJECT_DIR$/src/sql_manager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/user_manager.py" afterPath="$PROJECT_DIR$/src/user_manager.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="mysql_audit.iws" />
@@ -53,7 +52,6 @@
         <option value="$PROJECT_DIR$/src/inception_util.py" />
         <option value="$PROJECT_DIR$/src/host_manager.py" />
         <option value="$PROJECT_DIR$/templates/list.html" />
-        <option value="$PROJECT_DIR$/templates/list_for_dba.html" />
         <option value="$PROJECT_DIR$/templates/user_update_view.html" />
         <option value="$PROJECT_DIR$/templates/sql_update_view.html" />
         <option value="$PROJECT_DIR$/templates/list_base.html" />
@@ -62,9 +60,12 @@
         <option value="$PROJECT_DIR$/templates/user.html" />
         <option value="$PROJECT_DIR$/src/user_manager.py" />
         <option value="$PROJECT_DIR$/mysql_audit.py" />
-        <option value="$PROJECT_DIR$/templates/list_view.html" />
         <option value="$PROJECT_DIR$/src/sql_manager.py" />
         <option value="$PROJECT_DIR$/templates/sql_execute_home.html" />
+        <option value="$PROJECT_DIR$/templates/list_view.html" />
+        <option value="$PROJECT_DIR$/templates/list_for_dev.html" />
+        <option value="$PROJECT_DIR$/templates/list_for_leader.html" />
+        <option value="$PROJECT_DIR$/templates/list_for_dba.html" />
       </list>
     </option>
   </component>
@@ -151,7 +152,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="templates" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -475,7 +476,13 @@
       <option name="project" value="LOCAL" />
       <updated>1508142551133</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="优化代码，解决一个问题">
+      <created>1508295893286</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1508295893286</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView">
@@ -488,23 +495,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="54" y="-8" width="1874" height="1096" extended-state="0" />
+    <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16703418" sideWeight="0.49459043" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.49779493" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5022051" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953367" sideWeight="0.49779493" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284974" sideWeight="0.49558985" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29192546" sideWeight="0.49779493" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1631753" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29222798" sideWeight="0.49779493" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16703418" sideWeight="0.49459043" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1631753" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1427784" sideWeight="0.5054096" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3115942" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -539,7 +546,8 @@
     <MESSAGE value="添加编辑界面，可以修改sql内容" />
     <MESSAGE value="增加更新工单接口，调试没有问题" />
     <MESSAGE value="tijiao" />
-    <option name="LAST_COMMIT_MESSAGE" value="tijiao" />
+    <MESSAGE value="优化代码，解决一个问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化代码，解决一个问题" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -558,74 +566,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/mysql_audit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="430" column="65" selection-start-line="430" selection-start-column="61" selection-end-line="430" selection-end-column="65" />
-          <folding>
-            <element signature="e#780#792#0" expanded="false" />
-            <element signature="e#846#987#0" expanded="false" />
-            <element signature="e#1042#1077#0" expanded="false" />
-            <element signature="e#1093#1111#0" expanded="false" />
-            <element signature="e#1171#1254#0" expanded="false" />
-            <element signature="e#1348#1422#0" expanded="false" />
-            <element signature="e#1544#1586#0" expanded="false" />
-            <element signature="e#1711#1757#0" expanded="false" />
-            <element signature="e#1853#1896#0" expanded="false" />
-            <element signature="e#1991#2070#0" expanded="false" />
-            <element signature="e#2200#2243#0" expanded="false" />
-            <element signature="e#2258#2278#0" expanded="false" />
-            <element signature="e#2339#2645#0" expanded="false" />
-            <element signature="e#2733#2810#0" expanded="false" />
-            <element signature="e#2897#2935#0" expanded="false" />
-            <element signature="e#3057#3144#0" expanded="false" />
-            <element signature="e#3274#3424#0" expanded="false" />
-            <element signature="e#3547#3705#0" expanded="false" />
-            <element signature="e#3824#3865#0" expanded="false" />
-            <element signature="e#4011#4073#0" expanded="false" />
-            <element signature="e#4200#4285#0" expanded="false" />
-            <element signature="e#4301#4318#0" expanded="false" />
-            <element signature="e#4410#5160#0" expanded="false" />
-            <element signature="e#5276#6381#0" expanded="false" />
-            <element signature="e#6519#6561#0" expanded="false" />
-            <element signature="e#6684#6782#0" expanded="false" />
-            <element signature="e#6841#6987#0" expanded="false" />
-            <element signature="e#7057#7329#0" expanded="false" />
-            <element signature="e#7342#7359#0" expanded="false" />
-            <element signature="e#7417#7452#0" expanded="false" />
-            <element signature="e#7537#7621#0" expanded="false" />
-            <element signature="e#7702#7761#0" expanded="false" />
-            <element signature="e#7848#7866#0" expanded="false" />
-            <element signature="e#7953#8043#0" expanded="false" />
-            <element signature="e#8132#8203#0" expanded="false" />
-            <element signature="e#8299#8368#0" expanded="false" />
-            <element signature="e#8384#8401#0" expanded="false" />
-            <element signature="e#8459#8715#0" expanded="false" />
-            <element signature="e#8803#8877#0" expanded="false" />
-            <element signature="e#8962#9084#0" expanded="false" />
-            <element signature="e#9199#9274#0" expanded="false" />
-            <element signature="e#9387#9426#0" expanded="false" />
-            <element signature="e#9514#9594#0" expanded="false" />
-            <element signature="e#9686#9786#0" expanded="false" />
-            <element signature="e#9903#9955#0" expanded="false" />
-            <element signature="e#10049#10137#0" expanded="false" />
-            <element signature="e#10275#10543#0" expanded="false" />
-            <element signature="e#10559#10583#0" expanded="false" />
-            <element signature="e#10708#11480#0" expanded="false" />
-            <element signature="e#11587#11667#0" expanded="false" />
-            <element signature="e#11683#11701#0" expanded="false" />
-            <element signature="e#11780#12078#0" expanded="false" />
-            <element signature="e#12162#12191#0" expanded="false" />
-            <element signature="e#12249#12290#0" expanded="false" />
-            <element signature="e#12336#12402#0" expanded="false" />
-            <element signature="e#12418#12441#0" expanded="false" />
-            <element signature="e#12485#12847#0" expanded="false" />
-            <element signature="e#12896#13257#0" expanded="false" />
-            <element signature="e#13273#13292#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/sql_execute_view.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -840,26 +780,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_for_dev.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/list_for_admin.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_for_leader.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8442504">
-          <caret line="56" column="39" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="39" />
           <folding />
         </state>
       </provider>
@@ -890,14 +814,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.1965812">
           <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_for_dba.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5888325">
-          <caret line="21" column="126" selection-start-line="21" selection-start-column="121" selection-end-line="21" selection-end-column="126" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -953,14 +869,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.40463066">
           <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="129" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9830508">
-          <caret line="149" column="11" selection-start-line="142" selection-start-column="8" selection-end-line="149" selection-end-column="11" />
           <folding />
         </state>
       </provider>
@@ -1037,36 +945,6 @@
         <state vertical-scroll-proportion="0.47633588">
           <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/table.sql">
-      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5872">
-          <caret line="56" column="17" selection-start-line="56" selection-start-column="2" selection-end-line="56" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17252396">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/sql_execute_home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.0367413">
-          <caret line="125" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-          <folding>
-            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#textarea#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1207,6 +1085,128 @@
             <element signature="e#12896#13257#0" expanded="false" />
             <element signature="e#13273#13292#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63836825">
+          <caret line="152" column="44" selection-start-line="152" selection-start-column="44" selection-end-line="152" selection-end-column="44" />
+          <folding>
+            <element signature="n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#div#3;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#3;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#3;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#3;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#3;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#3;n#!!top" expanded="false" />
+            <element signature="n#div#4;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#4;n#!!top" expanded="false" />
+            <element signature="e#3430#3762#0#HTML" expanded="false" />
+            <element signature="e#3637#3691#0#HTML" expanded="false" />
+            <element signature="e#3711#3754#0#HTML" expanded="false" />
+            <element signature="e#3820#3895#0#HTML" expanded="false" />
+            <element signature="e#3943#4048#0#HTML" expanded="false" />
+            <element signature="e#4081#4392#0#HTML" expanded="false" />
+            <element signature="e#4156#4275#0#HTML" expanded="false" />
+            <element signature="e#4295#4384#0#HTML" expanded="false" />
+            <element signature="e#4443#4532#0#HTML" expanded="false" />
+            <element signature="e#4580#4874#0#HTML" expanded="false" />
+            <element signature="e#4636#4868#0#HTML" expanded="false" />
+            <element signature="e#4914#5171#0#HTML" expanded="false" />
+            <element signature="e#4986#5163#0#HTML" expanded="false" />
+            <element signature="e#5210#5641#0#HTML" expanded="false" />
+            <element signature="e#5394#5517#0#HTML" expanded="false" />
+            <element signature="e#5537#5633#0#HTML" expanded="false" />
+            <element signature="e#5687#5819#0#HTML" expanded="false" />
+            <element signature="e#5859#5924#0#HTML" expanded="false" />
+            <element signature="e#5959#5997#0#HTML" expanded="false" />
+            <element signature="e#6034#6073#0#HTML" expanded="false" />
+            <element signature="e#6118#6762#0#HTML" expanded="false" />
+            <element signature="e#6316#6445#0#HTML" expanded="false" />
+            <element signature="e#6358#6435#0#HTML" expanded="false" />
+            <element signature="e#6519#6640#0#HTML" expanded="false" />
+            <element signature="e#6660#6754#0#HTML" expanded="false" />
+            <element signature="e#6803#7056#0#HTML" expanded="false" />
+            <element signature="e#6877#6989#0#HTML" expanded="false" />
+            <element signature="e#7009#7048#0#HTML" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/audit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.64167583">
+          <caret line="110" column="36" selection-start-line="110" selection-start-column="36" selection-end-line="110" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_for_dev.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.69128996">
+          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_for_leader.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16207276">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/sql_execute_home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.40463066">
+          <caret line="197" column="12" selection-start-line="197" selection-start-column="12" selection-end-line="197" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/table.sql">
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.118101545">
+          <caret line="93" column="42" selection-start-line="93" selection-start-column="42" selection-end-line="93" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_for_dba.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7056229">
+          <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -108,11 +108,11 @@
                     {% endif %}
                 {% endif %}
 
-                <!--执行错误-->
+                <!--执行错误，不允许删除，要永久保留-->
                 {% if(info.status == 3) %}
                     <!--也只有自己创建的工单才能删除-->
                     {% if(info.create_user_id == user_info.user_id) %}
-                        <button class="btn-danger btn btn-xs" onclick=show_delete_sql_work_dialog({{ info.id }})>删除</button>
+                        <!--<button class="btn-danger btn btn-xs" onclick=show_delete_sql_work_dialog({{ info.id }})>删除</button>-->
                     {% endif %}
                 {% endif %}
 
