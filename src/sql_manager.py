@@ -194,7 +194,7 @@ def sql_execute(obj):
                                                     sleep_time=sql_info.sleep)
             sql = """update mysql_audit.sql_work
                      set
-                     return_value = '{0}',
+                     `return_value` = '{0}',
                      `status` = {1},
                      `ignore_warnings` = {2},
                      `execute_finish_date_time` = NOW(),

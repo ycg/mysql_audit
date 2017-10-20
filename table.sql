@@ -85,7 +85,7 @@ CREATE TABLE sql_work
 ) COMMENT 'sql执行工单表' CHARSET utf8 ENGINE innodb;
 
 
-CREATE TABLE sql_work
+/*CREATE TABLE sql_work
 (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   create_user_id SMALLINT UNSIGNED NOT NULL COMMENT '创建sql工单用户id',
@@ -128,7 +128,8 @@ CREATE TABLE sql_work_sub
   audit_result_value MEDIUMTEXT COMMENT '审核的结果',
   return_value MEDIUMTEXT COMMENT '执行SQL返回的结果值',
   `remark` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '工单审核备注信息，如果审核不通过需要写明理由'
-) COMMENT 'sql执行工单子表' CHARSET utf8 ENGINE innodb;
+) COMMENT 'sql执行工单子表' CHARSET utf8 ENGINE innodb;*/
+
 
 CREATE TABLE mysql_hosts
 (
@@ -162,6 +163,7 @@ create table user_host_priv
 
 
 #要执行的SQL
+/*
 set sql_safe_updates = 0;
 update mysql_audit.sql_work t1
 left join mysql_audit.work_user t2 on t1.create_user_id = t2.user_id
@@ -173,3 +175,22 @@ t1.create_user_name= t2.chinese_name,
 t1.audit_user_name=t3.chinese_name,
 t1.execute_user_name=t4.chinese_name,
 t1.real_execute_user_name=ifnull(t5.chinese_name, '');
+
+insert into mysql_audit.sql_work_sub
+select id,title,jira_url,execute_db_name,create_user_name,audit_user_name,execute_user_name,
+real_execute_user_name,sql_value,rollback_sql,audit_result_value,return_value,remark from mysql_audit.sql_work
+
+alter table sql_work
+drop column title,
+drop column jira_url,
+drop column execute_db_name,
+drop column create_user_name,
+drop column audit_user_name,
+drop column execute_user_name,
+drop column real_execute_user_name,
+drop column sql_value,
+drop column rollback_sql,
+drop column audit_result_value,
+drop column return_value,
+drop column remark;
+*/
