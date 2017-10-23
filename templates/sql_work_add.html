@@ -146,7 +146,7 @@
     function check_input_value() {
         var json_obj = get_form_json($("#sql_work_form"));
         if ($("#host_id").val() == null) {
-            display_error_message("请选择数据库集群");
+            display_error_message("请选择要执行的数据库集群");
         }
         else if (json_obj.sql_value.length <= 0) {
             display_error_message("请输入要执行的SQL");
@@ -185,7 +185,8 @@
     }
 
     function display_error_message(message) {
-        $("#audit_info").html(message);
+        alert(message + "！");
+        //$("#audit_info").html(message);
     }
 
     function show_database_names() {

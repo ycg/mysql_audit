@@ -117,16 +117,16 @@ function get_audit_infos() {
     var sql = $("#sql_value").val();
     var host_id = $("#host_id").val();
     if (host_id <= 0) {
-        $("#audit_info").html("请选择数据库集群");
-        return;
+        //$("#audit_info").html("请选择数据库集群");
+        alert("请选择要执行的数据库集群！");
     }
     else if (jQuery.trim(sql).length <= 0) {
-        $("#audit_info").html("请输入要审核的SQL");
-        return;
+        //$("#audit_info").html("请输入要审核的SQL");
+        alert("请输入要审核的SQL！");
     }
     else if ($("#db_name").val() == null) {
-        $("#audit_info").html("请选择要执行的数据库");
-        return;
+        //$("#audit_info").html("请选择要执行的数据库");
+        alert("请选择要执行的数据库！");
     }
     else {
         var json_obj = new Object();
