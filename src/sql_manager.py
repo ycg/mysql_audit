@@ -385,7 +385,6 @@ def get_sql_work_for_dev(obj):
 # leader工单查询方法
 # 能够看到自己的以及组内所以组员工单
 def get_sql_work_for_leader(obj):
-    sql_where = ""
     user_info = cache.MyCache().get_user_info(obj.current_user_id)
     if (obj.tab_type == settings.ALL_SQL_WORK_TAB):
         sql_where = " and create_user_id = {0}".format(obj.current_user_id)
