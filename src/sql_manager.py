@@ -97,8 +97,8 @@ def update_sql_work(obj):
     if (obj.current_user_id != sql_info.create_user_id):
         return "你不能编辑此工单，你不是工单创建者！"
 
-    if (sql_info.status != settings.SQL_NO_AUDIT or sql_info.status != settings.SQL_AUDIT_FAIL):
-        return "此工单的状态不能进行更新！"
+    if (sql_info.status != settings.SQL_NO_AUDIT and sql_info.status != settings.SQL_AUDIT_FAIL):
+        return "此工单的状态不允许更新操作！"
 
     audit_result = inception_util.sql_audit(get_use_db_sql(obj.sql_value, obj.db_name), cache.MyCache().get_mysql_host_info(obj.host_id))
     if (get_sql_execute_status(audit_result) == False):
