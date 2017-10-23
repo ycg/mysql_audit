@@ -3,7 +3,6 @@
 import json, time, traceback
 from flask import render_template, request
 import inception_util, cache, db_util, settings, common_util, custom_entity
-from flask_login import current_user
 
 
 # 根据sql和主机id审核sql
