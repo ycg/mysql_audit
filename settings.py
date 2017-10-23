@@ -71,4 +71,3 @@ EMAIL_SEND_ENABLE = False
 
 MY_KEY = 20
 
-

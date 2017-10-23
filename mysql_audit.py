@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os, json
+import os, json, functools
 from flask import Flask, app, render_template, request
 from flask_login import login_user, login_required, logout_user, LoginManager, current_user
 
@@ -18,6 +18,16 @@ login_manager.session_protection = "strong"
 login_manager.login_view = "login_home"
 login_manager.init_app(app=app)
 cache.MyCache().load_all_cache()
+
+
+def is_admin(func):
+    @functools.wraps(func)
+    def check():
+        if (cache.MyCache().get_user_info(current_user.id).group_id == settings.ADMIN_GROUP_ID):
+            return func()
+        else:
+            return "你没有操作权限！"
+    return check
 
 
 # region tab
@@ -78,6 +88,7 @@ def review_sql_work():
 @login_required
 def get_review_remark(sql_id):
     return sql_manager.get_audit_remark(sql_id)
+
 
 # endregion
 
@@ -231,30 +242,35 @@ def get_min_id(sql_list, page_number):
 
 @app.route("/host")
 @login_required
+@is_admin
 def get_host():
     return render_template("host.html")
 
 
 @app.route("/host/query", methods=["POST"])
 @login_required
+@is_admin
 def query_host():
     return render_template("host_view.html", host_infos=host_manager.query_host_infos())
 
 
 @app.route("/host/add", methods=["POST"])
 @login_required
+@is_admin
 def add_host():
     return host_manager.add(get_object_from_json(request.form))
 
 
 @app.route("/host/update", methods=["POST"])
 @login_required
+@is_admin
 def update_host():
     return "update ok"
 
 
 @app.route("/host/delete", methods=["POST"])
 @login_required
+@is_admin
 def delete_host():
     host_manager.delete(get_object_from_json(request.form))
     return "delete mysql host ok!"
@@ -262,12 +278,14 @@ def delete_host():
 
 @app.route("/host/test", methods=["POST"])
 @login_required
+@is_admin
 def test_connection():
     return host_manager.test_connection(get_object_from_json(request.form))
 
 
 @app.route("/host/query/host_id", methods=["POST"])
 @login_required
+@is_admin
 def get_host_info():
     return host_manager.get_host_info(get_object_from_json(request.form))
 
@@ -276,8 +294,10 @@ def get_host_info():
 
 # region user api
 
+
 @app.route("/user")
 @login_required
+@is_admin
 def get_user():
     return render_template("user.html",
                            role_infos=cache.MyCache().get_role_info(),
@@ -287,18 +307,21 @@ def get_user():
 
 @app.route("/user/add", methods=["GET", "POST"])
 @login_required
+@is_admin
 def add_user():
     return user_manager.add_user(get_object_from_json_tmp(request.get_data()))
 
 
 @app.route("/user/query", methods=["POST"])
 @login_required
+@is_admin
 def query_user():
     return render_template("user_view.html", user_infos=user_manager.query_user(get_object_from_json_tmp(request.get_data())))
 
 
 @app.route("/user/delete/<int:user_id>", methods=["GET", "POST"])
 @login_required
+@is_admin
 def delete_user(user_id):
     message = user_manager.delete_user(user_id)
     logout()
@@ -307,36 +330,42 @@ def delete_user(user_id):
 
 @app.route("/user/start/<int:user_id>", methods=["GET", "POST"])
 @login_required
+@is_admin
 def start_user(user_id):
     return user_manager.start_user(user_id)
 
 
 @app.route("/user/group/add", methods=["POST"])
 @login_required
+@is_admin
 def add_group():
     return user_manager.add_group_info(get_object_from_json_tmp(request.get_data()))
 
 
 @app.route("/user/group/query", methods=["POST"])
 @login_required
+@is_admin
 def query_group():
     return render_template("user_group_view.html", user_group_infos=user_manager.get_user_group_infos())
 
 
 @app.route("/user/group/delete/<int:group_id>", methods=["POST"])
 @login_required
+@is_admin
 def delete_group(group_id):
     return user_manager.delete_user_group_info(group_id)
 
 
 @app.route("/user/group/update", methods=["POST"])
 @login_required
+@is_admin
 def update_group():
     return user_manager.update_user_group_info(get_object_from_json_tmp(request.get_data()))
 
 
 @app.route("/user/update/dialog/<int:user_id>", methods=["GET", "POST"])
 @login_required
+@is_admin
 def get_show_update_user_dialog(user_id):
     return render_template("user_update_view.html",
                            role_infos=cache.MyCache().get_role_info(),
