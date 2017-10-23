@@ -3,6 +3,7 @@
 import json, time, traceback
 from flask import render_template, request
 import inception_util, cache, db_util, settings, common_util, custom_entity
+from flask_login import current_user
 
 
 # 根据sql和主机id审核sql
@@ -439,7 +440,6 @@ def get_sql_work_list_by_where(obj, sql_where):
     for info in result_list:
         get_sql_work_status_name(info)
     return result_list
-
 
 
 
