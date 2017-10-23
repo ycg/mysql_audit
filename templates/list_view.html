@@ -91,7 +91,9 @@
                     {% if(info.audit_user_id == user_info.user_id) %}
                         <button class="btn-success btn btn-xs" onclick="show_work_audit_dialog({{ info.id }})">审核</button>
                     {% endif %}
-                    <button class="btn-primary btn btn-xs" onclick="get_review_remark({{ info.id }})">备注</button>
+                    {% if(info.status == 2) %}
+                        <button class="btn-primary btn btn-xs" onclick="get_review_remark({{ info.id }})">备注</button>
+                    {% endif %}
                 {% endif %}
 
                 <!--审核成功才能执行-->

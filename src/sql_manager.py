@@ -97,6 +97,9 @@ def update_sql_work(obj):
     if (obj.current_user_id != sql_info.create_user_id):
         return "你不能编辑此工单，你不是工单创建者！"
 
+    if (sql_info.status != settings.SQL_NO_AUDIT or sql_info.status != settings.SQL_AUDIT_FAIL):
+        return "此工单的状态不能进行更新！"
+
     audit_result = inception_util.sql_audit(get_use_db_sql(obj.sql_value, obj.db_name), cache.MyCache().get_mysql_host_info(obj.host_id))
     if (get_sql_execute_status(audit_result) == False):
         return "提交的SQL有错误，请仔细检查！"
@@ -205,7 +208,6 @@ def sql_execute(obj):
                                                                                 obj.current_user_id,
                                                                                 cache.MyCache().get_user_info(obj.current_user_id).chinese_name,
                                                                                 sql_info.id)
-            print(sql)
             db_util.DBUtil().execute(settings.MySQL_HOST, sql)
             send_mail_for_execute_success(sql_info.id)
             return_info.execute_result = result_obj
@@ -229,7 +231,7 @@ def check_sql_audit_result_has_warnings(sql_id):
     sql_info = get_sql_info_by_id(sql_id)
     for info in json.loads(sql_info.audit_result_value):
         obj = common_util.get_object(info)
-        if (obj.errlevel == settings.INCETION_SQL_WARNING):
+        if (obj.errlevel == settings.INCEPTION_SQL_WARNING):
             result.has_warnings = True
             break
         else:
@@ -261,7 +263,7 @@ def get_sql_work_status_name(sql_info):
 # False：执行或审核出现严重错误
 def get_sql_execute_status(result):
     for info in result:
-        if (info.errlevel == settings.INCETION_SQL_ERROR):
+        if (info.errlevel == settings.INCEPTION_SQL_ERROR):
             return False
     return True
 
@@ -269,7 +271,7 @@ def get_sql_execute_status(result):
 # 获取审核或执行结果是否有警告状态
 def get_sql_result_has_warning_status(result):
     for info in result:
-        if (info.errlevel == settings.INCETION_SQL_WARNING):
+        if (info.errlevel == settings.INCEPTION_SQL_WARNING):
             return False
     return True
 
@@ -399,9 +401,9 @@ def get_sql_work_for_dba(obj):
     sql_where = ""
     if (obj.tab_type == settings.ALL_SQL_WORK_TAB):
         sql_where = "and create_user_id = {0}".format(obj.current_user_id)
-    elif (obj.tab_type == settings.NOT_EXECUTE_SQL_WORK_TAB):
+    elif (obj.tab_type == settings.NOT_EXECUTE_SQL_WORK_TAB or obj.tab_type == settings.EXECUTE_OK_SQL_WROK_TAB or obj.tab_type == settings.EXECUTE_FAIL_SQL_WROK_TAB):
         sql_where = " and (execute_user_id = {0} or create_user_id = {0})".format(obj.current_user_id)
-    elif (obj.tab_type == settings.AUDIT_OK_SQL_WORK_TAB):
+    elif (obj.tab_type == settings.AUDIT_OK_SQL_WORK_TAB or obj.tab_type == settings.NOT_AUDIT_SQL_WORK_TAB or obj.tab_type == settings.AUDIT_FAIL_SQL_WORK_TAB):
         sql_where = " and audit_user_id = {0}".format(obj.current_user_id)
     return get_sql_work_list_by_where(obj, sql_where)
 
