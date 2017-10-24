@@ -9,9 +9,6 @@ from src import common_util, cache, user_login, sql_manager, host_manager, user_
 
 app = Flask("mysql_audit", instance_relative_config=True, instance_path=os.getcwd())
 app.config["SESSION_COOKIE_NAME"] = "mysql_audit"
-app.logger.debug('A value for debugging')
-app.logger.warning('A warning occurred (%d apples)', 42)
-app.logger.error('An error occurred')
 app.secret_key = os.urandom(24)
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
