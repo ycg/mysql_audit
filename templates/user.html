@@ -163,7 +163,6 @@
 </div>
 
 <script type="text/javascript">
-    //$(".selectpicker").selectpicker();
     $(".selectpicker").selectpicker({liveSearch: true});
 
     function show_add_user_dialog() {
@@ -189,11 +188,14 @@
 
     function add_group() {
         $.post("/user/group/add", JSON.stringify(get_form_json($("#group_add_form"))), function (data) {
-            alert(data);
-            hide_modal_dialog("#group_add");
-            query_group();
-            $("#group_name").val("");
-            $("#remark_value").val("");
+            var obj = JSON.parse(data);
+            alert(obj.message);
+            if (obj.flag == true) {
+                hide_modal_dialog("#group_add");
+                query_group();
+                $("#group_name").val("");
+                $("#remark_value").val("");
+            }
         }).error(function () {
             alert("添加失败!");
             hide_modal_dialog("#group_add");

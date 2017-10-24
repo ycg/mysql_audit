@@ -4,7 +4,7 @@ import settings
 from custom_entity import Entity
 
 from email.mime.text import MIMEText
-import smtplib, traceback, threadpool
+import smtplib, traceback, threadpool, json
 
 threadpool_cache = threadpool.ThreadPool(settings.THREAD_POOL_SIZE)
 
@@ -17,6 +17,11 @@ def get_object(row):
             value = None
         setattr(info, key, value)
     return info
+
+
+# 转换对象为json数据
+def to_json(obj):
+    return json.dumps(obj, default=lambda o: o.__dict__)
 
 
 # 发生文本邮件

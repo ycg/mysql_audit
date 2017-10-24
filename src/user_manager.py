@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
-from common_util import Entity
+from common_util import Entity, to_json
 import db_util, settings, cache
 
 
@@ -33,10 +33,10 @@ def add_user(obj):
             result_json.message = "用户名已存在!"
         else:
             # 对用户能够访问哪些数据库进行设置
-            if (len(obj.user_hosts) > 1):
+            '''if (len(obj.user_hosts) > 1):
                 pass
             else:
-                pass
+                pass'''
 
             sql = """insert into mysql_audit.work_user
                      (user_name, user_password, chinese_name, group_id, role_id, email)
@@ -107,10 +107,20 @@ def get_user_group_infos():
 
 # 添加用户组信息
 def add_group_info(obj):
-    sql = "insert into mysql_audit.group_info (group_name, remark) VALUES ('{0}', '{1}');".format(obj.group_name, obj.remark_value)
-    db_util.DBUtil().execute(settings.MySQL_HOST, sql)
-    cache.MyCache().load_group_infos()
-    return "添加用户组成功!"
+    result_info = Entity()
+    result_info.flag = False
+    result_info.message = ""
+    if (len(obj.group_name) <= 0):
+        result_info.message = "请填写用户组名称！"
+    elif (len(obj.remark_value) <= 0):
+        result_info.message = "请填写用户组备注！"
+    else:
+        sql = "insert into mysql_audit.group_info (group_name, remark) VALUES ('{0}', '{1}');".format(obj.group_name, obj.remark_value)
+        db_util.DBUtil().execute(settings.MySQL_HOST, sql)
+        cache.MyCache().load_group_infos()
+        result_info.flag = True
+        result_info.message = "添加用户组成功!"
+    return to_json(result_info)
 
 
 # 更新用户组信息

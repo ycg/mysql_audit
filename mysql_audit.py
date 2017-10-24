@@ -22,9 +22,9 @@ cache.MyCache().load_all_cache()
 
 def is_admin(func):
     @functools.wraps(func)
-    def check():
+    def check(*args, **kwargs):
         if (cache.MyCache().get_user_info(current_user.id).group_id == settings.ADMIN_GROUP_ID):
-            return func()
+            return func(*args, **kwargs)
         else:
             return "你没有操作权限！"
     return check
