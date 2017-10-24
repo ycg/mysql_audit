@@ -182,14 +182,17 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <button class="btn btn-default" onclick="get_audit_info_for_edit()">重新审核SQL</button>
-            <button class="btn btn-primary" onclick="update_sql_work({{ work_info.id }})">保存工单</button>
-        </div>
-    </div>
 
-    </br>
+    {% if(work_info.status == 0 or work_info.status == 2) %}
+        <div class="row">
+            <div class="col-md-8">
+                <button class="btn btn-default" onclick="get_audit_info_for_edit()">重新审核SQL</button>
+                <button class="btn btn-primary" onclick="update_sql_work({{ work_info.id }})">保存工单</button>
+            </div>
+        </div>
+        </br>
+    {% endif %}
+
     <div class="row">
         <div class="col-md-12" id="audit_info"></div>
     </div>
