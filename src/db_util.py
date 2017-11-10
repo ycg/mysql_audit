@@ -101,8 +101,8 @@ class DBUtil(object):
             cursor = connection.cursor()
             cursor.execute(sql)
         finally:
-            if (cursor != None):
+            if (cursor is not None):
                 cursor.close()
-            if (connection != None):
+            if (connection is not None):
                 connection.close()
 
