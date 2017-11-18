@@ -16,7 +16,7 @@ grant all on *.* to yangcg@'%' identified by 'yangcaogui';
 2. 调用inception只能使用MySQLdb
 3. yum -y install python-devel python-setuptools
 4. easy_install pip
-5. pip install flask flask-login gevent threadpool pymysql DBUtils six packaging appdirs MySQLdb
+5. pip install flask flask-login gevent threadpool pymysql DBUtils six packaging appdirs mysql-python
 
 # 导入表结构
 mysql -h -u -p -P < table.sql</br>
